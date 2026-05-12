@@ -1067,40 +1067,43 @@ section { padding: 80px 0; }
   <div class="modal">
     <button class="modal-close" aria-label="Close" id="modalClose"><i class="ti ti-x" aria-hidden="true"></i></button>
 
-    <div class="modal-state active" data-state="enter">
+    <div class="modal-state active" data-state="signin">
       <div class="modal-eyebrow">Sign in to My Rich Tapestry</div>
-      <h3 id="modalTitle">Welcome, storyteller.</h3>
-      <p class="modal-lede">Enter your email and we'll send you a sign-in link. No password to remember.</p>
+      <h3 id="modalTitle">Welcome back.</h3>
+      <p class="modal-lede">Sign in to continue your recording.</p>
       <form class="modal-form" id="signInForm" novalidate>
-        <input type="email" class="modal-input" id="emailInput" placeholder="your@email.com" autocomplete="email" required aria-label="Email address">
-        <div class="modal-error" id="emailError" role="alert"></div>
-        <button type="submit" class="modal-submit" id="submitBtn">
-          <span class="submit-label">Send me a sign-in link</span>
+        <input type="email" class="modal-input" id="signinEmail" placeholder="your@email.com" autocomplete="email" required aria-label="Email address">
+        <input type="password" class="modal-input" id="signinPassword" placeholder="Password" autocomplete="current-password" required aria-label="Password">
+        <div class="modal-error" id="signinError" role="alert"></div>
+        <button type="submit" class="modal-submit" id="signinSubmit">
+          <span class="submit-label">Sign in</span>
           <span class="spinner" aria-hidden="true"></span>
         </button>
       </form>
-      <p class="modal-meta">New here? Same form — we'll create your account.</p>
+      <p class="modal-meta">No account yet? <a data-modal-state="signup">Create one</a></p>
     </div>
 
-    <div class="modal-state" data-state="check">
+    <div class="modal-state" data-state="signup">
+      <div class="modal-eyebrow">Create an account</div>
+      <h3>Welcome, storyteller.</h3>
+      <p class="modal-lede">Pick a password you'll remember. You'll need it next time.</p>
+      <form class="modal-form" id="signUpForm" novalidate>
+        <input type="email" class="modal-input" id="signupEmail" placeholder="your@email.com" autocomplete="email" required aria-label="Email address">
+        <input type="password" class="modal-input" id="signupPassword" placeholder="Password (8+ characters)" autocomplete="new-password" required aria-label="Password" minlength="8">
+        <div class="modal-error" id="signupError" role="alert"></div>
+        <button type="submit" class="modal-submit" id="signupSubmit">
+          <span class="submit-label">Create account &amp; sign in</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+      <p class="modal-meta">Already have an account? <a data-modal-state="signin">Sign in</a></p>
+    </div>
+
+    <div class="modal-state" data-state="confirm-sent">
       <div class="modal-success-icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
-      <h3>Check your email</h3>
-      <p class="modal-lede">We've sent a sign-in link to <span class="modal-sent-email" id="sentEmail"></span>. Click the link on this device — this window will update automatically.</p>
-
-      <details class="otp-fallback" id="otpFallback">
-        <summary>Or enter a 6-digit code instead</summary>
-        <p>The email also includes a 6-digit code. Paste it here if clicking the link is awkward.</p>
-        <form class="modal-form" id="otpForm" novalidate>
-          <input type="text" class="modal-input" id="otpInput" placeholder="123456" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
-          <div class="modal-error" id="otpError" role="alert"></div>
-          <button type="submit" class="modal-submit" id="otpSubmit">
-            <span class="submit-label">Verify code</span>
-            <span class="spinner" aria-hidden="true"></span>
-          </button>
-        </form>
-      </details>
-
-      <p class="modal-meta"><a id="resendLink">Use a different email</a></p>
+      <h3>Confirm your email</h3>
+      <p class="modal-lede">We've sent a confirmation link to <span class="modal-sent-email" id="confirmEmail"></span>. Click it, then come back here to sign in.</p>
+      <p class="modal-meta">Already confirmed? <a data-modal-state="signin">Sign in</a></p>
     </div>
   </div>
 </div>
@@ -1137,8 +1140,10 @@ section { padding: 80px 0; }
   // element refs
   var navLinks, hamburger, signInItem, startItem, userMenuItem, userBtn, userDropdown,
       userAvatar, userName, dropdownName, dropdownEmail,
-      modal, modalClose, signInForm, emailInput, emailError, submitBtn,
-      sentEmail, resendLink, otpForm, otpInput, otpError, otpSubmit, otpFallback,
+      modal, modalClose,
+      signInForm, signinEmail, signinPassword, signinError, signinSubmit,
+      signUpForm, signupEmail, signupPassword, signupError, signupSubmit,
+      confirmEmail,
       toast;
   var toastTimer = null;
 
@@ -1240,13 +1245,14 @@ section { padding: 80px 0; }
     if (!modal) return;
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
-    showModalState('enter');
-    if (emailInput) {
-      emailInput.value = '';
-      setTimeout(function () { emailInput.focus(); }, 60);
+    showModalState('signin');
+    if (signinEmail) {
+      setTimeout(function () { signinEmail.focus(); }, 60);
     }
-    if (emailError) emailError.textContent = '';
-    if (submitBtn) { submitBtn.classList.remove('loading'); submitBtn.disabled = false; }
+    if (signinError) signinError.textContent = '';
+    if (signupError) signupError.textContent = '';
+    if (signinSubmit) { signinSubmit.classList.remove('loading'); signinSubmit.disabled = false; }
+    if (signupSubmit) { signupSubmit.classList.remove('loading'); signupSubmit.disabled = false; }
     document.body.style.overflow = 'hidden';
   }
   function closeModal() {
@@ -1283,17 +1289,13 @@ section { padding: 80px 0; }
   }
 
   // ============== SUPABASE AUTH ==============
-  async function sendMagicLink(email) {
+  async function doSignIn(email, password) {
     if (!sb) return { error: { message: 'Backend not ready.' } };
-    var redirectTo = window.location.origin + window.location.pathname;
-    return await sb.auth.signInWithOtp({
-      email: email,
-      options: { emailRedirectTo: redirectTo }
-    });
+    return await sb.auth.signInWithPassword({ email: email, password: password });
   }
-  async function verifyOtp(email, token) {
+  async function doSignUp(email, password) {
     if (!sb) return { error: { message: 'Backend not ready.' } };
-    return await sb.auth.verifyOtp({ email: email, token: token, type: 'email' });
+    return await sb.auth.signUp({ email: email, password: password });
   }
   async function signOut() {
     if (!sb) return;
@@ -1642,70 +1644,85 @@ section { padding: 80px 0; }
 
   // ============== LISTENERS ==============
   function attachListeners() {
-    // Sign-in form
+    // Sign-in form (email + password)
     if (signInForm) {
       signInForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        var email = emailInput.value.trim();
+        var email = signinEmail.value.trim();
+        var password = signinPassword.value;
         if (!isValidEmail(email)) {
-          emailError.textContent = 'Please enter a valid email address.';
-          emailInput.focus();
+          signinError.textContent = 'Please enter a valid email address.';
+          signinEmail.focus();
           return;
         }
-        emailError.textContent = '';
-        submitBtn.classList.add('loading');
-        submitBtn.disabled = true;
-        var result = await sendMagicLink(email);
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
+        if (!password) {
+          signinError.textContent = 'Please enter your password.';
+          signinPassword.focus();
+          return;
+        }
+        signinError.textContent = '';
+        signinSubmit.classList.add('loading');
+        signinSubmit.disabled = true;
+        var result = await doSignIn(email, password);
+        signinSubmit.classList.remove('loading');
+        signinSubmit.disabled = false;
         if (result.error) {
-          emailError.textContent = result.error.message || 'Could not send link. Try again.';
-          return;
-        }
-        sentEmail.textContent = email;
-        pendingEmail = email;
-        showModalState('check');
-      });
-    }
-    if (emailInput) {
-      emailInput.addEventListener('input', function () {
-        if (emailError) emailError.textContent = '';
-      });
-    }
-
-    // OTP form
-    if (otpForm) {
-      otpForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        var token = otpInput.value.trim();
-        if (!/^\d{6}$/.test(token)) {
-          otpError.textContent = 'Enter the 6-digit code from your email.';
-          return;
-        }
-        otpError.textContent = '';
-        otpSubmit.classList.add('loading');
-        otpSubmit.disabled = true;
-        var result = await verifyOtp(pendingEmail, token);
-        otpSubmit.classList.remove('loading');
-        otpSubmit.disabled = false;
-        if (result.error) {
-          otpError.textContent = result.error.message || 'Invalid code.';
+          signinError.textContent = result.error.message || 'Sign in failed.';
           return;
         }
         // onAuthStateChange will fire SIGNED_IN -> closeModal + load
       });
     }
+    if (signinEmail) signinEmail.addEventListener('input', function () { if (signinError) signinError.textContent = ''; });
+    if (signinPassword) signinPassword.addEventListener('input', function () { if (signinError) signinError.textContent = ''; });
 
-    if (resendLink) {
-      resendLink.addEventListener('click', function (e) {
+    // Sign-up form (email + password)
+    if (signUpForm) {
+      signUpForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        showModalState('enter');
-        if (emailInput) {
-          emailInput.value = pendingEmail || '';
-          setTimeout(function () { emailInput.focus(); }, 40);
+        var email = signupEmail.value.trim();
+        var password = signupPassword.value;
+        if (!isValidEmail(email)) {
+          signupError.textContent = 'Please enter a valid email address.';
+          signupEmail.focus();
+          return;
+        }
+        if (!password || password.length < 8) {
+          signupError.textContent = 'Password must be at least 8 characters.';
+          signupPassword.focus();
+          return;
+        }
+        signupError.textContent = '';
+        signupSubmit.classList.add('loading');
+        signupSubmit.disabled = true;
+        var result = await doSignUp(email, password);
+        signupSubmit.classList.remove('loading');
+        signupSubmit.disabled = false;
+        if (result.error) {
+          signupError.textContent = result.error.message || 'Sign up failed.';
+          return;
+        }
+        // If email confirmation is enabled, session will be null
+        if (result.data && result.data.session) {
+          // Auto-signed-in; onAuthStateChange handles the rest
+        } else {
+          // Email confirmation required
+          if (confirmEmail) confirmEmail.textContent = email;
+          showModalState('confirm-sent');
         }
       });
     }
+    if (signupEmail) signupEmail.addEventListener('input', function () { if (signupError) signupError.textContent = ''; });
+    if (signupPassword) signupPassword.addEventListener('input', function () { if (signupError) signupError.textContent = ''; });
+
+    // State toggle links (signin <-> signup)
+    document.addEventListener('click', function (e) {
+      var toggle = e.target.closest && e.target.closest('[data-modal-state]');
+      if (toggle) {
+        e.preventDefault();
+        showModalState(toggle.getAttribute('data-modal-state'));
+      }
+    });
 
     if (modalClose) modalClose.addEventListener('click', closeModal);
     if (modal) {
@@ -1785,16 +1802,16 @@ section { padding: 80px 0; }
     modal = $('signInModal');
     modalClose = $('modalClose');
     signInForm = $('signInForm');
-    emailInput = $('emailInput');
-    emailError = $('emailError');
-    submitBtn = $('submitBtn');
-    sentEmail = $('sentEmail');
-    resendLink = $('resendLink');
-    otpForm = $('otpForm');
-    otpInput = $('otpInput');
-    otpError = $('otpError');
-    otpSubmit = $('otpSubmit');
-    otpFallback = $('otpFallback');
+    signinEmail = $('signinEmail');
+    signinPassword = $('signinPassword');
+    signinError = $('signinError');
+    signinSubmit = $('signinSubmit');
+    signUpForm = $('signUpForm');
+    signupEmail = $('signupEmail');
+    signupPassword = $('signupPassword');
+    signupError = $('signupError');
+    signupSubmit = $('signupSubmit');
+    confirmEmail = $('confirmEmail');
     toast = $('toast');
   }
 
