@@ -472,6 +472,214 @@ section { padding: 80px 0; }
   .curr-stats { gap: 24px; }
 }
 
+/* ============== STUDIO ============== */
+.studio-backdrop {
+  position: fixed; inset: 0; z-index: 250;
+  background: rgba(28, 25, 22, 0.65);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.25s ease-out;
+}
+.studio-backdrop.open { display: flex; }
+.studio {
+  background: var(--paper);
+  border-radius: 14px;
+  max-width: 1100px; width: 100%;
+  height: 92vh; max-height: 760px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px -10px rgba(74,27,12,0.4);
+  animation: rise 0.3s ease-out;
+}
+.studio-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px 14px 24px;
+  border-bottom: 0.5px solid var(--border);
+  font-size: 13px; color: var(--text-2);
+  flex-shrink: 0;
+}
+.studio-bar-title { display: flex; align-items: center; gap: 8px; }
+.studio-bar-title i { font-size: 16px; }
+.studio-bar-right { display: flex; align-items: center; gap: 12px; }
+.studio-bar-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-3); }
+.studio-bar-status i { font-size: 14px; color: #5a8a1f; }
+.studio-close {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-2);
+  transition: all 0.15s;
+}
+.studio-close:hover { background: var(--cream); color: var(--text); }
+.studio-close i { font-size: 20px; }
+.studio-grid {
+  display: grid; grid-template-columns: 210px 1fr 220px;
+  flex: 1; min-height: 0;
+}
+.studio-sidebar {
+  border-right: 0.5px solid var(--border);
+  padding: 20px 14px;
+  overflow-y: auto;
+}
+.studio-sidebar h4 {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 14px; font-weight: 500;
+}
+.studio-thread-list { list-style: none; }
+.studio-thread {
+  padding: 8px 12px; font-size: 13px; color: var(--text-2);
+  border-radius: 6px; margin-bottom: 2px;
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.studio-thread:hover:not(.locked):not(.active) { background: var(--cream); }
+.studio-thread i { font-size: 12px; flex-shrink: 0; }
+.studio-thread.done i { color: #5a8a1f; }
+.studio-thread.active {
+  background: var(--coral-50); color: var(--coral-900); font-weight: 500;
+}
+.studio-thread.locked { color: var(--text-3); cursor: default; }
+
+.studio-main {
+  padding: 36px 32px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 24px;
+  text-align: center;
+  overflow-y: auto;
+}
+.studio-prompt-label {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--coral-600); margin-bottom: 12px; font-weight: 500;
+}
+.studio-prompt-text {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.4;
+  max-width: 480px;
+  color: var(--text);
+  font-style: italic;
+  font-variation-settings: "opsz" 60;
+}
+.studio-rec-wrap { position: relative; width: 120px; height: 120px; }
+.studio-rec-pulse {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: var(--coral-50);
+  display: none;
+  pointer-events: none;
+}
+.studio-rec-wrap.recording .studio-rec-pulse {
+  display: block;
+  animation: pulse 2.2s ease-out infinite;
+}
+.studio-rec-button {
+  position: absolute; inset: 10px; border-radius: 50%;
+  background: var(--coral-400);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+  border: none; padding: 0;
+}
+.studio-rec-button:hover:not(:disabled) { transform: scale(1.04); background: var(--coral-600); }
+.studio-rec-button.recording { background: var(--coral-600); }
+.studio-rec-button:disabled { opacity: 0.7; cursor: not-allowed; }
+.studio-rec-button i { font-size: 36px; color: #fff; }
+.studio-rec-button.uploading i { animation: spin 0.9s linear infinite; }
+
+.studio-timer { font-family: 'SF Mono', Menlo, monospace; font-size: 22px; color: var(--coral-900); }
+.studio-timer-status {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--coral-600); margin-top: 6px;
+}
+.studio-saved {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; background: var(--coral-50);
+  border-radius: 100px; font-size: 12px; color: var(--coral-900);
+}
+.studio-saved i { color: #5a8a1f; }
+
+.studio-helper {
+  border-left: 0.5px solid var(--border);
+  padding: 20px 16px;
+  background: var(--pink-50);
+  overflow-y: auto;
+}
+.studio-helper h4 {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--pink-800); margin-bottom: 14px; font-weight: 500;
+}
+.studio-nudge {
+  font-size: 12px; color: var(--pink-900); line-height: 1.5;
+  padding: 10px 12px; background: #fff;
+  border-radius: 6px; margin-bottom: 8px;
+  border: 0.5px solid rgba(114, 36, 62, 0.1);
+}
+
+.studio-foot {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 20px;
+  border-top: 0.5px solid var(--border);
+  flex-shrink: 0;
+}
+.studio-foot-controls { display: flex; gap: 6px; align-items: center; }
+.studio-foot-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 12px; color: var(--text-2);
+  transition: all 0.15s;
+  font-family: var(--sans);
+}
+.studio-foot-btn:hover:not(:disabled) { background: var(--cream); color: var(--text); }
+.studio-foot-btn.danger:hover:not(:disabled) { background: #fde7e7; color: #b94747; }
+.studio-foot-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.studio-foot-btn i { font-size: 13px; }
+.studio-next {
+  background: var(--coral-900); color: #fff;
+  padding: 9px 18px; border-radius: 7px;
+  font-size: 13px; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.2s;
+  font-family: var(--sans);
+}
+.studio-next:hover:not(:disabled) { background: var(--coral-800); }
+.studio-next:disabled { opacity: 0.5; cursor: not-allowed; }
+.studio-next i { font-size: 14px; }
+
+.studio-thread-complete {
+  text-align: center;
+  padding: 20px;
+}
+.studio-thread-complete h3 {
+  font-family: var(--serif);
+  font-size: 32px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  color: var(--coral-900);
+}
+.studio-thread-complete p {
+  font-size: 14px;
+  color: var(--text-2);
+  max-width: 360px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+@media (max-width: 880px) {
+  .studio { height: 100vh; max-height: none; border-radius: 0; }
+  .studio-grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+  .studio-sidebar, .studio-helper { border: none; border-bottom: 0.5px solid var(--border); padding: 12px 14px; max-height: 100px; }
+  .studio-helper { border-bottom: none; border-top: 0.5px solid var(--border); }
+  .studio-thread-list { display: flex; gap: 4px; overflow-x: auto; }
+  .studio-thread { white-space: nowrap; flex-shrink: 0; }
+  .studio-main { padding: 24px 18px; gap: 18px; }
+  .studio-foot { flex-direction: column; gap: 10px; padding: 12px; }
+  .studio-foot-controls { width: 100%; justify-content: center; flex-wrap: wrap; }
+  .studio-next { width: 100%; justify-content: center; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -533,14 +741,6 @@ section { padding: 80px 0; }
         <a href="#sample" class="btn btn-ghost" data-action="sample-chapter"><i class="ti ti-player-play" aria-hidden="true"></i> Listen to a sample chapter</a>
       </div>
       <div class="hero-meta">No credit card · Five minutes is enough · Keep what you record, always</div>
-    </div>
-  </section>
-
-  <section class="trust">
-    <div class="container trust-inner">
-      <span>★★★★★ &nbsp; 4.9 from 8,200 voices</span>
-      <span>Featured in The Atlantic</span>
-      <span>Used by 40+ hospices</span>
     </div>
   </section>
 
@@ -683,7 +883,7 @@ section { padding: 80px 0; }
   <section class="curr-map">
     <h2>The whole tapestry, at a glance</h2>
     <div class="map-grid">
-      <a href="#thread-01" class="map-card map-card-new" data-thread="thread-01"><div class="map-card-head"><i class="ti ti-microphone-2" aria-hidden="true"></i><span class="map-card-num">01</span><span class="map-card-dur">~5 min</span></div><div class="map-card-title">Orientation</div><div class="map-card-sub">Finding your voice</div><div class="map-card-progress"></div></a>
+      <a href="#thread-01" class="map-card map-card-new" data-thread="thread-01" data-studio="thread-01"><div class="map-card-head"><i class="ti ti-microphone-2" aria-hidden="true"></i><span class="map-card-num">01</span><span class="map-card-dur">~5 min</span></div><div class="map-card-title">Orientation</div><div class="map-card-sub">Finding your voice</div><div class="map-card-progress"></div></a>
       <a href="#thread-02" class="map-card" data-thread="thread-02"><div class="map-card-head"><i class="ti ti-photo" aria-hidden="true"></i><span class="map-card-num">02</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Earliest memories</div><div class="map-card-sub">Fragments more than stories</div><div class="map-card-progress"></div></a>
       <a href="#thread-03" class="map-card" data-thread="thread-03"><div class="map-card-head"><i class="ti ti-home" aria-hidden="true"></i><span class="map-card-num">03</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">The family you were born into</div><div class="map-card-sub">Before you chose them</div><div class="map-card-progress"></div></a>
       <a href="#thread-04" class="map-card" data-thread="thread-04"><div class="map-card-head"><i class="ti ti-map-pin" aria-hidden="true"></i><span class="map-card-num">04</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">The places that made you</div><div class="map-card-sub">Rooms, landscapes, streets</div><div class="map-card-progress"></div></a>
@@ -1061,6 +1261,67 @@ section { padding: 80px 0; }
     Made with care, for people with stories
   </span>
 </footer>
+
+<!-- ============== STUDIO ============== -->
+<div class="studio-backdrop" id="studioBackdrop" role="dialog" aria-modal="true" aria-labelledby="studioThreadTitle" aria-hidden="true">
+  <div class="studio">
+    <header class="studio-bar">
+      <div class="studio-bar-title">
+        <i class="ti ti-book" aria-hidden="true"></i>
+        <span id="studioThreadTitle">Thread 01 · Orientation</span>
+      </div>
+      <div class="studio-bar-right">
+        <span class="studio-bar-status">
+          <i class="ti ti-cloud-check" aria-hidden="true"></i>
+          <span id="studioStatus">0 of 3 prompts answered</span>
+        </span>
+        <button class="studio-close" id="studioClose" aria-label="Close studio">
+          <i class="ti ti-x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </header>
+    <div class="studio-grid">
+      <aside class="studio-sidebar" aria-label="Threads">
+        <h4>Your chapters</h4>
+        <ul class="studio-thread-list" id="studioThreadList"></ul>
+      </aside>
+      <div class="studio-main" id="studioMain">
+        <div>
+          <div class="studio-prompt-label" id="studioPromptLabel">Prompt 1 of 3</div>
+          <div class="studio-prompt-text" id="studioPromptText">"..."</div>
+        </div>
+        <div class="studio-rec-wrap" id="studioRecWrap">
+          <div class="studio-rec-pulse" aria-hidden="true"></div>
+          <button class="studio-rec-button" id="studioRecBtn" aria-label="Record">
+            <i class="ti ti-microphone" id="studioRecIcon" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div>
+          <div class="studio-timer" id="studioTimer">00:00</div>
+          <div class="studio-timer-status" id="studioTimerStatus">Ready when you are</div>
+        </div>
+        <div class="studio-saved" id="studioSaved" style="display:none;">
+          <i class="ti ti-cloud-check" aria-hidden="true"></i>
+          <span id="studioSavedText">Saved.</span>
+        </div>
+      </div>
+      <aside class="studio-helper" aria-label="If you get stuck">
+        <h4>If you get stuck</h4>
+        <div class="studio-nudge">There's no wrong way to do this.</div>
+        <div class="studio-nudge">If you stumble, just keep going.</div>
+        <div class="studio-nudge">Speak as if to someone who loves you.</div>
+      </aside>
+    </div>
+    <footer class="studio-foot">
+      <div class="studio-foot-controls">
+        <button class="studio-foot-btn" id="studioPrevBtn"><i class="ti ti-chevron-left" aria-hidden="true"></i> Previous</button>
+        <button class="studio-foot-btn" id="studioPlayBtn" style="display:none;"><i class="ti ti-player-play" aria-hidden="true"></i> Listen back</button>
+        <button class="studio-foot-btn danger" id="studioDeleteBtn" style="display:none;"><i class="ti ti-trash" aria-hidden="true"></i> Delete</button>
+      </div>
+      <button class="studio-next" id="studioNextBtn">Done · next question <i class="ti ti-chevron-right" aria-hidden="true"></i></button>
+    </footer>
+  </div>
+</div>
 
 <!-- ============== SIGN-IN MODAL ============== -->
 <div class="modal-backdrop" id="signInModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
@@ -1458,8 +1719,14 @@ section { padding: 80px 0; }
     renderRecordingState(key);
 
     timerInterval = setInterval(function () {
+      var elapsed = Math.floor((Date.now() - recStartTime) / 1000);
+      var formatted = formatDuration(elapsed);
       var el = $('dur-' + key);
-      if (el) el.textContent = formatDuration(Math.floor((Date.now() - recStartTime) / 1000));
+      if (el) el.textContent = formatted;
+      if (studioOpen() && studioState.thread + ':' + studioState.index === key) {
+        var studioTimerEl = $('studioTimer');
+        if (studioTimerEl) studioTimerEl.textContent = formatted;
+      }
     }, 250);
   }
 
@@ -1531,6 +1798,7 @@ section { padding: 80px 0; }
     recordings[key] = insertResult.data;
     renderRecordingState(key);
     renderThreadProgress();
+    if (studioOpen()) { renderStudio(); renderStudioSidebar(); }
     showToast('Saved. Your voice is safe.');
   }
 
@@ -1596,6 +1864,7 @@ section { padding: 80px 0; }
     delete recordings[key];
     renderRecordingState(key);
     renderThreadProgress();
+    if (studioOpen()) { renderStudio(); renderStudioSidebar(); }
     showToast('Recording deleted.');
   }
 
@@ -1751,6 +2020,22 @@ section { padding: 80px 0; }
     }
 
     document.addEventListener('click', function (e) {
+      // Studio open (e.g. map card on curriculum page)
+      var studioLink = e.target.closest && e.target.closest('[data-studio]');
+      if (studioLink) {
+        e.preventDefault();
+        openStudio(studioLink.getAttribute('data-studio'));
+        return;
+      }
+      // Studio sidebar thread switch
+      var studioThreadEl = e.target.closest && e.target.closest('[data-studio-thread]');
+      if (studioThreadEl && studioOpen()) {
+        e.preventDefault();
+        var tid = studioThreadEl.getAttribute('data-studio-thread');
+        if (tid !== studioState.thread) openStudio(tid);
+        return;
+      }
+
       // Recording controls
       var recEl = e.target.closest && e.target.closest('[data-rec-action]');
       if (recEl) {
@@ -1815,6 +2100,242 @@ section { padding: 80px 0; }
     toast = $('toast');
   }
 
+  // ============== STUDIO ==============
+  var studioState = { thread: null, index: 1, total: 0, prompts: [] };
+
+  function getThreadPrompts(threadId) {
+    var thread = document.getElementById(threadId);
+    if (!thread) return [];
+    var items = thread.querySelectorAll('.thread-prompts li');
+    var result = [];
+    items.forEach(function (li) {
+      var numEl = li.querySelector('.prompt-num');
+      var textEl = li.querySelector('.prompt-text-row');
+      if (numEl && textEl) {
+        result.push({ index: parseInt(numEl.textContent, 10), text: textEl.textContent.trim() });
+      }
+    });
+    return result;
+  }
+  function getThreadTitle(threadId) {
+    var thread = document.getElementById(threadId);
+    if (!thread) return '';
+    var h3 = thread.querySelector('h3');
+    var num = threadId.replace('thread-', '');
+    return 'Thread ' + num + ' · ' + (h3 ? h3.textContent : '');
+  }
+  function studioOpen() {
+    var bd = $('studioBackdrop');
+    return !!(bd && bd.classList.contains('open'));
+  }
+  function openStudio(threadId) {
+    if (!currentUser) { openModal(); return; }
+    var backdrop = $('studioBackdrop');
+    if (!backdrop) return;
+    studioState.thread = threadId;
+    studioState.prompts = getThreadPrompts(threadId);
+    studioState.total = studioState.prompts.length;
+    var startIdx = studioState.prompts.length > 0 ? studioState.prompts[0].index : 1;
+    for (var i = 0; i < studioState.prompts.length; i++) {
+      var p = studioState.prompts[i];
+      if (!recordings[threadId + ':' + p.index]) { startIdx = p.index; break; }
+      if (i === studioState.prompts.length - 1) startIdx = p.index;
+    }
+    studioState.index = startIdx;
+    backdrop.classList.add('open');
+    backdrop.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    var titleEl = $('studioThreadTitle');
+    if (titleEl) titleEl.textContent = getThreadTitle(threadId);
+    renderStudioSidebar();
+    renderStudio();
+  }
+  function closeStudio() {
+    var backdrop = $('studioBackdrop');
+    if (!backdrop) return;
+    if (activeKey && studioState.thread && activeKey.indexOf(studioState.thread + ':') === 0) stopRecording();
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; currentPlayingKey = null; }
+    backdrop.classList.remove('open');
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    studioState.thread = null;
+  }
+  function renderStudio() {
+    if (!studioState.thread) return;
+    var prompt = null;
+    for (var i = 0; i < studioState.prompts.length; i++) {
+      if (studioState.prompts[i].index === studioState.index) { prompt = studioState.prompts[i]; break; }
+    }
+    if (!prompt) return;
+    var key = studioState.thread + ':' + studioState.index;
+    var hasRecording = !!recordings[key];
+    var isRecording = activeKey === key;
+
+    var labelEl = $('studioPromptLabel');
+    if (labelEl) labelEl.textContent = 'Prompt ' + studioState.index + ' of ' + studioState.total;
+    var textEl = $('studioPromptText');
+    if (textEl) textEl.textContent = '"' + prompt.text + '"';
+
+    var recWrap = $('studioRecWrap');
+    var recBtn = $('studioRecBtn');
+    var recIcon = $('studioRecIcon');
+    var timer = $('studioTimer');
+    var timerStatus = $('studioTimerStatus');
+    var saved = $('studioSaved');
+    var savedText = $('studioSavedText');
+    var playBtn = $('studioPlayBtn');
+    var deleteBtn = $('studioDeleteBtn');
+
+    if (recWrap) recWrap.classList.toggle('recording', isRecording);
+    if (recBtn) { recBtn.classList.remove('uploading'); recBtn.classList.toggle('recording', isRecording); }
+
+    if (isRecording) {
+      if (recIcon) recIcon.className = 'ti ti-player-stop-filled';
+      if (recBtn) recBtn.setAttribute('aria-label', 'Stop recording');
+      if (timer) timer.textContent = formatDuration(Math.floor((Date.now() - recStartTime) / 1000));
+      if (timerStatus) timerStatus.textContent = '● Recording';
+      if (saved) saved.style.display = 'none';
+      if (playBtn) playBtn.style.display = 'none';
+      if (deleteBtn) deleteBtn.style.display = 'none';
+    } else if (hasRecording) {
+      var r = recordings[key];
+      if (recIcon) recIcon.className = 'ti ti-microphone';
+      if (recBtn) recBtn.setAttribute('aria-label', 'Record again');
+      if (timer) timer.textContent = formatDuration(r.duration_seconds);
+      if (timerStatus) timerStatus.textContent = 'Recorded · tap mic to re-record';
+      if (saved) saved.style.display = 'inline-flex';
+      if (savedText) savedText.textContent = 'Saved. ' + formatDuration(r.duration_seconds) + ' of you, kept.';
+      if (playBtn) {
+        playBtn.style.display = 'inline-flex';
+        if (currentPlayingKey === key) {
+          playBtn.innerHTML = '<i class="ti ti-player-pause" aria-hidden="true"></i> Pause';
+        } else {
+          playBtn.innerHTML = '<i class="ti ti-player-play" aria-hidden="true"></i> Listen back';
+        }
+      }
+      if (deleteBtn) deleteBtn.style.display = 'inline-flex';
+    } else {
+      if (recIcon) recIcon.className = 'ti ti-microphone';
+      if (recBtn) recBtn.setAttribute('aria-label', 'Record');
+      if (timer) timer.textContent = '00:00';
+      if (timerStatus) timerStatus.textContent = 'Ready when you are';
+      if (saved) saved.style.display = 'none';
+      if (playBtn) playBtn.style.display = 'none';
+      if (deleteBtn) deleteBtn.style.display = 'none';
+    }
+
+    var prevBtn = $('studioPrevBtn');
+    var nextBtn = $('studioNextBtn');
+    if (prevBtn) prevBtn.disabled = (studioState.index <= 1);
+    if (nextBtn) {
+      if (studioState.index >= studioState.total) {
+        nextBtn.innerHTML = 'Finish thread <i class="ti ti-check" aria-hidden="true"></i>';
+      } else {
+        nextBtn.innerHTML = 'Done · next question <i class="ti ti-chevron-right" aria-hidden="true"></i>';
+      }
+    }
+    var statusEl = $('studioStatus');
+    if (statusEl) {
+      var doneCount = 0;
+      studioState.prompts.forEach(function (p) {
+        if (recordings[studioState.thread + ':' + p.index]) doneCount++;
+      });
+      statusEl.textContent = doneCount + ' of ' + studioState.total + ' prompts answered';
+    }
+  }
+  function renderStudioSidebar() {
+    var list = $('studioThreadList');
+    if (!list) return;
+    list.innerHTML = '';
+    var threads = document.querySelectorAll('.thread[id^="thread-"]');
+    threads.forEach(function (thread) {
+      var threadId = thread.id;
+      var num = threadId.replace('thread-', '');
+      var h3 = thread.querySelector('h3');
+      var title = h3 ? h3.textContent : threadId;
+      var promptCount = thread.querySelectorAll('.thread-prompts li').length;
+      var doneCount = 0;
+      for (var k in recordings) {
+        if (recordings.hasOwnProperty(k) && k.indexOf(threadId + ':') === 0) doneCount++;
+      }
+      var li = document.createElement('li');
+      var isActive = threadId === studioState.thread;
+      var isDone = promptCount > 0 && doneCount === promptCount;
+      var isSample = threadId === 'thread-01';
+      var isLocked = !isSample;
+      li.className = 'studio-thread' + (isActive ? ' active' : '') + (isDone ? ' done' : '') + (isLocked && !isActive ? ' locked' : '');
+      if (isSample && !isActive) li.setAttribute('data-studio-thread', threadId);
+      var iconHtml = '';
+      if (isDone) iconHtml = '<i class="ti ti-check" aria-hidden="true"></i> ';
+      else if (isLocked && !isActive) iconHtml = '<i class="ti ti-lock" aria-hidden="true"></i> ';
+      li.innerHTML = iconHtml + '<span>' + parseInt(num, 10) + ' · ' + title + '</span>';
+      list.appendChild(li);
+    });
+  }
+  async function studioToggleRecord() {
+    if (!studioState.thread) return;
+    if (!currentUser) { openModal(); return; }
+    var key = studioState.thread + ':' + studioState.index;
+    if (activeKey === key) {
+      await stopRecording();
+    } else {
+      if (activeKey) await stopRecording();
+      await startRecording(key);
+      renderStudio();
+    }
+  }
+  async function studioTogglePlay() {
+    if (!studioState.thread) return;
+    var key = studioState.thread + ':' + studioState.index;
+    if (currentPlayingKey === key) {
+      pausePlayback();
+      renderStudio();
+    } else {
+      await playRecording(key);
+      renderStudio();
+    }
+  }
+  async function studioDeleteCurrent() {
+    if (!studioState.thread) return;
+    var key = studioState.thread + ':' + studioState.index;
+    await deleteRecording(key);
+    renderStudio();
+    renderStudioSidebar();
+  }
+  function studioPrev() {
+    if (studioState.index > 1) { studioState.index--; renderStudio(); }
+  }
+  function studioNext() {
+    if (studioState.index < studioState.total) {
+      studioState.index++;
+      renderStudio();
+    } else {
+      showToast('Thread complete. Beautiful work.');
+      closeStudio();
+    }
+  }
+  function attachStudioListeners() {
+    var closeBtn = $('studioClose');
+    if (closeBtn) closeBtn.addEventListener('click', closeStudio);
+    var backdrop = $('studioBackdrop');
+    if (backdrop) {
+      backdrop.addEventListener('click', function (e) { if (e.target === backdrop) closeStudio(); });
+    }
+    var recBtn = $('studioRecBtn');
+    if (recBtn) recBtn.addEventListener('click', studioToggleRecord);
+    var playBtn = $('studioPlayBtn');
+    if (playBtn) playBtn.addEventListener('click', studioTogglePlay);
+    var deleteBtn = $('studioDeleteBtn');
+    if (deleteBtn) deleteBtn.addEventListener('click', studioDeleteCurrent);
+    var prevBtn = $('studioPrevBtn');
+    if (prevBtn) prevBtn.addEventListener('click', studioPrev);
+    var nextBtn = $('studioNextBtn');
+    if (nextBtn) nextBtn.addEventListener('click', studioNext);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && studioOpen()) closeStudio();
+    });
+  }
+
   // ============== INIT ==============
   async function init() {
     initRefs();
@@ -1835,6 +2356,7 @@ section { padding: 80px 0; }
     }
 
     attachListeners();
+    attachStudioListeners();
     injectRecordControls();
 
     if (sb) {
