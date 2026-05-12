@@ -274,6 +274,7 @@ section { padding: 80px 0; }
 .testimonial-by-text { text-align: left; }
 .testimonial-by-name { font-size: 13px; color: var(--coral-900); font-weight: 500; }
 .testimonial-by-role { font-size: 11px; color: var(--coral-600); }
+.testimonial-attribution { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--coral-600); margin-top: 8px; }
 
 /* ============== FINAL CTA ============== */
 .final-cta { background: var(--coral-900); color: var(--coral-50); text-align: center; padding: 64px 28px; }
@@ -387,7 +388,7 @@ section { padding: 80px 0; }
 }
 
 /* ============== MODAL ============== */
-.modal-backdrop { position: fixed; inset: 0; z-index: 200; background: rgba(28, 25, 22, 0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.2s ease-out; }
+.modal-backdrop { position: fixed; inset: 0; z-index: 400; background: rgba(28, 25, 22, 0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.2s ease-out; }
 .modal-backdrop.open { display: flex; }
 .modal { background: var(--paper); border-radius: 14px; max-width: 420px; width: 100%; padding: 38px 34px 30px; box-shadow: 0 20px 50px -10px rgba(74,27,12,0.3); position: relative; animation: rise 0.3s ease-out; }
 .modal-close { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--text-2); transition: all 0.15s; }
@@ -437,7 +438,7 @@ section { padding: 80px 0; }
 #otpInput { text-align: center; letter-spacing: 0.4em; font-family: 'SF Mono', Menlo, monospace; font-size: 18px; }
 
 /* ============== TOAST ============== */
-.toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 100px; font-size: 13px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4); opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 300; max-width: 420px; }
+.toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 100px; font-size: 13px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4); opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 500; max-width: 420px; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast.error { background: var(--coral-800); color: #fff; }
 
@@ -471,6 +472,42 @@ section { padding: 80px 0; }
   .trust-inner { gap: 12px; font-size: 10px; }
   .curr-stats { gap: 24px; }
 }
+
+/* ============== THREAD HELPERS BUTTON ============== */
+.thread-head {
+  justify-content: space-between;
+}
+.thread-helper-btn {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: var(--pink-50); color: var(--pink-800);
+  font-size: 11px; font-weight: 500;
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.15s;
+  border: 0.5px solid rgba(114, 36, 62, 0.18);
+  white-space: nowrap;
+}
+.thread-helper-btn:hover { background: var(--pink-200); color: #fff; border-color: var(--pink-200); }
+.thread-helper-btn i { font-size: 13px; }
+
+/* ============== HELPERS MODAL ============== */
+.modal.helpers-modal h3 {
+  text-align: left;
+  margin-bottom: 18px;
+}
+.modal.helpers-modal .modal-eyebrow {
+  text-align: left;
+}
+.helpers-list .studio-nudge {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.helpers-list .studio-nudge:last-child { margin-bottom: 0; }
 
 /* ============== STUDIO ============== */
 .studio-backdrop {
@@ -513,6 +550,42 @@ section { padding: 80px 0; }
 }
 .studio-close:hover { background: var(--cream); color: var(--text); }
 .studio-close i { font-size: 20px; }
+.studio-progress {
+  display: flex;
+  gap: 4px;
+  padding: 10px 24px;
+  border-bottom: 0.5px solid var(--border);
+  background: var(--bg-soft);
+  flex-shrink: 0;
+}
+.studio-progress-bar {
+  flex: 1;
+  height: 5px;
+  border-radius: 100px;
+  background: rgba(74, 27, 12, 0.1);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  min-width: 12px;
+  border: none;
+  padding: 0;
+}
+.studio-progress-bar:hover { transform: scaleY(1.6); background: rgba(74, 27, 12, 0.2); }
+.studio-progress-bar.done { background: var(--coral-400); }
+.studio-progress-bar.done:hover { background: var(--coral-600); }
+.studio-progress-bar.current {
+  background: var(--coral-200);
+  animation: progressPulse 2s ease-in-out infinite;
+}
+.studio-progress-bar.current.done {
+  background: var(--coral-400);
+  animation: none;
+  box-shadow: 0 0 0 1.5px var(--coral-50), 0 0 0 2.5px var(--coral-400);
+}
+@keyframes progressPulse {
+  0%, 100% { background: var(--coral-200); }
+  50% { background: var(--coral-400); }
+}
+
 .studio-grid {
   display: grid; grid-template-columns: 210px 1fr 220px;
   flex: 1; min-height: 0;
@@ -593,6 +666,19 @@ section { padding: 80px 0; }
   font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--coral-600); margin-top: 6px;
 }
+.studio-waveform {
+  display: none;
+  align-items: center; gap: 3px;
+  height: 36px;
+}
+.studio-waveform.active { display: flex; }
+.studio-waveform span {
+  width: 2.5px;
+  background: var(--coral-200);
+  border-radius: 1.5px;
+  animation: wave 1.6s ease-in-out infinite;
+}
+
 .studio-saved {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 8px 14px; background: var(--coral-50);
@@ -700,7 +786,7 @@ section { padding: 80px 0; }
     </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home" class="nav-link" data-page="home">Home</a></li>
-      <li><a href="#curriculum" class="nav-link" data-page="curriculum">What you'll cover</a></li>
+      <li><a href="#curriculum" class="nav-link" data-page="curriculum">Start recording journey</a></li>
       <li class="nav-signin-item"><a href="#sign-in" class="nav-link nav-signin" data-action="sign-in">Sign in</a></li>
       <li class="nav-start-item"><a href="#start" class="btn btn-primary" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Start recording</a></li>
       <li class="user-menu-item">
@@ -737,8 +823,7 @@ section { padding: 80px 0; }
       <h1 class="serif-display">Your life is a story.<br><em class="serif-italic">Tell it out loud.</em></h1>
       <p class="hero-sub">We ask the questions. You answer in your own voice. Your grandchildren will hear you tell it — long after you can no longer tell it yourself.</p>
       <div class="hero-ctas">
-        <a href="#start" class="btn btn-accent" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Record your first memory — free</a>
-        <a href="#sample" class="btn btn-ghost" data-action="sample-chapter"><i class="ti ti-player-play" aria-hidden="true"></i> Listen to a sample chapter</a>
+        <a href="#start" class="btn btn-accent" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Record your first memory</a>
       </div>
       <div class="hero-meta">No credit card · Five minutes is enough · Keep what you record, always</div>
     </div>
@@ -843,22 +928,16 @@ section { padding: 80px 0; }
 
   <section class="testimonial">
     <div class="container">
-      <div class="testimonial-quote">My father's voice is on a USB in our kitchen drawer. The grandkids never met him, but every Christmas Eve we play a chapter. They know exactly what he sounded like when he laughed.</div>
-      <div class="testimonial-by">
-        <div class="avatar">RT</div>
-        <div class="testimonial-by-text">
-          <div class="testimonial-by-name">Rachel T.</div>
-          <div class="testimonial-by-role">Daughter, who keeps the USB</div>
-        </div>
-      </div>
+      <div class="testimonial-quote">There is no greater agony than bearing an untold story inside you.</div>
+      <div class="testimonial-attribution">— Maya Angelou</div>
     </div>
   </section>
 
   <section class="final-cta">
     <div class="final-cta-inner">
-      <h2>Press record. We'll take it from there.</h2>
-      <p>We'll send the first question to your phone tonight. Answer it on tomorrow's walk.</p>
-      <a href="#start" class="btn btn-accent" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Record your first answer</a>
+      <h2>Getting started is the only hard part.</h2>
+      <p>Five minutes. One question. Your own voice. That's all it takes to begin.</p>
+      <a href="#start" class="btn btn-accent" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Begin your story</a>
     </div>
   </section>
 
@@ -1280,6 +1359,7 @@ section { padding: 80px 0; }
         </button>
       </div>
     </header>
+    <div class="studio-progress" id="studioProgress" aria-label="Prompt progress"></div>
     <div class="studio-grid">
       <aside class="studio-sidebar" aria-label="Threads">
         <h4>Your chapters</h4>
@@ -1300,6 +1380,32 @@ section { padding: 80px 0; }
           <div class="studio-timer" id="studioTimer">00:00</div>
           <div class="studio-timer-status" id="studioTimerStatus">Ready when you are</div>
         </div>
+        <div class="studio-waveform" id="studioWaveform" aria-hidden="true">
+          <span style="height:8px; animation-delay:0s"></span>
+          <span style="height:18px; animation-delay:0.08s"></span>
+          <span style="height:26px; animation-delay:0.16s"></span>
+          <span style="height:14px; animation-delay:0.24s"></span>
+          <span style="height:22px; animation-delay:0.32s"></span>
+          <span style="height:30px; animation-delay:0.4s"></span>
+          <span style="height:12px; animation-delay:0.48s"></span>
+          <span style="height:20px; animation-delay:0.56s"></span>
+          <span style="height:28px; animation-delay:0.64s"></span>
+          <span style="height:16px; animation-delay:0.72s"></span>
+          <span style="height:24px; animation-delay:0.8s"></span>
+          <span style="height:10px; animation-delay:0.88s"></span>
+          <span style="height:18px; animation-delay:0.96s"></span>
+          <span style="height:26px; animation-delay:1.04s"></span>
+          <span style="height:14px; animation-delay:1.12s"></span>
+          <span style="height:22px; animation-delay:1.2s"></span>
+          <span style="height:30px; animation-delay:1.28s"></span>
+          <span style="height:12px; animation-delay:1.36s"></span>
+          <span style="height:20px; animation-delay:1.44s"></span>
+          <span style="height:28px; animation-delay:1.52s"></span>
+          <span style="height:16px; animation-delay:1.6s"></span>
+          <span style="height:24px; animation-delay:1.68s"></span>
+          <span style="height:10px; animation-delay:1.76s"></span>
+          <span style="height:18px; animation-delay:1.84s"></span>
+        </div>
         <div class="studio-saved" id="studioSaved" style="display:none;">
           <i class="ti ti-cloud-check" aria-hidden="true"></i>
           <span id="studioSavedText">Saved.</span>
@@ -1307,9 +1413,7 @@ section { padding: 80px 0; }
       </div>
       <aside class="studio-helper" aria-label="If you get stuck">
         <h4>If you get stuck</h4>
-        <div class="studio-nudge">There's no wrong way to do this.</div>
-        <div class="studio-nudge">If you stumble, just keep going.</div>
-        <div class="studio-nudge">Speak as if to someone who loves you.</div>
+        <div id="studioHelpersList"></div>
       </aside>
     </div>
     <footer class="studio-foot">
@@ -1366,6 +1470,18 @@ section { padding: 80px 0; }
       <p class="modal-lede">We've sent a confirmation link to <span class="modal-sent-email" id="confirmEmail"></span>. Click it, then come back here to sign in.</p>
       <p class="modal-meta">Already confirmed? <a data-modal-state="signin">Sign in</a></p>
     </div>
+  </div>
+</div>
+
+<!-- ============== HELPERS MODAL ============== -->
+<div class="modal-backdrop" id="helpersModal" role="dialog" aria-modal="true" aria-labelledby="helpersTitle" aria-hidden="true">
+  <div class="modal helpers-modal">
+    <button class="modal-close" id="helpersClose" aria-label="Close">
+      <i class="ti ti-x" aria-hidden="true"></i>
+    </button>
+    <div class="modal-eyebrow">If you get stuck</div>
+    <h3 id="helpersTitle">Helpers</h3>
+    <div class="helpers-list" id="helpersList"></div>
   </div>
 </div>
 
@@ -2020,11 +2136,18 @@ section { padding: 80px 0; }
     }
 
     document.addEventListener('click', function (e) {
-      // Studio open (e.g. map card on curriculum page)
-      var studioLink = e.target.closest && e.target.closest('[data-studio]');
-      if (studioLink) {
+      // Helpers button on a thread → open helpers modal
+      var helpersBtn = e.target.closest && e.target.closest('[data-helpers-for]');
+      if (helpersBtn) {
         e.preventDefault();
-        openStudio(studioLink.getAttribute('data-studio'));
+        openHelpersModal(helpersBtn.getAttribute('data-helpers-for'));
+        return;
+      }
+      // Map card on curriculum page → open Studio for that thread
+      var mapCardEl = e.target.closest && e.target.closest('.map-card[data-thread]');
+      if (mapCardEl) {
+        e.preventDefault();
+        openStudio(mapCardEl.getAttribute('data-thread'));
         return;
       }
       // Studio sidebar thread switch
@@ -2033,6 +2156,17 @@ section { padding: 80px 0; }
         e.preventDefault();
         var tid = studioThreadEl.getAttribute('data-studio-thread');
         if (tid !== studioState.thread) openStudio(tid);
+        return;
+      }
+      // Progress bar click → jump to that prompt
+      var jumpEl = e.target.closest && e.target.closest('[data-prompt-jump]');
+      if (jumpEl && studioOpen()) {
+        e.preventDefault();
+        var idx = parseInt(jumpEl.getAttribute('data-prompt-jump'), 10);
+        if (!isNaN(idx) && idx !== studioState.index) {
+          studioState.index = idx;
+          renderStudio();
+        }
         return;
       }
 
@@ -2100,6 +2234,82 @@ section { padding: 80px 0; }
     toast = $('toast');
   }
 
+  // ============== THREAD HELPERS DATA ==============
+  var THREAD_HELPERS = {
+    'thread-01': ["There's no wrong way to do this.", "If you stumble, just keep going.", "Speak as if to someone who loves you."],
+    'thread-02': ["Don't trust the photograph version — trust the one your body remembers.", "If a smell or a sound comes up, say it.", "Fragments are fine. You don't need a whole story."],
+    'thread-03': ["Who they were before you, not just to you.", "What did the silences in the room sound like?", "It's okay to say the hard things too."],
+    'thread-04': ["Walk us through it — the doorway, the light, the smell.", "What's the first thing your hand reaches for in this place?", "Even the ordinary parts are worth saying."],
+    'thread-05': ["What was the official version, and what was the real one?", "Were you bored, scared, proud — what was the feeling?", "Their face — can you still see it?"],
+    'thread-06': ["The version of you nobody else remembers.", "If a song comes to mind, hum it or name it.", "What was the loudest feeling?"],
+    'thread-07': ["What did you carry with you, literally?", "Who waved you off — or didn't?", "What did you think 'a life of your own' meant then?"],
+    'thread-08': ["Money is also feeling. What did it feel like?", "What were the unspoken rules?", "What would you have wanted someone to tell you?"],
+    'thread-09': ["What did you make, fix, save, lose?", "Who taught you the trick of it?", "What did it cost you that wasn't on the timesheet?"],
+    'thread-10': ["Friendship is its own kind of love. Name it that.", "What did they call you that nobody else did?", "Distance changes things but doesn't end them."],
+    'thread-11': ["Don't tidy it up. Let it be specific.", "The small moments often hold the whole thing.", "What did their voice do to a room?"],
+    'thread-12': ["However it actually happened.", "The boring daily moments are often the ones that stay.", "What did watching them teach you about yourself?"],
+    'thread-13': ["What does your hand know?", "Who's going to inherit this skill?", "Be specific — the tools, the materials, the moves."],
+    'thread-14': ["Tell it like you're telling a friend over a beer.", "If you got away with it, you're allowed to laugh now.", "Don't worry about who's listening — yet."],
+    'thread-15': ["The body has its own memory.", "What did the wait feel like? The recovery?", "Don't tidy the hard parts."],
+    'thread-16': ["What did you not know then that you know now?", "Where were you, exactly, when it came in?", "What did your kitchen radio or TV sound like?"],
+    'thread-17': ["Why did it land? What did it ask of you?", "When did you first hear it, see it, read it?", "What do you reach for when you can't sleep?"],
+    'thread-18': ["It's okay to have changed your mind.", "The not-knowing can be the answer too.", "What still moves you?"],
+    'thread-19': ["Don't rush past it. Stay in it if you can.", "What did the kitchen smell like the week after?", "What do you keep of them, in the small daily ways?"],
+    'thread-20': ["You're allowed to contradict yourself.", "If you could be heard by only one person, who?", "Don't aim for wisdom. Aim for true."]
+  };
+  var DEFAULT_HELPERS = ["Take your time.", "There's no wrong answer.", "Just keep going."];
+  function getHelpers(threadId) { return THREAD_HELPERS[threadId] || DEFAULT_HELPERS; }
+  function renderHelpersInto(el, threadId) {
+    if (!el) return;
+    var helpers = getHelpers(threadId);
+    el.innerHTML = helpers.map(function (h) {
+      return '<div class="studio-nudge">' + h + '</div>';
+    }).join('');
+  }
+
+  // ============== HELPERS MODAL ==============
+  function openHelpersModal(threadId) {
+    var modal = $('helpersModal');
+    if (!modal) return;
+    var titleEl = $('helpersTitle');
+    if (titleEl) {
+      var thread = document.getElementById(threadId);
+      var num = threadId.replace('thread-', '');
+      var h3 = thread ? thread.querySelector('h3') : null;
+      titleEl.textContent = 'Thread ' + num + ' · ' + (h3 ? h3.textContent : '');
+    }
+    renderHelpersInto($('helpersList'), threadId);
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeHelpersModal() {
+    var modal = $('helpersModal');
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    // Only release body overflow if no other modal is open
+    var signIn = $('signInModal');
+    var studio = $('studioBackdrop');
+    if (!(signIn && signIn.classList.contains('open')) && !(studio && studio.classList.contains('open'))) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  // ============== HELPER BUTTONS ON THREADS ==============
+  function injectHelperButtons() {
+    var threads = document.querySelectorAll('.thread[id^="thread-"]');
+    threads.forEach(function (thread) {
+      var head = thread.querySelector('.thread-head');
+      if (!head || head.querySelector('.thread-helper-btn')) return;
+      var btn = document.createElement('button');
+      btn.className = 'thread-helper-btn';
+      btn.setAttribute('data-helpers-for', thread.id);
+      btn.innerHTML = '<i class="ti ti-help" aria-hidden="true"></i> If you get stuck';
+      head.appendChild(btn);
+    });
+  }
+
   // ============== STUDIO ==============
   var studioState = { thread: null, index: 1, total: 0, prompts: [] };
 
@@ -2129,7 +2339,7 @@ section { padding: 80px 0; }
     return !!(bd && bd.classList.contains('open'));
   }
   function openStudio(threadId) {
-    if (!currentUser) { openModal(); return; }
+    // Auth check temporarily removed for UX preview — recording itself still gates on sign-in.
     var backdrop = $('studioBackdrop');
     if (!backdrop) return;
     studioState.thread = threadId;
@@ -2147,6 +2357,7 @@ section { padding: 80px 0; }
     document.body.style.overflow = 'hidden';
     var titleEl = $('studioThreadTitle');
     if (titleEl) titleEl.textContent = getThreadTitle(threadId);
+    renderHelpersInto($('studioHelpersList'), threadId);
     renderStudioSidebar();
     renderStudio();
   }
@@ -2188,6 +2399,8 @@ section { padding: 80px 0; }
 
     if (recWrap) recWrap.classList.toggle('recording', isRecording);
     if (recBtn) { recBtn.classList.remove('uploading'); recBtn.classList.toggle('recording', isRecording); }
+    var waveform = $('studioWaveform');
+    if (waveform) waveform.classList.toggle('active', isRecording);
 
     if (isRecording) {
       if (recIcon) recIcon.className = 'ti ti-player-stop-filled';
@@ -2235,12 +2448,24 @@ section { padding: 80px 0; }
       }
     }
     var statusEl = $('studioStatus');
-    if (statusEl) {
-      var doneCount = 0;
-      studioState.prompts.forEach(function (p) {
-        if (recordings[studioState.thread + ':' + p.index]) doneCount++;
-      });
-      statusEl.textContent = doneCount + ' of ' + studioState.total + ' prompts answered';
+    var doneCount = 0;
+    studioState.prompts.forEach(function (p) {
+      if (recordings[studioState.thread + ':' + p.index]) doneCount++;
+    });
+    if (statusEl) statusEl.textContent = doneCount + ' of ' + studioState.total + ' prompts answered';
+
+    var progressEl = $('studioProgress');
+    if (progressEl) {
+      progressEl.innerHTML = studioState.prompts.map(function (p) {
+        var k = studioState.thread + ':' + p.index;
+        var isDone = !!recordings[k];
+        var isCurrent = p.index === studioState.index;
+        var cls = 'studio-progress-bar';
+        if (isDone) cls += ' done';
+        if (isCurrent) cls += ' current';
+        var label = 'Prompt ' + p.index + (isDone ? ' (recorded)' : '') + (isCurrent ? ' (current)' : '');
+        return '<button class="' + cls + '" data-prompt-jump="' + p.index + '" aria-label="' + label + '"></button>';
+      }).join('');
     }
   }
   function renderStudioSidebar() {
@@ -2261,13 +2486,10 @@ section { padding: 80px 0; }
       var li = document.createElement('li');
       var isActive = threadId === studioState.thread;
       var isDone = promptCount > 0 && doneCount === promptCount;
-      var isSample = threadId === 'thread-01';
-      var isLocked = !isSample;
-      li.className = 'studio-thread' + (isActive ? ' active' : '') + (isDone ? ' done' : '') + (isLocked && !isActive ? ' locked' : '');
-      if (isSample && !isActive) li.setAttribute('data-studio-thread', threadId);
+      li.className = 'studio-thread' + (isActive ? ' active' : '') + (isDone ? ' done' : '');
+      if (!isActive) li.setAttribute('data-studio-thread', threadId);
       var iconHtml = '';
       if (isDone) iconHtml = '<i class="ti ti-check" aria-hidden="true"></i> ';
-      else if (isLocked && !isActive) iconHtml = '<i class="ti ti-lock" aria-hidden="true"></i> ';
       li.innerHTML = iconHtml + '<span>' + parseInt(num, 10) + ' · ' + title + '</span>';
       list.appendChild(li);
     });
@@ -2302,10 +2524,12 @@ section { padding: 80px 0; }
     renderStudio();
     renderStudioSidebar();
   }
-  function studioPrev() {
+  async function studioPrev() {
+    if (activeKey) await stopRecording();
     if (studioState.index > 1) { studioState.index--; renderStudio(); }
   }
-  function studioNext() {
+  async function studioNext() {
+    if (activeKey) await stopRecording();
     if (studioState.index < studioState.total) {
       studioState.index++;
       renderStudio();
@@ -2331,8 +2555,19 @@ section { padding: 80px 0; }
     if (prevBtn) prevBtn.addEventListener('click', studioPrev);
     var nextBtn = $('studioNextBtn');
     if (nextBtn) nextBtn.addEventListener('click', studioNext);
+
+    // Helpers modal
+    var helpersClose = $('helpersClose');
+    if (helpersClose) helpersClose.addEventListener('click', closeHelpersModal);
+    var helpersModal = $('helpersModal');
+    if (helpersModal) {
+      helpersModal.addEventListener('click', function (e) { if (e.target === helpersModal) closeHelpersModal(); });
+    }
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && studioOpen()) closeStudio();
+      if (e.key === 'Escape') {
+        if (helpersModal && helpersModal.classList.contains('open')) { closeHelpersModal(); return; }
+        if (studioOpen()) closeStudio();
+      }
     });
   }
 
@@ -2358,6 +2593,7 @@ section { padding: 80px 0; }
     attachListeners();
     attachStudioListeners();
     injectRecordControls();
+    injectHelperButtons();
 
     if (sb) {
       var sessionResult = await sb.auth.getSession();
