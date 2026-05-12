@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Rich Tapestry — Tell your life out loud</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..600;1,8..60,300..600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.js"></script>
+<style>
+:root {
+  --coral-50:#FAECE7; --coral-100:#F5C4B3; --coral-200:#F0997B; --coral-400:#D85A30;
+  --coral-600:#993C1D; --coral-800:#712B13; --coral-900:#4A1B0C;
+  --pink-50:#FBEAF0; --pink-200:#ED93B1; --pink-800:#72243E; --pink-900:#4B1528;
+  --cream:#F1EFE8;
+  --bg:#FEFCF8;
+  --bg-soft:#F5EFE7;
+  --paper:#FFFFFF;
+  --text:#1c1916;
+  --text-2:#5e5a53;
+  --text-3:#6e685f;
+  --border:rgba(74,27,12,0.10);
+  --border-strong:rgba(74,27,12,0.18);
+  --serif:'Source Serif 4', Charter, 'Iowan Old Style', 'Sitka Text', Cambria, Georgia, serif;
+  --sans:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "ss02";
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+:focus-visible {
+  outline: 2px solid var(--coral-400);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============== NAV ============== */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(254, 252, 248, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 0.5px solid var(--border);
+}
+.nav-inner {
+  max-width: 1180px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px;
+  position: relative;
+}
+.brand {
+  font-family: var(--serif); font-size: 22px; font-style: italic;
+  font-weight: 400; color: var(--coral-900);
+  letter-spacing: -0.01em;
+}
+.nav-links { display: flex; align-items: center; gap: 26px; list-style: none; }
+.nav-link {
+  font-size: 13px; color: var(--text-2);
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-link:hover { color: var(--text); }
+.nav-link.active { color: var(--coral-900); font-weight: 500; }
+.nav-link.active::after {
+  content: ""; position: absolute; bottom: -19px; left: 0; right: 0;
+  height: 2px; background: var(--coral-400);
+}
+.nav-signin { color: var(--text); font-size: 13px; }
+.hamburger {
+  display: none;
+  width: 38px; height: 38px;
+  align-items: center; justify-content: center;
+  border-radius: 7px;
+  color: var(--text);
+  transition: background 0.15s;
+}
+.hamburger:hover { background: var(--cream); }
+.hamburger i { font-size: 20px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 18px; border-radius: 6px;
+  font-size: 13px; font-weight: 500;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: var(--sans);
+  cursor: pointer;
+}
+.btn-primary { background: var(--coral-900); color: #fff; }
+.btn-primary:hover { background: var(--coral-800); transform: translateY(-1px); }
+.btn-accent { background: var(--coral-400); color: #fff; padding: 13px 26px; font-size: 14px; }
+.btn-accent:hover { background: var(--coral-600); transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent; color: var(--text);
+  border: 0.5px solid var(--border-strong);
+  padding: 9px 18px;
+}
+.btn-ghost:hover { background: var(--cream); }
+
+/* ============== USER MENU ============== */
+.user-menu-item { position: relative; display: none; }
+.user-menu-item.show { display: list-item; }
+.user-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 11px 5px 5px;
+  border-radius: 100px;
+  transition: background 0.15s;
+  font-family: var(--sans);
+}
+.user-btn:hover { background: var(--cream); }
+.user-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--coral-400); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500;
+}
+.user-name { font-size: 13px; color: var(--text); font-weight: 500; }
+.user-btn .ti-chevron-down { font-size: 14px; color: var(--text-2); }
+.user-dropdown {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  min-width: 220px;
+  background: var(--paper);
+  border: 0.5px solid var(--border-strong);
+  border-radius: 10px;
+  box-shadow: 0 14px 34px -14px rgba(74,27,12,0.22);
+  padding: 6px;
+  display: none;
+  z-index: 90;
+}
+.user-dropdown.open { display: block; }
+.user-dropdown-email {
+  padding: 9px 11px 11px;
+  font-size: 11px; color: var(--text-3);
+  word-break: break-all;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+.user-dropdown-email strong { color: var(--text); font-weight: 500; font-size: 13px; display: block; margin-bottom: 2px; }
+.user-dropdown-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 13px; color: var(--text);
+  cursor: pointer;
+  width: 100%; text-align: left;
+  font-family: var(--sans);
+  transition: background 0.15s;
+}
+.user-dropdown-item:hover { background: var(--cream); }
+.user-dropdown-item i { font-size: 15px; color: var(--text-2); }
+
+/* ============== LAYOUT ============== */
+.page { display: none; animation: fadeIn 0.4s ease-out; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.container { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+.container-narrow { max-width: 820px; margin: 0 auto; padding: 0 28px; }
+section { padding: 80px 0; }
+.eyebrow {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--coral-600); font-weight: 500;
+}
+.serif-headline {
+  font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em;
+  line-height: 1.05; color: var(--text);
+  font-variation-settings: "opsz" 60;
+}
+.serif-display {
+  font-family: var(--serif); font-weight: 400; line-height: 1.1; letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 60;
+}
+.serif-italic { font-style: italic; color: var(--coral-400); }
+
+/* ============== HERO ============== */
+.hero { padding: 100px 0 90px; text-align: center; background: var(--bg); }
+.hero-inner { position: relative; }
+.hero .eyebrow { margin-bottom: 22px; animation: rise 0.7s ease-out 0.1s both; }
+.hero h1 { font-size: clamp(44px, 6vw, 68px); max-width: 760px; margin: 0 auto 24px; animation: rise 0.7s ease-out 0.2s both; }
+.hero-sub { font-size: 17px; color: var(--text-2); max-width: 540px; margin: 0 auto 36px; line-height: 1.6; animation: rise 0.7s ease-out 0.3s both; }
+.hero-ctas { display: flex; gap: 12px; justify-content: center; margin-bottom: 22px; flex-wrap: wrap; animation: rise 0.7s ease-out 0.4s both; }
+.hero-meta { font-size: 12px; color: var(--text-3); animation: rise 0.7s ease-out 0.5s both; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* ============== TRUST STRIP ============== */
+.trust { padding: 18px 0; background: var(--coral-50); border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); }
+.trust-inner { display: flex; justify-content: space-around; gap: 24px; font-size: 11px; color: var(--coral-900); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; flex-wrap: wrap; }
+
+/* ============== HOW IT WORKS ============== */
+.how-it-works { padding: 100px 0; }
+.section-head { text-align: center; margin-bottom: 56px; }
+.section-head .eyebrow { display: block; margin-bottom: 14px; }
+.section-head h2 { font-size: clamp(30px, 4vw, 42px); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; max-width: 980px; margin: 0 auto; }
+.step { text-align: center; }
+.step-num {
+  width: 56px; height: 56px; margin: 0 auto 18px;
+  border-radius: 50%; background: var(--coral-50);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 22px; font-style: italic;
+  color: var(--coral-900); border: 0.5px solid var(--coral-200);
+}
+.step h3 { font-size: 17px; font-weight: 500; margin-bottom: 8px; }
+.step p { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+
+/* ============== RECORDING ROOM (HOME MOCK) ============== */
+.recording-room { padding: 60px 0 90px; background: var(--bg-soft); border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); scroll-margin-top: 70px; }
+.app-mock { max-width: 1000px; margin: 0 auto; background: var(--paper); border: 0.5px solid var(--border-strong); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 0 rgba(74,27,12,0.04), 0 12px 40px -20px rgba(74,27,12,0.18); }
+.app-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 0.5px solid var(--border); font-size: 12px; color: var(--text-2); }
+.app-bar i { font-size: 14px; vertical-align: -2px; margin-right: 4px; }
+.app-grid { display: grid; grid-template-columns: 180px 1fr 190px; min-height: 360px; }
+.app-sidebar { border-right: 0.5px solid var(--border); padding: 18px 14px; }
+.app-sidebar h4 { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; font-weight: 500; }
+.chap-list { list-style: none; }
+.chap-item { padding: 7px 10px; font-size: 13px; color: var(--text-2); border-radius: 5px; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+.chap-item i { font-size: 12px; }
+.chap-item.done i { color: #5a8a1f; }
+.chap-item.active { background: var(--coral-50); color: var(--coral-900); font-weight: 500; }
+.chap-item.locked { color: var(--text-3); }
+.app-record { padding: 32px 28px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.prompt-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+.prompt-text { font-family: var(--serif); font-size: 22px; line-height: 1.35; max-width: 340px; color: var(--text); font-style: italic; font-variation-settings: "opsz" 60; }
+.rec-button-wrap { position: relative; width: 104px; height: 104px; }
+.rec-pulse { position: absolute; inset: 0; border-radius: 50%; background: var(--coral-50); animation: pulse 2.2s ease-out infinite; pointer-events: none; }
+@keyframes pulse { 0% { transform: scale(0.9); opacity: 0.7; } 100% { transform: scale(1.15); opacity: 0; } }
+.rec-button { position: absolute; inset: 10px; border-radius: 50%; background: var(--coral-400); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s, background 0.15s; border: none; padding: 0; }
+.rec-button:hover { transform: scale(1.04); background: var(--coral-600); }
+.rec-square { width: 22px; height: 22px; background: #fff; border-radius: 4px; }
+.timer { font-family: 'SF Mono', Menlo, monospace; font-size: 18px; color: var(--coral-900); }
+.timer-status { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral-600); margin-top: 4px; }
+.timer-dot { display: inline-block; width: 6px; height: 6px; background: var(--coral-400); border-radius: 50%; vertical-align: middle; margin-right: 5px; animation: blink 1.4s ease-in-out infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.waveform { display: flex; align-items: center; gap: 2px; height: 28px; }
+.waveform span { width: 2px; background: var(--coral-200); border-radius: 1px; animation: wave 1.6s ease-in-out infinite; }
+@keyframes wave { 0%, 100% { height: 6px; background: var(--coral-100); } 50% { height: 22px; background: var(--coral-400); } }
+.transcript { font-family: var(--serif); font-style: italic; font-size: 14px; line-height: 1.65; color: var(--text-2); max-width: 360px; padding: 14px 18px; background: var(--coral-50); border-radius: 8px; }
+.transcript-cursor { color: var(--coral-400); animation: blink 1s infinite; }
+.app-prompts { border-left: 0.5px solid var(--border); padding: 18px 14px; background: var(--pink-50); }
+.app-prompts h4 { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pink-800); margin-bottom: 12px; font-weight: 500; }
+.nudge { font-size: 12px; color: var(--pink-900); line-height: 1.5; padding: 10px 12px; background: #fff; border-radius: 6px; margin-bottom: 8px; border: 0.5px solid rgba(114, 36, 62, 0.1); }
+.app-foot { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-top: 0.5px solid var(--border); font-size: 11px; color: var(--text-3); }
+.app-foot .next { background: var(--coral-900); color: #fff; padding: 5px 12px; border-radius: 5px; font-size: 11px; }
+
+/* ============== FEATURES ============== */
+.features { padding: 100px 0; }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1080px; margin: 0 auto; }
+.feat { padding: 24px; border: 0.5px solid var(--border); border-radius: 12px; background: var(--paper); transition: all 0.25s; }
+.feat:hover { border-color: var(--coral-200); transform: translateY(-2px); }
+.feat-icon { width: 40px; height: 40px; background: var(--coral-50); color: var(--coral-400); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.feat-icon i { font-size: 20px; }
+.feat h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.feat p { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+
+/* ============== TESTIMONIAL ============== */
+.testimonial { padding: 90px 0; background: var(--coral-50); text-align: center; }
+.testimonial-quote { font-family: var(--serif); font-style: italic; font-size: clamp(22px, 3vw, 30px); line-height: 1.4; max-width: 720px; margin: 0 auto 28px; color: var(--coral-900); font-weight: 400; letter-spacing: -0.01em; }
+.testimonial-quote::before { content: "\201C"; color: var(--coral-200); font-size: 1.2em; }
+.testimonial-quote::after { content: "\201D"; color: var(--coral-200); font-size: 1.2em; }
+.testimonial-by { display: inline-flex; align-items: center; gap: 12px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--coral-400); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; }
+.testimonial-by-text { text-align: left; }
+.testimonial-by-name { font-size: 13px; color: var(--coral-900); font-weight: 500; }
+.testimonial-by-role { font-size: 11px; color: var(--coral-600); }
+
+/* ============== FINAL CTA ============== */
+.final-cta { background: var(--coral-900); color: var(--coral-50); text-align: center; padding: 64px 28px; }
+.final-cta-inner { max-width: 440px; margin: 0 auto; }
+.final-cta h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 3vw, 32px); margin-bottom: 12px; color: var(--coral-50); letter-spacing: -0.005em; line-height: 1.25; }
+.final-cta p { font-size: 14px; color: var(--coral-200); max-width: 380px; margin: 0 auto 22px; line-height: 1.6; }
+.final-cta .btn-accent { background: var(--coral-400); color: #fff; padding: 11px 22px; font-size: 13px; font-weight: 500; }
+.final-cta .btn-accent:hover { background: var(--coral-200); color: var(--coral-900); }
+
+/* ============== FOOTER ============== */
+.footer { padding: 28px; border-top: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--text-3); max-width: 1180px; margin: 0 auto; }
+.footer .brand { font-size: 16px; }
+.footer-meta a { color: inherit; }
+.footer-meta a:hover { color: var(--text); }
+
+/* ============== CURRICULUM PAGE ============== */
+.curr-header { padding: 80px 0 50px; text-align: center; background: radial-gradient(circle at 70% 0%, var(--coral-50) 0%, transparent 50%), var(--bg); }
+.curr-header h1 { font-size: clamp(40px, 6vw, 60px); max-width: 720px; margin: 18px auto 16px; }
+.curr-header p { font-size: 16px; color: var(--text-2); max-width: 580px; margin: 0 auto; }
+.curr-stats { display: flex; justify-content: center; gap: 32px; margin-top: 32px; }
+.curr-stat-num { font-family: var(--serif); font-style: italic; font-size: 32px; color: var(--coral-400); line-height: 1; }
+.curr-stat-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-top: 6px; }
+.curr-map { padding: 50px 28px 80px; max-width: 1180px; margin: 0 auto; }
+.curr-map h2 { font-family: var(--serif); font-weight: 400; font-size: 18px; text-align: center; color: var(--text-3); font-style: italic; margin-bottom: 28px; }
+.map-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(218px, 1fr)); gap: 10px; }
+.map-card { background: var(--paper); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px; transition: all 0.2s; cursor: pointer; display: block; position: relative; }
+.map-card:hover { border-color: var(--coral-200); transform: translateY(-2px); box-shadow: 0 6px 18px -10px rgba(74,27,12,0.15); }
+.map-card-new { background: var(--coral-50); border-color: var(--coral-200); }
+.map-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.map-card-head i { font-size: 18px; color: var(--coral-400); }
+.map-card-num { font-family: var(--serif); font-style: italic; font-size: 19px; color: var(--coral-400); flex: 1; line-height: 1; }
+.map-card-dur { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
+.map-card-title { font-size: 13px; font-weight: 500; margin-bottom: 3px; line-height: 1.3; }
+.map-card-sub { font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--text-2); line-height: 1.4; }
+.map-card-progress {
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--coral-600);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  display: none;
+}
+.map-card.has-progress .map-card-progress { display: block; }
+
+.curr-detail { padding: 50px 0 80px; background: var(--bg-soft); border-top: 0.5px solid var(--border); }
+.curr-detail h2 { font-family: var(--serif); font-weight: 400; font-size: 18px; text-align: center; color: var(--text-3); font-style: italic; margin-bottom: 36px; }
+
+.thread { max-width: 760px; margin: 0 auto 18px; background: var(--paper); border: 0.5px solid var(--border); border-radius: 14px; padding: 32px 36px; scroll-margin-top: 80px; }
+.thread-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.thread-icon { width: 48px; height: 48px; border-radius: 50%; background: var(--coral-50); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.thread-icon i { font-size: 24px; color: var(--coral-400); }
+.thread-meta { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral-600); font-weight: 500; }
+.thread h3 { font-family: var(--serif); font-size: clamp(28px, 3.5vw, 36px); font-weight: 400; margin-bottom: 8px; line-height: 1.1; letter-spacing: -0.015em; font-variation-settings: "opsz" 60; }
+.thread-essence { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--text-2); margin-bottom: 20px; line-height: 1.5; }
+.thread-prompts { border-top: 0.5px solid var(--border); padding-top: 16px; list-style: none; }
+.thread-prompts li { display: flex; gap: 16px; padding: 12px 0; border-bottom: 0.5px solid rgba(74,27,12,0.04); align-items: center; }
+.thread-prompts li:last-child { border-bottom: none; }
+.prompt-num { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--coral-400); min-width: 28px; line-height: 1.5; flex-shrink: 0; }
+.prompt-text-row { font-size: 15px; line-height: 1.55; color: var(--text); padding-top: 1px; flex: 1; }
+
+.thread-new { background: linear-gradient(180deg, var(--coral-50) 0%, var(--paper) 30%); border-color: var(--coral-200); }
+
+.curr-close { text-align: center; padding: 80px 28px; }
+.curr-close-quote { font-family: var(--serif); font-style: italic; font-size: clamp(22px, 3vw, 28px); color: var(--coral-900); max-width: 540px; margin: 0 auto 26px; line-height: 1.4; font-weight: 400; }
+
+/* ============== PROMPT RECORDING CONTROLS ============== */
+.prompt-controls {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rec-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: var(--coral-50); color: var(--coral-900);
+  font-size: 12px; font-weight: 500;
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.15s;
+  border: 0.5px solid var(--coral-200);
+  white-space: nowrap;
+}
+.rec-pill:hover:not(:disabled) { background: var(--coral-100); }
+.rec-pill i { font-size: 14px; }
+.rec-pill.recording { background: var(--coral-400); color: #fff; border-color: var(--coral-400); }
+.rec-pill.recording i { animation: blink 1s infinite; }
+.rec-pill.uploading { opacity: 0.7; cursor: not-allowed; }
+.rec-pill .spin-icon { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.rec-action-group { display: inline-flex; gap: 4px; align-items: center; }
+.rec-icon-btn {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--cream); color: var(--text-2);
+  transition: all 0.15s;
+}
+.rec-icon-btn:hover { background: var(--coral-50); color: var(--coral-900); }
+.rec-icon-btn.danger:hover { background: #fde7e7; color: #b94747; }
+.rec-icon-btn.playing { background: var(--coral-400); color: #fff; }
+.rec-icon-btn i { font-size: 14px; }
+.rec-duration { font-size: 11px; color: var(--text-3); font-family: 'SF Mono', Menlo, monospace; min-width: 36px; text-align: right; }
+
+@media (max-width: 540px) {
+  .thread-prompts li { flex-wrap: wrap; align-items: flex-start; }
+  .prompt-text-row { flex: 1 1 calc(100% - 44px); }
+  .prompt-controls { margin-left: 44px; margin-top: 8px; width: 100%; }
+}
+
+/* ============== MODAL ============== */
+.modal-backdrop { position: fixed; inset: 0; z-index: 200; background: rgba(28, 25, 22, 0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.2s ease-out; }
+.modal-backdrop.open { display: flex; }
+.modal { background: var(--paper); border-radius: 14px; max-width: 420px; width: 100%; padding: 38px 34px 30px; box-shadow: 0 20px 50px -10px rgba(74,27,12,0.3); position: relative; animation: rise 0.3s ease-out; }
+.modal-close { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--text-2); transition: all 0.15s; }
+.modal-close:hover { background: var(--cream); color: var(--text); }
+.modal-close i { font-size: 18px; }
+.modal-eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral-600); font-weight: 500; margin-bottom: 12px; text-align: center; }
+.modal h3 { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.2; letter-spacing: -0.015em; margin-bottom: 10px; text-align: center; font-variation-settings: "opsz" 60; }
+.modal p.modal-lede { font-size: 14px; color: var(--text-2); line-height: 1.6; margin-bottom: 22px; text-align: center; }
+.modal-form { display: flex; flex-direction: column; gap: 10px; }
+.modal-input { width: 100%; padding: 12px 14px; border: 0.5px solid var(--border-strong); border-radius: 7px; font-family: var(--sans); font-size: 14px; color: var(--text); background: var(--bg); transition: border 0.15s, box-shadow 0.15s; }
+.modal-input:focus { outline: none; border-color: var(--coral-400); box-shadow: 0 0 0 3px var(--coral-50); }
+.modal-error { font-size: 12px; color: var(--coral-600); min-height: 16px; text-align: left; }
+.modal-submit { background: var(--coral-900); color: #fff; padding: 12px; border-radius: 7px; font-size: 13px; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; font-family: var(--sans); cursor: pointer; }
+.modal-submit:hover:not(:disabled) { background: var(--coral-800); }
+.modal-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+.modal-submit .spinner { width: 14px; height: 14px; border: 1.5px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+.modal-submit.loading .spinner { display: inline-block; }
+.modal-submit.loading .submit-label { display: none; }
+.modal-meta { font-size: 12px; color: var(--text-3); margin-top: 16px; text-align: center; line-height: 1.55; }
+.modal-meta a { color: var(--coral-600); text-decoration: underline; cursor: pointer; }
+.modal-success-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--coral-50); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+.modal-success-icon i { font-size: 28px; color: var(--coral-400); }
+.modal-sent-email { font-weight: 500; color: var(--text); }
+.modal-state { display: none; }
+.modal-state.active { display: block; }
+
+.otp-fallback {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 0.5px solid var(--border);
+}
+.otp-fallback summary {
+  font-size: 12px;
+  color: var(--coral-600);
+  cursor: pointer;
+  text-align: center;
+  list-style: none;
+  user-select: none;
+}
+.otp-fallback summary::-webkit-details-marker { display: none; }
+.otp-fallback summary:hover { color: var(--coral-800); }
+.otp-fallback[open] summary { margin-bottom: 12px; }
+.otp-fallback p {
+  font-size: 12px; color: var(--text-2); line-height: 1.5;
+  margin-bottom: 10px; text-align: center;
+}
+#otpInput { text-align: center; letter-spacing: 0.4em; font-family: 'SF Mono', Menlo, monospace; font-size: 18px; }
+
+/* ============== TOAST ============== */
+.toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 100px; font-size: 13px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4); opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 300; max-width: 420px; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(--coral-800); color: #fff; }
+
+/* ============== RESPONSIVE ============== */
+@media (max-width: 880px) {
+  .nav-inner { padding: 12px 18px; }
+  .hamburger { display: flex; }
+  .nav-links { position: absolute; top: calc(100% + 8px); right: 14px; flex-direction: column; align-items: stretch; gap: 0; background: var(--paper); border: 0.5px solid var(--border-strong); border-radius: 10px; padding: 8px; min-width: 220px; box-shadow: 0 14px 34px -14px rgba(74,27,12,0.18); display: none; }
+  .nav-links.open { display: flex; }
+  .nav-links li { display: block; }
+  .nav-link { display: block; padding: 10px 12px; font-size: 14px; border-radius: 6px; }
+  .nav-link:hover { background: var(--cream); }
+  .nav-link.active::after { display: none; }
+  .nav-link.active { background: var(--coral-50); }
+  .nav-links .btn { width: 100%; justify-content: center; margin-top: 4px; }
+  .user-menu-item.show { display: block; }
+  .user-btn { width: 100%; padding: 10px 12px; border-radius: 6px; }
+  .user-btn .ti-chevron-down { display: none; }
+  .user-dropdown { position: static; box-shadow: none; border: none; border-top: 0.5px solid var(--border); border-radius: 0; margin-top: 4px; padding: 4px 0 0; display: block; min-width: 0; }
+  section { padding: 60px 0; }
+  .hero { padding: 70px 0 60px; }
+  .steps { grid-template-columns: 1fr; gap: 32px; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .app-grid { grid-template-columns: 1fr; }
+  .app-sidebar, .app-prompts { border: none; border-top: 0.5px solid var(--border); }
+  .thread { padding: 24px 22px; }
+  .container, .container-narrow { padding: 0 18px; }
+}
+@media (max-width: 540px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .trust-inner { gap: 12px; font-size: 10px; }
+  .curr-stats { gap: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="#home" class="brand" data-page="home">My Rich Tapestry</a>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <i class="ti ti-menu-2" aria-hidden="true"></i>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="nav-link" data-page="home">Home</a></li>
+      <li><a href="#curriculum" class="nav-link" data-page="curriculum">What you'll cover</a></li>
+      <li class="nav-signin-item"><a href="#sign-in" class="nav-link nav-signin" data-action="sign-in">Sign in</a></li>
+      <li class="nav-start-item"><a href="#start" class="btn btn-primary" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Start recording</a></li>
+      <li class="user-menu-item">
+        <button class="user-btn" aria-haspopup="true" aria-expanded="false" id="userBtn">
+          <span class="user-avatar" id="userAvatar">·</span>
+          <span class="user-name" id="userName">You</span>
+          <i class="ti ti-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="user-dropdown" id="userDropdown" role="menu">
+          <div class="user-dropdown-email">
+            <strong id="dropdownName">You</strong>
+            <span id="dropdownEmail"></span>
+          </div>
+          <button class="user-dropdown-item" data-action="go-curriculum" role="menuitem">
+            <i class="ti ti-microphone-2" aria-hidden="true"></i> Continue recording
+          </button>
+          <button class="user-dropdown-item" data-action="sign-out" role="menuitem">
+            <i class="ti ti-logout" aria-hidden="true"></i> Sign out
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============== HOME PAGE ============== -->
+<div id="home" class="page active">
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="eyebrow">A voice-first memoir companion</div>
+      <h1 class="serif-display">Your life is a story.<br><em class="serif-italic">Tell it out loud.</em></h1>
+      <p class="hero-sub">We ask the questions. You answer in your own voice. Your grandchildren will hear you tell it — long after you can no longer tell it yourself.</p>
+      <div class="hero-ctas">
+        <a href="#start" class="btn btn-accent" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Record your first memory — free</a>
+        <a href="#sample" class="btn btn-ghost" data-action="sample-chapter"><i class="ti ti-player-play" aria-hidden="true"></i> Listen to a sample chapter</a>
+      </div>
+      <div class="hero-meta">No credit card · Five minutes is enough · Keep what you record, always</div>
+    </div>
+  </section>
+
+  <section class="trust">
+    <div class="container trust-inner">
+      <span>★★★★★ &nbsp; 4.9 from 8,200 voices</span>
+      <span>Featured in The Atlantic</span>
+      <span>Used by 40+ hospices</span>
+    </div>
+  </section>
+
+  <section class="how-it-works" id="how">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2 class="serif-headline">No typing. Just talking.</h2>
+    </div>
+    <div class="container">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>We ask a question</h3>
+          <p>Each week, a specific prompt designed to unlock a real memory. Not "tell me about your childhood" — "what did your father smell like?"</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>You answer out loud</h3>
+          <p>In the kitchen, on a walk, in bed. Press record. Five minutes is plenty. Pause and resume whenever.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>A book and an audiobook</h3>
+          <p>A linen-bound hardback with your transcripts. And an audiobook — in your real voice — for the people who will miss the sound of it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="recording-room" id="sample">
+    <div class="section-head">
+      <span class="eyebrow">The recording room</span>
+      <h2 class="serif-headline">One question. One button.</h2>
+    </div>
+    <div class="container">
+      <div class="app-mock">
+        <div class="app-bar">
+          <span><i class="ti ti-book" aria-hidden="true"></i> Chapter 3 · The summer we left the coast</span>
+          <span><i class="ti ti-cloud-check" aria-hidden="true"></i> Saved · 4 of 6 prompts answered</span>
+        </div>
+        <div class="app-grid">
+          <aside class="app-sidebar" aria-label="Chapter list">
+            <h4>Your chapters</h4>
+            <ul class="chap-list">
+              <li class="chap-item done"><i class="ti ti-check" aria-hidden="true"></i> 1 · Beginnings</li>
+              <li class="chap-item done"><i class="ti ti-check" aria-hidden="true"></i> 2 · School days</li>
+              <li class="chap-item active" aria-current="true">3 · The summer...</li>
+              <li class="chap-item locked"><i class="ti ti-lock" aria-hidden="true"></i> 4 · Locked</li>
+              <li class="chap-item locked"><i class="ti ti-lock" aria-hidden="true"></i> 5 · Locked</li>
+            </ul>
+          </aside>
+          <div class="app-record">
+            <div>
+              <div class="prompt-label">This week's question</div>
+              <div class="prompt-text">"What did your father smell like?"</div>
+            </div>
+            <div class="rec-button-wrap">
+              <div class="rec-pulse" aria-hidden="true"></div>
+              <button class="rec-button" aria-label="Stop recording" data-action="start-recording">
+                <div class="rec-square" aria-hidden="true"></div>
+              </button>
+            </div>
+            <div>
+              <div class="timer" aria-label="Recording duration">01:23</div>
+              <div class="timer-status"><span class="timer-dot" aria-hidden="true"></span>Recording</div>
+            </div>
+            <div class="waveform" aria-hidden="true">
+              <span style="height:8px; animation-delay:0s"></span><span style="height:14px; animation-delay:0.1s"></span><span style="height:20px; animation-delay:0.2s"></span><span style="height:12px; animation-delay:0.3s"></span><span style="height:18px; animation-delay:0.4s"></span><span style="height:24px; animation-delay:0.5s"></span><span style="height:10px; animation-delay:0.6s"></span><span style="height:16px; animation-delay:0.7s"></span><span style="height:22px; animation-delay:0.8s"></span><span style="height:14px; animation-delay:0.9s"></span><span style="height:18px; animation-delay:1.0s"></span><span style="height:8px; animation-delay:1.1s"></span><span style="height:14px; animation-delay:1.2s"></span><span style="height:20px; animation-delay:1.3s"></span><span style="height:12px; animation-delay:1.4s"></span><span style="height:18px; animation-delay:1.5s"></span><span style="height:24px; animation-delay:1.6s"></span><span style="height:10px; animation-delay:1.7s"></span><span style="height:16px; animation-delay:1.8s"></span><span style="height:22px; animation-delay:1.9s"></span>
+            </div>
+            <div class="transcript">"He always smelled of two-stroke oil from the garage, and Old Spice on Sundays. There was a particular jacket — green canvas — that smelled like him for years after..."<span class="transcript-cursor" aria-hidden="true">|</span></div>
+          </div>
+          <aside class="app-prompts" aria-label="If you get stuck">
+            <h4>If you get stuck</h4>
+            <div class="nudge">Was he tall or short?</div>
+            <div class="nudge">His hands — what did they look like?</div>
+            <div class="nudge">A phrase he said often?</div>
+          </aside>
+        </div>
+        <div class="app-foot">
+          <span><i class="ti ti-player-pause" aria-hidden="true"></i> Pause &nbsp;·&nbsp; <i class="ti ti-refresh" aria-hidden="true"></i> Start over &nbsp;·&nbsp; <i class="ti ti-player-play" aria-hidden="true"></i> Listen back</span>
+          <span class="next">Done · next question</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="section-head"><h2 class="serif-headline">Built for people who'd rather talk than type</h2></div>
+    <div class="container">
+      <div class="features-grid">
+        <div class="feat"><div class="feat-icon"><i class="ti ti-microphone" aria-hidden="true"></i></div><h3>Talk, don't type</h3><p>Speak naturally. No keyboard, no formatting, no backspacing your way out of a memory.</p></div>
+        <div class="feat"><div class="feat-icon"><i class="ti ti-volume" aria-hidden="true"></i></div><h3>Your real voice, kept</h3><p>An heirloom audiobook in your own voice. The accent, the laugh, the pauses.</p></div>
+        <div class="feat"><div class="feat-icon"><i class="ti ti-file-text" aria-hidden="true"></i></div><h3>Gently transcribed</h3><p>Edited for readability, not for voice. Your phrases, idioms, and "um well anyway" stay yours.</p></div>
+        <div class="feat"><div class="feat-icon"><i class="ti ti-walk" aria-hidden="true"></i></div><h3>Record anywhere</h3><p>Mobile app for the kitchen, the car, a walk. Pause and resume. We stitch it together.</p></div>
+        <div class="feat"><div class="feat-icon"><i class="ti ti-lock" aria-hidden="true"></i></div><h3>Private by default</h3><p>Encrypted at rest. Only the people you name in your will can listen in fifty years.</p></div>
+        <div class="feat"><div class="feat-icon"><i class="ti ti-book-2" aria-hidden="true"></i></div><h3>Hardback + audiobook</h3><p>Linen-bound book with photos. Audiobook on USB, app stream, or a QR on the bookplate.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonial">
+    <div class="container">
+      <div class="testimonial-quote">My father's voice is on a USB in our kitchen drawer. The grandkids never met him, but every Christmas Eve we play a chapter. They know exactly what he sounded like when he laughed.</div>
+      <div class="testimonial-by">
+        <div class="avatar">RT</div>
+        <div class="testimonial-by-text">
+          <div class="testimonial-by-name">Rachel T.</div>
+          <div class="testimonial-by-role">Daughter, who keeps the USB</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="final-cta-inner">
+      <h2>Press record. We'll take it from there.</h2>
+      <p>We'll send the first question to your phone tonight. Answer it on tomorrow's walk.</p>
+      <a href="#start" class="btn btn-accent" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Record your first answer</a>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============== CURRICULUM PAGE ============== -->
+<div id="curriculum" class="page">
+
+  <section class="curr-header">
+    <div class="container">
+      <div class="eyebrow">The curriculum</div>
+      <h1 class="serif-display">Twenty threads.<br><em class="serif-italic">One life.</em></h1>
+      <p>An arc from earliest memories to what you know now — about 26 hours of recordings, told one prompt a week, in your own time.</p>
+      <div class="curr-stats">
+        <div><div class="curr-stat-num">20</div><div class="curr-stat-label">Threads</div></div>
+        <div><div class="curr-stat-num">~165</div><div class="curr-stat-label">Prompts</div></div>
+        <div><div class="curr-stat-num">~26h</div><div class="curr-stat-label">Recordings</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="curr-map">
+    <h2>The whole tapestry, at a glance</h2>
+    <div class="map-grid">
+      <a href="#thread-01" class="map-card map-card-new" data-thread="thread-01"><div class="map-card-head"><i class="ti ti-microphone-2" aria-hidden="true"></i><span class="map-card-num">01</span><span class="map-card-dur">~5 min</span></div><div class="map-card-title">Orientation</div><div class="map-card-sub">Finding your voice</div><div class="map-card-progress"></div></a>
+      <a href="#thread-02" class="map-card" data-thread="thread-02"><div class="map-card-head"><i class="ti ti-photo" aria-hidden="true"></i><span class="map-card-num">02</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Earliest memories</div><div class="map-card-sub">Fragments more than stories</div><div class="map-card-progress"></div></a>
+      <a href="#thread-03" class="map-card" data-thread="thread-03"><div class="map-card-head"><i class="ti ti-home" aria-hidden="true"></i><span class="map-card-num">03</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">The family you were born into</div><div class="map-card-sub">Before you chose them</div><div class="map-card-progress"></div></a>
+      <a href="#thread-04" class="map-card" data-thread="thread-04"><div class="map-card-head"><i class="ti ti-map-pin" aria-hidden="true"></i><span class="map-card-num">04</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">The places that made you</div><div class="map-card-sub">Rooms, landscapes, streets</div><div class="map-card-progress"></div></a>
+      <a href="#thread-05" class="map-card" data-thread="thread-05"><div class="map-card-head"><i class="ti ti-school" aria-hidden="true"></i><span class="map-card-num">05</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">School and the early world</div><div class="map-card-sub">Outside the family, for the first time</div><div class="map-card-progress"></div></a>
+      <a href="#thread-06" class="map-card" data-thread="thread-06"><div class="map-card-head"><i class="ti ti-headphones" aria-hidden="true"></i><span class="map-card-num">06</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Adolescence</div><div class="map-card-sub">Becoming, in all its noise</div><div class="map-card-progress"></div></a>
+      <a href="#thread-07" class="map-card" data-thread="thread-07"><div class="map-card-head"><i class="ti ti-luggage" aria-hidden="true"></i><span class="map-card-num">07</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Leaving home</div><div class="map-card-sub">Into a life of your own</div><div class="map-card-progress"></div></a>
+      <a href="#thread-08" class="map-card" data-thread="thread-08"><div class="map-card-head"><i class="ti ti-coins" aria-hidden="true"></i><span class="map-card-num">08</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Money and class</div><div class="map-card-sub">What you grew up with, what you feel</div><div class="map-card-progress"></div></a>
+      <a href="#thread-09" class="map-card" data-thread="thread-09"><div class="map-card-head"><i class="ti ti-briefcase" aria-hidden="true"></i><span class="map-card-num">09</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Work and vocation</div><div class="map-card-sub">What you've done with your days</div><div class="map-card-progress"></div></a>
+      <a href="#thread-10" class="map-card" data-thread="thread-10"><div class="map-card-head"><i class="ti ti-users" aria-hidden="true"></i><span class="map-card-num">10</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Friendship</div><div class="map-card-sub">Neither blood nor lovers</div><div class="map-card-progress"></div></a>
+      <a href="#thread-11" class="map-card" data-thread="thread-11"><div class="map-card-head"><i class="ti ti-heart" aria-hidden="true"></i><span class="map-card-num">11</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Love and partnership</div><div class="map-card-sub">The people you chose</div><div class="map-card-progress"></div></a>
+      <a href="#thread-12" class="map-card" data-thread="thread-12"><div class="map-card-head"><i class="ti ti-baby-carriage" aria-hidden="true"></i><span class="map-card-num">12</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Children, or the absence</div><div class="map-card-sub">A turning, either way</div><div class="map-card-progress"></div></a>
+      <a href="#thread-13" class="map-card" data-thread="thread-13"><div class="map-card-head"><i class="ti ti-hammer" aria-hidden="true"></i><span class="map-card-num">13</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Hands and craft</div><div class="map-card-sub">What you've made or grown</div><div class="map-card-progress"></div></a>
+      <a href="#thread-14" class="map-card" data-thread="thread-14"><div class="map-card-head"><i class="ti ti-mood-wink" aria-hidden="true"></i><span class="map-card-num">14</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Trouble</div><div class="map-card-sub">Mischief, rule-breaking, scrapes</div><div class="map-card-progress"></div></a>
+      <a href="#thread-15" class="map-card" data-thread="thread-15"><div class="map-card-head"><i class="ti ti-heartbeat" aria-hidden="true"></i><span class="map-card-num">15</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">The body and its history</div><div class="map-card-sub">The vessel you've been in</div><div class="map-card-progress"></div></a>
+      <a href="#thread-16" class="map-card" data-thread="thread-16"><div class="map-card-head"><i class="ti ti-world" aria-hidden="true"></i><span class="map-card-num">16</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">The wider world</div><div class="map-card-sub">How history broke into your life</div><div class="map-card-progress"></div></a>
+      <a href="#thread-17" class="map-card" data-thread="thread-17"><div class="map-card-head"><i class="ti ti-book-2" aria-hidden="true"></i><span class="map-card-num">17</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Books, music, art</div><div class="map-card-sub">The work made by others</div><div class="map-card-progress"></div></a>
+      <a href="#thread-18" class="map-card" data-thread="thread-18"><div class="map-card-head"><i class="ti ti-flame" aria-hidden="true"></i><span class="map-card-num">18</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Belief and meaning</div><div class="map-card-sub">Questions that stayed with you</div><div class="map-card-progress"></div></a>
+      <a href="#thread-19" class="map-card" data-thread="thread-19"><div class="map-card-head"><i class="ti ti-feather" aria-hidden="true"></i><span class="map-card-num">19</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Loss and grief</div><div class="map-card-sub">What you've kept anyway</div><div class="map-card-progress"></div></a>
+      <a href="#thread-20" class="map-card" data-thread="thread-20"><div class="map-card-head"><i class="ti ti-compass" aria-hidden="true"></i><span class="map-card-num">20</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">What you know now</div><div class="map-card-sub">The end is the beginning of the telling</div><div class="map-card-progress"></div></a>
+    </div>
+  </section>
+
+  <section class="curr-detail">
+    <h2>Every prompt, in order</h2>
+
+    <article class="thread thread-new" id="thread-01">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-microphone-2" aria-hidden="true"></i></div><div class="thread-meta">Thread 01 · ~5 min · 3 prompts</div></div>
+      <h3>Orientation</h3>
+      <p class="thread-essence">A few minutes for the microphone, not for the memoir. Just to find your voice.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">Your full name, where you were born, and when.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">Who you most hope might be listening to this, one day.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">Why you're sitting down to do this now. Even if the answer is "I'm not sure yet."</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-02">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-photo" aria-hidden="true"></i></div><div class="thread-meta">Thread 02 · ~90 min · 10 prompts</div></div>
+      <h3>Earliest memories</h3>
+      <p class="thread-essence">The first scenes you can summon — fragments more than stories, but specific.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The first room you remember. What was on the walls, what was on the floor, where did the light come from?</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">The first time you remember being afraid.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A meal that comes back to you — what was on the table, who was around it?</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">The first thing you remember wanting badly.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A sound from your childhood you'd recognise anywhere.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A smell that takes you straight back to somewhere specific.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A toy, blanket, or object that mattered more than it should have.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">The first secret you remember keeping.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">The first time you understood that adults didn't know everything.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">A moment of pure happiness from before you knew the word for it.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-03">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-home" aria-hidden="true"></i></div><div class="thread-meta">Thread 03 · ~90 min · 10 prompts</div></div>
+      <h3>The family you were born into</h3>
+      <p class="thread-essence">The people who shaped you before you could choose them.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">Who was your mother before she was your mother?</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">Who was your father before he was your father?</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A grandparent's story — whether you knew them, or only knew the stories about them.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">The sibling dynamic, or the only-child experience: what was the real shape of it?</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A family ritual — Sunday lunch, Christmas, a birthday — and what it actually felt like, not what it looked like in the photos.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">Something the family never spoke about, and why.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">An aunt, uncle, or extended family member who mattered.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">A row that you still remember in detail.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">A moment of unexpected tenderness from someone in the family.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">A family trait — physical, temperamental, or moral — that you carry.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-04">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div><div class="thread-meta">Thread 04 · ~75 min · 8 prompts</div></div>
+      <h3>The places that made you</h3>
+      <p class="thread-essence">The rooms, landscapes, and streets that became part of how you think.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The house, or houses, you grew up in. Walk the listener through one.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">The street or road you grew up on — the neighbours, the sounds, the rhythm.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">Your school — not the official version, the real one.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A landscape — beach, forest, fields, street, harbour, mountain — that's part of how you think.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A place you went to escape.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A place that frightened you as a child.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A place you've been back to as an adult, and what had changed (or hadn't).</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">A place that doesn't exist anymore.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-05">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-school" aria-hidden="true"></i></div><div class="thread-meta">Thread 05 · ~75 min · 8 prompts</div></div>
+      <h3>School and the early world</h3>
+      <p class="thread-essence">The first world outside the family — and the first time you noticed yourself in it.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">A teacher who mattered, for good or ill.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A friend whose name you still remember and why.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">The first time you understood you were good at something.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">The first time you understood you weren't.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">An injustice from those years, and what you did or didn't do about it.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A day you'd live again if you could.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">What you wanted to be when you grew up, and what came of it.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">A first kiss, a first dance, or any first time you felt seen.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-06">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-headphones" aria-hidden="true"></i></div><div class="thread-meta">Thread 06 · ~90 min · 10 prompts</div></div>
+      <h3>Adolescence</h3>
+      <p class="thread-essence">The years of becoming, in all their tenderness and noise.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The music that was the soundtrack to your teenage years.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A risk you took that should have ended worse than it did.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">The first time you fell in love, or thought you did.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">An argument with a parent you still remember.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">Who you wanted to be at seventeen, and who you were.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">The first time you saw an adult as a real person, with their own problems.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A friend who was a bad influence, in the best way.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">The first time you got truly drunk, or its equivalent — and what you remember of it.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">An older person who saw something in you.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">The first time you understood your parents weren't going to live forever.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-07">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-luggage" aria-hidden="true"></i></div><div class="thread-meta">Thread 07 · ~75 min · 8 prompts</div></div>
+      <h3>Leaving home</h3>
+      <p class="thread-essence">The first steps into a life of your own making.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The day you left, or the day you knew you wouldn't.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">The first time you had to fend for yourself.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">The first space that was yours — a flat, a room, a corner of one — and what you put in it.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A decision you made then that shaped everything after.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">Someone you lost touch with and wish you hadn't.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A friend who became family in those years.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A belief you held then that you no longer hold.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">The first proper heartbreak.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-08">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-coins" aria-hidden="true"></i></div><div class="thread-meta">Thread 08 · ~75 min · 8 prompts</div></div>
+      <h3>Money and class</h3>
+      <p class="thread-essence">The shape of money in your life — what you grew up with, what you learned, what you still feel.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">What you understood about money as a child.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">The first time you realised your family had more or less than someone else's.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A financial decision that shaped your life.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A time money was tight, and what you did.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A time money came easily, and what you did with it.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A class boundary you crossed, or didn't.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">What you'd want a child or grandchild to understand about money.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">What you believe about money now that you didn't at twenty.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-09">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-briefcase" aria-hidden="true"></i></div><div class="thread-meta">Thread 09 · ~90 min · 10 prompts</div></div>
+      <h3>Work and vocation</h3>
+      <p class="thread-essence">What you've done with your days — for pay, for love, for someone who needed it.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The first work that asked something of you — paid or unpaid — and what it taught you.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">The work you've been proudest of.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A boss, colleague, or mentor who changed how you saw things.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A failure at work, and what you did with it.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A choice between two paths, and how you chose.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">The moment you knew you'd found (or hadn't found) your calling.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A time you were treated unfairly at work, and what you did.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">Someone you mentored, taught, or supervised.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">What work has cost you, and what it has given you.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">What you'd tell yourself starting out.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-10">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-users" aria-hidden="true"></i></div><div class="thread-meta">Thread 10 · ~75 min · 8 prompts</div></div>
+      <h3>Friendship</h3>
+      <p class="thread-essence">The people who weren't blood and weren't lovers, but became essential.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The friend who knew you best at twenty.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A friendship that ended, and how.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A friend you made later in life, against the odds.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A friendship that survived a major rupture.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">Someone you wish you'd been a better friend to.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">The friend you've known longest, and what's kept it.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A small kindness from a friend that you've never forgotten.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">What friendship has given you that family or romance hasn't.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-11">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-heart" aria-hidden="true"></i></div><div class="thread-meta">Thread 11 · ~90 min · 10 prompts</div></div>
+      <h3>Love and partnership</h3>
+      <p class="thread-essence">The people you chose, and the ones who chose you.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">How you met the person you ended up with — or how you didn't.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A moment when you knew. Or a moment when you knew you didn't.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">The first time you said "I love you" and meant it.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A hard season in a relationship, and how you came through (or didn't).</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">An argument that almost broke things, and how it didn't.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A small daily ritual that has mattered more than the big moments — with a partner, with yourself, with a friend, with a place.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A love that didn't last, and what it gave you anyway.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">What you've learned about being loved.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">What you understand about love now that you didn't at twenty.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">A love letter, message, or note you still have, or wish you did.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-12">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-baby-carriage" aria-hidden="true"></i></div><div class="thread-meta">Thread 12 · ~90 min · 10 prompts</div></div>
+      <h3>Children, or the absence of them</h3>
+      <p class="thread-essence">A turning, either way.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The day you found out you were going to be a parent — or the choice not to be.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">One thing a young person in your life has taught you — your own child, a niece or nephew, a godchild, a student.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A moment of caring for someone younger that you got right.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A moment you got wrong, and what you did about it.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A small daily moment with a child in your life you want to remember.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A worry about a young person that turned out fine — or didn't.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">Watching someone you love become themselves, separate from you.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">A nephew, niece, godchild, or other young person who's mattered.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">What you hope to pass on — to a child, a niece, a godchild, a community — that isn't money.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">The version of yourself you became when someone else's wellbeing started to matter more than your own.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-13">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-hammer" aria-hidden="true"></i></div><div class="thread-meta">Thread 13 · ~75 min · 8 prompts</div></div>
+      <h3>Hands and craft</h3>
+      <p class="thread-essence">What you've made, mended, grown, or shaped with your own hands.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">Something you made or built that you're proud of.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">Something you grew, or kept alive.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">Something you fixed when you didn't think you could.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A skill someone taught you that you still use.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A craft, hobby, or pursuit that's been with you for years.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A creative project that didn't work, and what you learned.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A tool, instrument, or piece of equipment you've loved.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">The work of your hands as opposed to your head.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-14">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-mood-wink" aria-hidden="true"></i></div><div class="thread-meta">Thread 14 · ~75 min · 8 prompts</div></div>
+      <h3>Trouble</h3>
+      <p class="thread-essence">The mischief, the rule-breaking, the times you should have been caught — and the ones you were.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">A prank or scrape you still tell people about.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">Something you did that should have ended worse than it did.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">The teacher, boss, or parent you outwitted — and whether you ever got caught.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A rule you broke on principle, and whether you'd break it again.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">The accomplice — the friend you got into trouble with — and the trouble itself.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A piece of nonsense that still makes you laugh out loud forty years on.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">The closest call — a night, a moment, a line you nearly crossed.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">Something the children or grandchildren would never believe you did.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-15">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-heartbeat" aria-hidden="true"></i></div><div class="thread-meta">Thread 15 · ~75 min · 8 prompts</div></div>
+      <h3>The body and its history</h3>
+      <p class="thread-essence">The vessel you've been in all this time, and what it has carried you through.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">A childhood illness or injury you remember vividly.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A time your body did something you didn't think it could.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A time it failed you.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">Your relationship with sport, exercise, or movement.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A scar and the story behind it.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">An operation, hospital stay, or fragile season.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">How you've felt about your body through the decades.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">What ageing has taught you about being in a body.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-16">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-world" aria-hidden="true"></i></div><div class="thread-meta">Thread 16 · ~75 min · 8 prompts</div></div>
+      <h3>The wider world</h3>
+      <p class="thread-essence">How history broke into your private life, and what you've seen of the world.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The first time you understood the world was bigger than your country.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A piece of news that changed how you saw things.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A place you travelled to that surprised you.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A historical event you remember exactly where you were for.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A political belief you've held, and how it's evolved.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A country, culture, or community that became important to you.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A moment when the world's noise broke into your private life.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">What you understand about your country now that you didn't growing up.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-17">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-book-2" aria-hidden="true"></i></div><div class="thread-meta">Thread 17 · ~75 min · 8 prompts</div></div>
+      <h3>Books, music, art</h3>
+      <p class="thread-essence">The work made by others that became part of how you think.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">A book that you keep returning to.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A song or album from a particular season of your life.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A film or piece of theatre that stayed with you.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">Someone whose work — written, sung, painted, made — has shaped how you see.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A piece of art, music, or writing you don't understand and love anyway.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">Something you used to love and grew out of.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">Something you grew into.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">What you'd want someone to read, watch, or listen to to understand you.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-18">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-flame" aria-hidden="true"></i></div><div class="thread-meta">Thread 18 · ~75 min · 8 prompts</div></div>
+      <h3>Belief and meaning</h3>
+      <p class="thread-essence">The questions that have stayed with you, and the answers you've made some peace with.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">What you believed at twenty.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">What changed it.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A practice or discipline that's shaped you — faith, sport, art, craft, work.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A question you've never resolved.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">What you've come to trust.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A moment that felt larger than itself.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A piece of wisdom from someone older that's stayed with you.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">A time you were wrong about something important, and what you did with it.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-19">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-feather" aria-hidden="true"></i></div><div class="thread-meta">Thread 19 · ~90 min · 10 prompts</div></div>
+      <h3>Loss and grief</h3>
+      <p class="thread-essence">What has been taken, and what you've kept anyway.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The first death that mattered.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A loss that wasn't a death — a friendship, a marriage, a home, a self.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">Something you grieved more than you expected to.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">Something you didn't grieve, and noticed.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">How loss has changed what you spend your time on.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A funeral or memorial that's stayed with you.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">Someone you'd want to say one more thing to.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">A grief that surprised you with how it came, and went.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">Something you've learned about grief from being with someone else's.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">An anniversary you keep, privately.</div></li>
+      </ol>
+    </article>
+
+    <article class="thread" id="thread-20">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-compass" aria-hidden="true"></i></div><div class="thread-meta">Thread 20 · ~90 min · 10 prompts</div></div>
+      <h3>What you know now</h3>
+      <p class="thread-essence">The end of the path, which is also the beginning of the telling.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">A piece of advice you actually believe.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">Something you used to be sure of and aren't anymore.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A small pleasure that's never let you down.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">A regret that's softened with time.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A regret that hasn't.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">What you'd say to yourself at twenty-five, in one sentence.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A day from the last year that you'll want to remember.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">What you've come to expect from life, and what you've stopped expecting.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">The one thing you'd want a great-grandchild to know about you.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">The story you want told at your funeral, in your own words.</div></li>
+      </ol>
+    </article>
+
+  </section>
+
+  <section class="curr-close">
+    <p class="curr-close-quote">"Don't aim for perfect. Aim for recorded. A flawed recording in the world is worth a hundred perfect ones still in your head."</p>
+    <a href="#thread-01" class="btn btn-accent" data-action="go-thread-01"><i class="ti ti-microphone-2" aria-hidden="true"></i> Start with thread 01</a>
+  </section>
+
+</div>
+
+</main>
+
+<footer class="footer">
+  <span class="brand">My Rich Tapestry</span>
+  <span class="footer-meta">
+    <a href="#home" data-page="home">About</a> ·
+    <a href="#sample" data-scroll="sample">Listen</a> ·
+    <a href="#privacy">Privacy</a> ·
+    <a href="mailto:hello@myrichtapestry.example">Contact</a> ·
+    Made with care, for people with stories
+  </span>
+</footer>
+
+<!-- ============== SIGN-IN MODAL ============== -->
+<div class="modal-backdrop" id="signInModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal">
+    <button class="modal-close" aria-label="Close" id="modalClose"><i class="ti ti-x" aria-hidden="true"></i></button>
+
+    <div class="modal-state active" data-state="enter">
+      <div class="modal-eyebrow">Sign in to My Rich Tapestry</div>
+      <h3 id="modalTitle">Welcome, storyteller.</h3>
+      <p class="modal-lede">Enter your email and we'll send you a sign-in link. No password to remember.</p>
+      <form class="modal-form" id="signInForm" novalidate>
+        <input type="email" class="modal-input" id="emailInput" placeholder="your@email.com" autocomplete="email" required aria-label="Email address">
+        <div class="modal-error" id="emailError" role="alert"></div>
+        <button type="submit" class="modal-submit" id="submitBtn">
+          <span class="submit-label">Send me a sign-in link</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+      <p class="modal-meta">New here? Same form — we'll create your account.</p>
+    </div>
+
+    <div class="modal-state" data-state="check">
+      <div class="modal-success-icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
+      <h3>Check your email</h3>
+      <p class="modal-lede">We've sent a sign-in link to <span class="modal-sent-email" id="sentEmail"></span>. Click the link on this device — this window will update automatically.</p>
+
+      <details class="otp-fallback" id="otpFallback">
+        <summary>Or enter a 6-digit code instead</summary>
+        <p>The email also includes a 6-digit code. Paste it here if clicking the link is awkward.</p>
+        <form class="modal-form" id="otpForm" novalidate>
+          <input type="text" class="modal-input" id="otpInput" placeholder="123456" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
+          <div class="modal-error" id="otpError" role="alert"></div>
+          <button type="submit" class="modal-submit" id="otpSubmit">
+            <span class="submit-label">Verify code</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+      </details>
+
+      <p class="modal-meta"><a id="resendLink">Use a different email</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============== TOAST ============== -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ============== CONFIG ==============
+  var SUPABASE_URL = 'https://eodvawfhpbqxgtbojwvn.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_WNFXMpgFvhOZyHsS4wrusA_0eVuB8Hb';
+
+  // ============== STATE ==============
+  var sb = null;
+  var currentUser = null;
+  var recordings = {}; // key: "threadId:promptIndex" -> recording row
+  var pendingEmail = '';
+
+  // recording state
+  var activeStream = null;
+  var activeRecorder = null;
+  var activeKey = null;
+  var recChunks = [];
+  var recStartTime = 0;
+  var timerInterval = null;
+
+  // playback
+  var currentAudio = null;
+  var currentPlayingKey = null;
+
+  // element refs
+  var navLinks, hamburger, signInItem, startItem, userMenuItem, userBtn, userDropdown,
+      userAvatar, userName, dropdownName, dropdownEmail,
+      modal, modalClose, signInForm, emailInput, emailError, submitBtn,
+      sentEmail, resendLink, otpForm, otpInput, otpError, otpSubmit, otpFallback,
+      toast;
+  var toastTimer = null;
+
+  function $(id) { return document.getElementById(id); }
+
+  // ============== HELPERS ==============
+  function nameFromEmail(email) {
+    if (!email) return '';
+    var local = email.split('@')[0];
+    var first = local.split(/[._\-+]/)[0];
+    return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+  }
+  function initialFromEmail(email) { return email ? email.charAt(0).toUpperCase() : '·'; }
+  function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+  function formatDuration(s) {
+    if (!s && s !== 0) return '';
+    var m = Math.floor(s / 60);
+    var sec = s % 60;
+    return m + ':' + String(sec).padStart(2, '0');
+  }
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    // Fallback
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+
+  // ============== TOAST ==============
+  function showToast(message, isError) {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    toast.classList.toggle('error', !!isError);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 3600);
+  }
+
+  // ============== PAGES ==============
+  function showPage(id) {
+    var pages = document.querySelectorAll('.page');
+    for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
+    var target = $(id);
+    if (target && target.classList.contains('page')) target.classList.add('active');
+    var links = document.querySelectorAll('.nav-link');
+    for (var j = 0; j < links.length; j++) links[j].classList.remove('active');
+    var matches = document.querySelectorAll('[data-page="' + id + '"]');
+    for (var k = 0; k < matches.length; k++) {
+      if (matches[k].classList.contains('nav-link')) matches[k].classList.add('active');
+    }
+  }
+  function smoothScrollTo(id) {
+    var el = $(id);
+    if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function handleHash() {
+    var hash = window.location.hash.slice(1);
+    // Supabase OTP redirect can leave a hash like "access_token=..." — ignore
+    if (hash.indexOf('access_token=') === 0 || hash.indexOf('error=') === 0) return;
+    if (hash.indexOf('thread-') === 0) {
+      showPage('curriculum');
+      setTimeout(function () { smoothScrollTo(hash); }, 80);
+      return;
+    }
+    if (hash === 'how' || hash === 'sample') {
+      showPage('home');
+      setTimeout(function () { smoothScrollTo(hash); }, 80);
+      return;
+    }
+    var el = hash ? $(hash) : null;
+    var pageId = (el && el.classList.contains('page')) ? hash : 'home';
+    showPage(pageId);
+    if (!hash) window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  // ============== AUTH UI ==============
+  function renderAuth() {
+    if (currentUser) {
+      if (signInItem) signInItem.style.display = 'none';
+      if (startItem) startItem.style.display = 'none';
+      if (userMenuItem) userMenuItem.classList.add('show');
+      var email = currentUser.email || '';
+      var name = nameFromEmail(email);
+      if (userAvatar) userAvatar.textContent = initialFromEmail(email);
+      if (userName) userName.textContent = name;
+      if (dropdownName) dropdownName.textContent = name;
+      if (dropdownEmail) dropdownEmail.textContent = email;
+    } else {
+      if (signInItem) signInItem.style.display = '';
+      if (startItem) startItem.style.display = '';
+      if (userMenuItem) userMenuItem.classList.remove('show');
+      closeUserDropdown();
+    }
+  }
+
+  // ============== MODAL ==============
+  function openModal() {
+    if (!modal) return;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    showModalState('enter');
+    if (emailInput) {
+      emailInput.value = '';
+      setTimeout(function () { emailInput.focus(); }, 60);
+    }
+    if (emailError) emailError.textContent = '';
+    if (submitBtn) { submitBtn.classList.remove('loading'); submitBtn.disabled = false; }
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  function showModalState(state) {
+    if (!modal) return;
+    var states = modal.querySelectorAll('.modal-state');
+    for (var i = 0; i < states.length; i++) {
+      states[i].classList.toggle('active', states[i].getAttribute('data-state') === state);
+    }
+  }
+
+  // ============== DROPDOWN ==============
+  function openUserDropdown() {
+    if (!userDropdown || !userBtn) return;
+    userDropdown.classList.add('open');
+    userBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeUserDropdown() {
+    if (!userDropdown || !userBtn) return;
+    userDropdown.classList.remove('open');
+    userBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  // ============== MOBILE MENU ==============
+  function closeMobileMenu() {
+    if (!navLinks || !hamburger) return;
+    navLinks.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  // ============== SUPABASE AUTH ==============
+  async function sendMagicLink(email) {
+    if (!sb) return { error: { message: 'Backend not ready.' } };
+    var redirectTo = window.location.origin + window.location.pathname;
+    return await sb.auth.signInWithOtp({
+      email: email,
+      options: { emailRedirectTo: redirectTo }
+    });
+  }
+  async function verifyOtp(email, token) {
+    if (!sb) return { error: { message: 'Backend not ready.' } };
+    return await sb.auth.verifyOtp({ email: email, token: token, type: 'email' });
+  }
+  async function signOut() {
+    if (!sb) return;
+    await sb.auth.signOut();
+  }
+
+  // ============== RECORDINGS DATA ==============
+  async function loadRecordings() {
+    if (!sb || !currentUser) return;
+    var result = await sb.from('recordings').select('*').eq('user_id', currentUser.id);
+    if (result.error) {
+      console.error('Load recordings failed:', result.error);
+      return;
+    }
+    recordings = {};
+    (result.data || []).forEach(function (r) {
+      recordings[r.thread_id + ':' + r.prompt_index] = r;
+    });
+    renderAllRecordingStates();
+    renderThreadProgress();
+  }
+  function renderThreadProgress() {
+    var threadCounts = {};
+    Object.keys(recordings).forEach(function (key) {
+      var threadId = key.split(':')[0];
+      threadCounts[threadId] = (threadCounts[threadId] || 0) + 1;
+    });
+    document.querySelectorAll('.map-card[data-thread]').forEach(function (card) {
+      var threadId = card.getAttribute('data-thread');
+      var count = threadCounts[threadId] || 0;
+      var thread = $(threadId);
+      var total = thread ? thread.querySelectorAll('.thread-prompts li').length : 0;
+      var progressEl = card.querySelector('.map-card-progress');
+      if (count > 0 && progressEl) {
+        progressEl.textContent = '● ' + count + ' of ' + total + ' recorded';
+        card.classList.add('has-progress');
+      } else if (progressEl) {
+        progressEl.textContent = '';
+        card.classList.remove('has-progress');
+      }
+    });
+  }
+
+  // ============== INJECT RECORD CONTROLS ==============
+  function injectRecordControls() {
+    var items = document.querySelectorAll('.thread-prompts li');
+    items.forEach(function (li) {
+      if (li.dataset.key) return; // already done
+      var thread = li.closest('.thread');
+      if (!thread) return;
+      var threadId = thread.id;
+      var numEl = li.querySelector('.prompt-num');
+      var promptIndex = parseInt(numEl ? numEl.textContent : '', 10);
+      if (!threadId || isNaN(promptIndex)) return;
+
+      li.dataset.key = threadId + ':' + promptIndex;
+      var controls = document.createElement('div');
+      controls.className = 'prompt-controls';
+      li.appendChild(controls);
+      renderRecordingState(li.dataset.key);
+    });
+  }
+  function renderAllRecordingStates() {
+    document.querySelectorAll('.thread-prompts li').forEach(function (li) {
+      if (li.dataset.key) renderRecordingState(li.dataset.key);
+    });
+  }
+  function renderRecordingState(key, override) {
+    var li = document.querySelector('[data-key="' + key + '"]');
+    if (!li) return;
+    var controls = li.querySelector('.prompt-controls');
+    if (!controls) return;
+
+    var state = override || (activeKey === key ? 'recording' :
+      (recordings[key] ? 'recorded' : 'idle'));
+
+    if (state === 'recording') {
+      controls.innerHTML =
+        '<span class="rec-duration" id="dur-' + key + '">00:00</span>' +
+        '<button class="rec-pill recording" data-rec-action="stop" data-key="' + key + '">' +
+        '<i class="ti ti-player-stop-filled" aria-hidden="true"></i> Stop</button>';
+    } else if (state === 'uploading') {
+      controls.innerHTML =
+        '<span class="rec-pill uploading">' +
+        '<i class="ti ti-loader-2 spin-icon" aria-hidden="true"></i> Saving…</span>';
+    } else if (state === 'recorded') {
+      var r = recordings[key];
+      var dur = formatDuration(r.duration_seconds);
+      var playing = currentPlayingKey === key;
+      controls.innerHTML =
+        '<span class="rec-duration">' + dur + '</span>' +
+        '<span class="rec-action-group">' +
+        '<button class="rec-icon-btn' + (playing ? ' playing' : '') + '" data-rec-action="' + (playing ? 'pause' : 'play') + '" data-key="' + key + '" aria-label="' + (playing ? 'Pause' : 'Play') + '"><i class="ti ti-' + (playing ? 'player-pause-filled' : 'player-play-filled') + '" aria-hidden="true"></i></button>' +
+        '<button class="rec-icon-btn" data-rec-action="record" data-key="' + key + '" aria-label="Re-record"><i class="ti ti-microphone" aria-hidden="true"></i></button>' +
+        '<button class="rec-icon-btn danger" data-rec-action="delete" data-key="' + key + '" aria-label="Delete recording"><i class="ti ti-trash" aria-hidden="true"></i></button>' +
+        '</span>';
+    } else {
+      controls.innerHTML =
+        '<button class="rec-pill" data-rec-action="record" data-key="' + key + '">' +
+        '<i class="ti ti-microphone" aria-hidden="true"></i> Record</button>';
+    }
+  }
+
+  // ============== RECORDING ==============
+  async function handleRecAction(action, key) {
+    if (!currentUser && action !== 'stop') {
+      openModal();
+      return;
+    }
+    if (action === 'record') {
+      if (activeKey) { await stopRecording(); }
+      await startRecording(key);
+    } else if (action === 'stop') {
+      await stopRecording();
+    } else if (action === 'play') {
+      await playRecording(key);
+    } else if (action === 'pause') {
+      pausePlayback();
+    } else if (action === 'delete') {
+      await deleteRecording(key);
+    }
+  }
+
+  async function startRecording(key) {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      showToast('Recording not supported in this browser.', true);
+      return;
+    }
+    try {
+      activeStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      showToast('Microphone access denied. Allow it in your browser to record.', true);
+      return;
+    }
+
+    var mimeType = 'audio/webm;codecs=opus';
+    if (!window.MediaRecorder || !MediaRecorder.isTypeSupported(mimeType)) {
+      mimeType = 'audio/webm';
+      if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = '';
+    }
+
+    try {
+      var options = { audioBitsPerSecond: 32000 };
+      if (mimeType) options.mimeType = mimeType;
+      activeRecorder = new MediaRecorder(activeStream, options);
+    } catch (err) {
+      showToast('Recording not supported. Try Chrome or Firefox.', true);
+      cleanupStream();
+      return;
+    }
+
+    recChunks = [];
+    activeRecorder.ondataavailable = function (e) {
+      if (e.data && e.data.size > 0) recChunks.push(e.data);
+    };
+    activeRecorder.onstop = function () { finishRecording(key); };
+    activeRecorder.start();
+    activeKey = key;
+    recStartTime = Date.now();
+    renderRecordingState(key);
+
+    timerInterval = setInterval(function () {
+      var el = $('dur-' + key);
+      if (el) el.textContent = formatDuration(Math.floor((Date.now() - recStartTime) / 1000));
+    }, 250);
+  }
+
+  async function stopRecording() {
+    if (!activeRecorder) return;
+    if (activeRecorder.state !== 'inactive') {
+      activeRecorder.stop();
+    }
+  }
+
+  async function finishRecording(key) {
+    clearInterval(timerInterval);
+    cleanupStream();
+
+    var duration = Math.round((Date.now() - recStartTime) / 1000);
+    var blob = new Blob(recChunks, { type: 'audio/webm' });
+    recChunks = [];
+    activeRecorder = null;
+    activeKey = null;
+
+    if (blob.size < 500) {
+      showToast('Recording too short. Try again.', true);
+      renderRecordingState(key);
+      return;
+    }
+
+    renderRecordingState(key, 'uploading');
+
+    var recordingId = uuid();
+    var path = currentUser.id + '/' + recordingId + '.webm';
+    var parts = key.split(':');
+    var threadId = parts[0];
+    var promptIndex = parseInt(parts[1], 10);
+
+    var existing = recordings[key];
+
+    var uploadResult = await sb.storage.from('recordings').upload(path, blob, {
+      contentType: 'audio/webm'
+    });
+    if (uploadResult.error) {
+      console.error('Upload error:', uploadResult.error);
+      showToast('Upload failed: ' + uploadResult.error.message, true);
+      renderRecordingState(key);
+      return;
+    }
+
+    var insertResult = await sb.from('recordings').insert({
+      id: recordingId,
+      user_id: currentUser.id,
+      thread_id: threadId,
+      prompt_index: promptIndex,
+      storage_path: path,
+      duration_seconds: duration
+    }).select().single();
+
+    if (insertResult.error) {
+      console.error('Insert error:', insertResult.error);
+      await sb.storage.from('recordings').remove([path]);
+      showToast('Save failed: ' + insertResult.error.message, true);
+      renderRecordingState(key);
+      return;
+    }
+
+    if (existing) {
+      await sb.storage.from('recordings').remove([existing.storage_path]);
+      await sb.from('recordings').delete().eq('id', existing.id);
+    }
+
+    recordings[key] = insertResult.data;
+    renderRecordingState(key);
+    renderThreadProgress();
+    showToast('Saved. Your voice is safe.');
+  }
+
+  function cleanupStream() {
+    if (activeStream) {
+      activeStream.getTracks().forEach(function (t) { t.stop(); });
+      activeStream = null;
+    }
+  }
+
+  // ============== PLAYBACK ==============
+  async function playRecording(key) {
+    var r = recordings[key];
+    if (!r) return;
+    if (currentAudio) {
+      currentAudio.pause();
+      var prevKey = currentPlayingKey;
+      currentAudio = null;
+      currentPlayingKey = null;
+      if (prevKey) renderRecordingState(prevKey);
+    }
+    var result = await sb.storage.from('recordings').createSignedUrl(r.storage_path, 300);
+    if (result.error || !result.data || !result.data.signedUrl) {
+      showToast('Could not load recording.', true);
+      return;
+    }
+    currentAudio = new Audio(result.data.signedUrl);
+    currentPlayingKey = key;
+    currentAudio.addEventListener('ended', function () {
+      var endedKey = currentPlayingKey;
+      currentAudio = null;
+      currentPlayingKey = null;
+      if (endedKey) renderRecordingState(endedKey);
+    });
+    currentAudio.play().then(function () {
+      renderRecordingState(key);
+    }).catch(function () {
+      showToast('Playback failed.', true);
+      currentAudio = null;
+      currentPlayingKey = null;
+    });
+  }
+  function pausePlayback() {
+    if (currentAudio) {
+      currentAudio.pause();
+      var key = currentPlayingKey;
+      currentAudio = null;
+      currentPlayingKey = null;
+      if (key) renderRecordingState(key);
+    }
+  }
+  async function deleteRecording(key) {
+    var r = recordings[key];
+    if (!r) return;
+    if (!confirm('Delete this recording? This cannot be undone.')) return;
+    if (currentPlayingKey === key) pausePlayback();
+    await sb.storage.from('recordings').remove([r.storage_path]);
+    var result = await sb.from('recordings').delete().eq('id', r.id);
+    if (result.error) {
+      showToast('Delete failed.', true);
+      return;
+    }
+    delete recordings[key];
+    renderRecordingState(key);
+    renderThreadProgress();
+    showToast('Recording deleted.');
+  }
+
+  // ============== ACTIONS ==============
+  function handleAction(action, e) {
+    switch (action) {
+      case 'sign-in':
+        if (e) e.preventDefault();
+        closeMobileMenu();
+        openModal();
+        return true;
+      case 'start-recording':
+        if (e) e.preventDefault();
+        closeMobileMenu();
+        if (currentUser) {
+          window.location.hash = '#thread-01';
+        } else {
+          openModal();
+        }
+        return true;
+      case 'sample-chapter':
+        if (e) e.preventDefault();
+        closeMobileMenu();
+        showPage('home');
+        setTimeout(function () { smoothScrollTo('sample'); }, 80);
+        return true;
+      case 'sign-out':
+        if (e) e.preventDefault();
+        signOut();
+        closeUserDropdown();
+        closeMobileMenu();
+        return true;
+      case 'go-curriculum':
+        if (e) e.preventDefault();
+        closeUserDropdown();
+        closeMobileMenu();
+        window.location.hash = '#thread-01';
+        return true;
+      case 'go-thread-01':
+        if (e) e.preventDefault();
+        window.location.hash = '#thread-01';
+        return true;
+    }
+    return false;
+  }
+
+  // ============== LISTENERS ==============
+  function attachListeners() {
+    // Sign-in form
+    if (signInForm) {
+      signInForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var email = emailInput.value.trim();
+        if (!isValidEmail(email)) {
+          emailError.textContent = 'Please enter a valid email address.';
+          emailInput.focus();
+          return;
+        }
+        emailError.textContent = '';
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+        var result = await sendMagicLink(email);
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        if (result.error) {
+          emailError.textContent = result.error.message || 'Could not send link. Try again.';
+          return;
+        }
+        sentEmail.textContent = email;
+        pendingEmail = email;
+        showModalState('check');
+      });
+    }
+    if (emailInput) {
+      emailInput.addEventListener('input', function () {
+        if (emailError) emailError.textContent = '';
+      });
+    }
+
+    // OTP form
+    if (otpForm) {
+      otpForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var token = otpInput.value.trim();
+        if (!/^\d{6}$/.test(token)) {
+          otpError.textContent = 'Enter the 6-digit code from your email.';
+          return;
+        }
+        otpError.textContent = '';
+        otpSubmit.classList.add('loading');
+        otpSubmit.disabled = true;
+        var result = await verifyOtp(pendingEmail, token);
+        otpSubmit.classList.remove('loading');
+        otpSubmit.disabled = false;
+        if (result.error) {
+          otpError.textContent = result.error.message || 'Invalid code.';
+          return;
+        }
+        // onAuthStateChange will fire SIGNED_IN -> closeModal + load
+      });
+    }
+
+    if (resendLink) {
+      resendLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        showModalState('enter');
+        if (emailInput) {
+          emailInput.value = pendingEmail || '';
+          setTimeout(function () { emailInput.focus(); }, 40);
+        }
+      });
+    }
+
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal && modal.classList.contains('open')) closeModal();
+    });
+
+    if (userBtn) {
+      userBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (userDropdown.classList.contains('open')) closeUserDropdown();
+        else openUserDropdown();
+      });
+    }
+
+    if (hamburger) {
+      hamburger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var isOpen = navLinks.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    }
+
+    document.addEventListener('click', function (e) {
+      // Recording controls
+      var recEl = e.target.closest && e.target.closest('[data-rec-action]');
+      if (recEl) {
+        var action = recEl.getAttribute('data-rec-action');
+        var key = recEl.getAttribute('data-key');
+        handleRecAction(action, key);
+        return;
+      }
+
+      var actionEl = e.target.closest && e.target.closest('[data-action]');
+      if (actionEl) {
+        if (handleAction(actionEl.getAttribute('data-action'), e)) return;
+      }
+
+      if (userMenuItem && !userMenuItem.contains(e.target)) closeUserDropdown();
+
+      if (window.innerWidth <= 880 && navLinks && hamburger &&
+          !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+        closeMobileMenu();
+      }
+
+      var navLink = e.target.closest && e.target.closest('.nav-link');
+      if (navLink) closeMobileMenu();
+
+      var scrollEl = e.target.closest && e.target.closest('[data-scroll]');
+      if (scrollEl) {
+        e.preventDefault();
+        var target = scrollEl.getAttribute('data-scroll');
+        showPage('home');
+        setTimeout(function () { smoothScrollTo(target); }, 80);
+      }
+    });
+
+    window.addEventListener('hashchange', handleHash);
+  }
+
+  function initRefs() {
+    navLinks = $('navLinks');
+    hamburger = document.querySelector('.hamburger');
+    signInItem = document.querySelector('.nav-signin-item');
+    startItem = document.querySelector('.nav-start-item');
+    userMenuItem = document.querySelector('.user-menu-item');
+    userBtn = $('userBtn');
+    userDropdown = $('userDropdown');
+    userAvatar = $('userAvatar');
+    userName = $('userName');
+    dropdownName = $('dropdownName');
+    dropdownEmail = $('dropdownEmail');
+    modal = $('signInModal');
+    modalClose = $('modalClose');
+    signInForm = $('signInForm');
+    emailInput = $('emailInput');
+    emailError = $('emailError');
+    submitBtn = $('submitBtn');
+    sentEmail = $('sentEmail');
+    resendLink = $('resendLink');
+    otpForm = $('otpForm');
+    otpInput = $('otpInput');
+    otpError = $('otpError');
+    otpSubmit = $('otpSubmit');
+    otpFallback = $('otpFallback');
+    toast = $('toast');
+  }
+
+  // ============== INIT ==============
+  async function init() {
+    initRefs();
+
+    // Initialize Supabase
+    if (window.supabase && window.supabase.createClient) {
+      try {
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+          auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+        });
+      } catch (e) {
+        console.error('Supabase init failed:', e);
+        showToast('Could not connect to backend.', true);
+      }
+    } else {
+      console.error('Supabase SDK did not load.');
+      showToast('Could not load backend SDK. Check your connection.', true);
+    }
+
+    attachListeners();
+    injectRecordControls();
+
+    if (sb) {
+      var sessionResult = await sb.auth.getSession();
+      currentUser = (sessionResult.data && sessionResult.data.session) ? sessionResult.data.session.user : null;
+      renderAuth();
+
+      sb.auth.onAuthStateChange(async function (event, session) {
+        currentUser = session ? session.user : null;
+        renderAuth();
+        if (event === 'SIGNED_IN') {
+          closeModal();
+          showToast('Welcome, ' + nameFromEmail(currentUser.email) + '.');
+          await loadRecordings();
+        } else if (event === 'SIGNED_OUT') {
+          recordings = {};
+          renderAllRecordingStates();
+          renderThreadProgress();
+          showToast('Signed out. Your recordings are safe.');
+        }
+      });
+
+      if (currentUser) await loadRecordings();
+    }
+
+    handleHash();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+</body>
+</html>
