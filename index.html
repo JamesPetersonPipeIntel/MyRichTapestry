@@ -963,9 +963,19 @@ section { padding: 80px 0; }
 
 @media (max-width: 880px) {
   .studio { height: 100vh; height: 100dvh; max-height: none; border-radius: 0; }
-  .studio-grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+  .studio-grid { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; min-height: 0; }
   .studio-sidebar, .studio-helper { border: none; border-bottom: 0.5px solid var(--border); padding: 12px 14px; max-height: 100px; }
-  .studio-helper { border-bottom: none; border-top: 0.5px solid var(--border); max-height: none; padding: 14px 14px 18px; }
+  /* Main area stays put at content height (button always visible).
+     Helper takes whatever's left and scrolls inside its panel. */
+  .studio:not(.studio-static) .studio-main { min-height: 0; overflow: visible; }
+  .studio-helper {
+    border-bottom: none;
+    border-top: 0.5px solid var(--border);
+    max-height: none;
+    padding: 14px 14px 18px;
+    overflow-y: auto;
+    min-height: 0;
+  }
   /* Mobile studio main: put timer beside the big record button (frees vertical space).
      studio-static (home-page mock) is excluded — it keeps its desktop layout. */
   .studio:not(.studio-static) .studio-main {
@@ -1301,7 +1311,7 @@ html { -webkit-text-size-adjust: 100%; }
     </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home" class="nav-link" data-page="home">Home</a></li>
-      <li class="nav-desktop-only"><a href="#curriculum" class="nav-link" data-page="curriculum">View recording journey</a></li>
+      <li><a href="#curriculum" class="nav-link" data-page="curriculum">View recording journey</a></li>
       <li class="nav-signin-item"><a href="#sign-in" class="nav-link nav-signin" data-action="sign-in">Sign in</a></li>
       <li class="nav-start-item"><a href="#start" class="btn btn-primary" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Start recording</a></li>
       <li class="user-menu-item">
