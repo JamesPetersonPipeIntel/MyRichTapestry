@@ -963,6 +963,16 @@ section { padding: 80px 0; }
 
 @media (max-width: 880px) {
   .studio { height: 100vh; height: 100dvh; max-height: none; border-radius: 0; }
+  /* Hide the bar's title + status on mobile — both are duplicated below
+     (sidebar highlights the current chapter; progress bars show prompt count).
+     Keep just the X close button. */
+  .studio:not(.studio-static) .studio-bar {
+    padding: 4px 6px;
+    border-bottom: none;
+    justify-content: flex-end;
+  }
+  .studio:not(.studio-static) .studio-bar-title { display: none; }
+  .studio:not(.studio-static) .studio-bar-status { display: none; }
   .studio-grid { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; min-height: 0; }
   .studio-sidebar, .studio-helper { border: none; border-bottom: 0.5px solid var(--border); padding: 12px 14px; max-height: 100px; }
   /* Main area stays put at content height (button always visible).
@@ -990,7 +1000,7 @@ section { padding: 80px 0; }
     align-items: center;
     column-gap: 18px;
     row-gap: 16px;
-    padding: 22px 18px 38px;
+    padding: 18px 18px 16px;
     text-align: left;
   }
   .studio:not(.studio-static) .studio-main > div:nth-child(1) { grid-area: prompt; text-align: center; }
@@ -1003,9 +1013,9 @@ section { padding: 80px 0; }
   .studio-thread-list { display: flex; gap: 4px; overflow-x: auto; }
   .studio-thread { white-space: nowrap; flex-shrink: 0; }
   .studio-main { padding: 24px 18px; gap: 18px; }
-  .studio-foot { flex-direction: column; gap: 10px; padding: 12px; }
-  .studio-foot-controls { width: 100%; justify-content: center; flex-wrap: wrap; }
-  .studio-next { width: 100%; justify-content: center; }
+  .studio-foot { flex-direction: row; gap: 8px; padding: 10px 12px; align-items: center; }
+  .studio-foot-controls { width: auto; justify-content: flex-start; flex-wrap: nowrap; }
+  .studio-next { width: auto; flex-shrink: 0; }
 }
 
 /* ============== YOUR RECORD (DASHBOARD) ============== */
