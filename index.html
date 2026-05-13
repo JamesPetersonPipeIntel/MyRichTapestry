@@ -193,6 +193,14 @@ section { padding: 80px 0; }
 .hero-sub { font-size: 17px; color: var(--text-2); max-width: 540px; margin: 0 auto 36px; line-height: 1.6; animation: rise 0.7s ease-out 0.3s both; }
 .hero-ctas { display: flex; gap: 12px; justify-content: center; margin-bottom: 22px; flex-wrap: wrap; animation: rise 0.7s ease-out 0.4s both; }
 .hero-meta { font-size: 12px; color: var(--text-3); animation: rise 0.7s ease-out 0.5s both; }
+.hero-break {
+  width: 100%;
+  height: 1px;
+  background: var(--coral-900);
+  border: none;
+  margin: 0;
+  animation: rise 0.7s ease-out 0.6s both;
+}
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
 /* ============== TRUST STRIP ============== */
@@ -297,8 +305,87 @@ section { padding: 80px 0; }
 .curr-stats { display: flex; justify-content: center; gap: 32px; margin-top: 32px; }
 .curr-stat-num { font-family: var(--serif); font-style: italic; font-size: 32px; color: var(--coral-400); line-height: 1; }
 .curr-stat-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-top: 6px; }
+.curr-guidance {
+  padding: 40px 28px 0;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.curr-guidance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.curr-guidance-card {
+  padding: 22px;
+  background: var(--paper);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+}
+.curr-guidance-icon {
+  width: 36px; height: 36px;
+  background: var(--coral-50);
+  color: var(--coral-400);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.curr-guidance-icon i { font-size: 18px; }
+.curr-guidance-card h3 {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.curr-guidance-card p {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+@media (max-width: 700px) {
+  .curr-guidance-grid { grid-template-columns: 1fr; }
+  .curr-guidance { padding: 32px 18px 0; }
+}
+
 .curr-map { padding: 50px 28px 80px; max-width: 1180px; margin: 0 auto; }
 .curr-map h2 { font-family: var(--serif); font-weight: 400; font-size: 18px; text-align: center; color: var(--text-3); font-style: italic; margin-bottom: 28px; }
+.curr-section-head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 40px;
+}
+.curr-section-head .eyebrow { display: block; margin-bottom: 14px; }
+.curr-section-head h2.curr-section-title {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.15; letter-spacing: -0.015em;
+  color: var(--text);
+  font-style: normal;
+  margin-bottom: 14px;
+  font-variation-settings: "opsz" 60;
+}
+.curr-section-sub {
+  font-size: 15px; color: var(--text-2); line-height: 1.6;
+  max-width: 560px; margin: 0 auto;
+}
+.curr-switch { text-align: center; margin-top: 44px; }
+.curr-switch-back { margin-top: 0; margin-bottom: 36px; }
+.curr-switch a {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px;
+  border: 0.5px solid var(--border-strong);
+  border-radius: 100px;
+  font-size: 13px; color: var(--text);
+  font-weight: 500;
+  transition: all 0.15s;
+  cursor: pointer;
+  background: var(--paper);
+}
+.curr-switch a:hover {
+  background: var(--coral-50);
+  border-color: var(--coral-200);
+  color: var(--coral-900);
+}
 .map-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(218px, 1fr)); gap: 10px; }
 .map-card { background: var(--paper); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px; transition: all 0.2s; cursor: pointer; display: block; position: relative; }
 .map-card:hover { border-color: var(--coral-200); transform: translateY(-2px); box-shadow: 0 6px 18px -10px rgba(74,27,12,0.15); }
@@ -444,6 +531,7 @@ section { padding: 80px 0; }
 
 /* ============== RESPONSIVE ============== */
 @media (max-width: 880px) {
+  .nav-desktop-only { display: none !important; }
   .nav-inner { padding: 12px 18px; }
   .hamburger { display: flex; }
   .nav-links { position: absolute; top: calc(100% + 8px); right: 14px; flex-direction: column; align-items: stretch; gap: 0; background: var(--paper); border: 0.5px solid var(--border-strong); border-radius: 10px; padding: 8px; min-width: 220px; box-shadow: 0 14px 34px -14px rgba(74,27,12,0.18); display: none; }
@@ -472,6 +560,57 @@ section { padding: 80px 0; }
   .trust-inner { gap: 12px; font-size: 10px; }
   .curr-stats { gap: 24px; }
 }
+
+/* ============== TERMS PAGE ============== */
+.terms-page-section { padding: 80px 28px 100px; }
+.terms-container { max-width: 720px; margin: 0 auto; }
+.terms-container .eyebrow { display: block; margin-bottom: 14px; }
+.terms-container h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(36px, 5vw, 52px);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  font-variation-settings: "opsz" 60;
+}
+.terms-meta {
+  font-size: 13px; color: var(--text-3);
+  margin-bottom: 40px;
+}
+.terms-container h2 {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 17px;
+  margin-top: 36px;
+  margin-bottom: 10px;
+  color: var(--coral-900);
+}
+.terms-container h2:first-of-type { margin-top: 0; }
+.terms-container p {
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 14px;
+  line-height: 1.7;
+}
+.terms-container ul {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.7;
+  padding-left: 22px;
+  margin-bottom: 14px;
+}
+.terms-container ul li { margin-bottom: 4px; }
+.terms-container hr {
+  border: none;
+  border-top: 0.5px solid var(--border);
+  margin: 40px 0 22px;
+}
+.terms-disclaimer {
+  font-size: 13px; color: var(--text-3); font-style: italic; line-height: 1.6;
+}
+.terms-container a { color: var(--coral-600); text-decoration: underline; }
+.terms-container a:hover { color: var(--coral-900); }
 
 /* ============== THREAD HELPERS BUTTON ============== */
 .thread-head {
@@ -508,6 +647,66 @@ section { padding: 80px 0; }
   line-height: 1.6;
 }
 .helpers-list .studio-nudge:last-child { margin-bottom: 0; }
+
+/* ============== STUDIO STATIC (home page mock) ============== */
+.studio-static {
+  height: auto !important;
+  max-height: none !important;
+  animation: none !important;
+  margin: 0 auto;
+  box-shadow: 0 1px 0 rgba(74,27,12,0.04), 0 12px 40px -20px rgba(74,27,12,0.18) !important;
+}
+.studio-static .studio-grid {
+  min-height: 480px;
+}
+.studio-static .studio-rec-button { cursor: default; }
+.studio-static .studio-foot-btn,
+.studio-static .studio-next,
+.studio-static .studio-close,
+.studio-static .studio-progress-bar { cursor: default; pointer-events: none; }
+@media (max-width: 880px) {
+  .studio-static { border-radius: 14px !important; height: auto !important; }
+  .studio-static .studio-grid {
+    grid-template-columns: 170px 1fr 180px !important;
+    grid-template-rows: auto !important;
+    min-height: 440px;
+  }
+  .studio-static .studio-sidebar {
+    border: none !important;
+    border-right: 0.5px solid var(--border) !important;
+    padding: 14px 12px !important;
+    max-height: none !important;
+  }
+  .studio-static .studio-helper {
+    border: none !important;
+    border-left: 0.5px solid var(--border) !important;
+    padding: 14px 12px !important;
+    max-height: none !important;
+  }
+  .studio-static .studio-thread-list {
+    display: block !important;
+    overflow-x: visible !important;
+  }
+  .studio-static .studio-thread {
+    white-space: normal !important;
+  }
+  .studio-static .studio-foot {
+    flex-direction: row !important;
+  }
+  .studio-static .studio-next {
+    width: auto !important;
+  }
+}
+@media (max-width: 600px) {
+  .studio-static .studio-grid {
+    grid-template-columns: 130px 1fr 140px !important;
+  }
+  .studio-static .studio-bar-status span:last-child { display: none; }
+  .studio-static .studio-prompt-text { font-size: 16px !important; }
+  .studio-static .studio-rec-wrap { width: 84px !important; height: 84px !important; }
+  .studio-static .studio-rec-button i { font-size: 28px !important; }
+  .studio-static .studio-foot-btn { font-size: 11px !important; padding: 5px 8px !important; }
+}
 
 /* ============== STUDIO ============== */
 .studio-backdrop {
@@ -560,16 +759,16 @@ section { padding: 80px 0; }
 }
 .studio-progress-bar {
   flex: 1;
-  height: 5px;
+  height: 9px;
   border-radius: 100px;
   background: rgba(74, 27, 12, 0.1);
   cursor: pointer;
   transition: background 0.15s, transform 0.15s;
-  min-width: 12px;
+  min-width: 16px;
   border: none;
   padding: 0;
 }
-.studio-progress-bar:hover { transform: scaleY(1.6); background: rgba(74, 27, 12, 0.2); }
+.studio-progress-bar:hover { transform: scaleY(1.4); background: rgba(74, 27, 12, 0.2); }
 .studio-progress-bar.done { background: var(--coral-400); }
 .studio-progress-bar.done:hover { background: var(--coral-600); }
 .studio-progress-bar.current {
@@ -786,7 +985,7 @@ section { padding: 80px 0; }
     </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home" class="nav-link" data-page="home">Home</a></li>
-      <li><a href="#curriculum" class="nav-link" data-page="curriculum">Start recording journey</a></li>
+      <li class="nav-desktop-only"><a href="#curriculum" class="nav-link" data-page="curriculum">View recording journey</a></li>
       <li class="nav-signin-item"><a href="#sign-in" class="nav-link nav-signin" data-action="sign-in">Sign in</a></li>
       <li class="nav-start-item"><a href="#start" class="btn btn-primary" data-action="start-recording"><i class="ti ti-microphone-2" aria-hidden="true"></i> Start recording</a></li>
       <li class="user-menu-item">
@@ -800,7 +999,7 @@ section { padding: 80px 0; }
             <strong id="dropdownName">You</strong>
             <span id="dropdownEmail"></span>
           </div>
-          <button class="user-dropdown-item" data-action="go-curriculum" role="menuitem">
+          <button class="user-dropdown-item" data-action="continue-recording" role="menuitem">
             <i class="ti ti-microphone-2" aria-hidden="true"></i> Continue recording
           </button>
           <button class="user-dropdown-item" data-action="sign-out" role="menuitem">
@@ -828,6 +1027,8 @@ section { padding: 80px 0; }
       <div class="hero-meta">No credit card · Five minutes is enough · Keep what you record, always</div>
     </div>
   </section>
+
+  <hr class="hero-break" aria-hidden="true">
 
   <section class="how-it-works" id="how">
     <div class="section-head">
@@ -861,53 +1062,104 @@ section { padding: 80px 0; }
       <h2 class="serif-headline">One question. One button.</h2>
     </div>
     <div class="container">
-      <div class="app-mock">
-        <div class="app-bar">
-          <span><i class="ti ti-book" aria-hidden="true"></i> Chapter 3 · The summer we left the coast</span>
-          <span><i class="ti ti-cloud-check" aria-hidden="true"></i> Saved · 4 of 6 prompts answered</span>
+      <div class="studio studio-static" aria-label="Recording studio example">
+        <header class="studio-bar">
+          <div class="studio-bar-title">
+            <i class="ti ti-book" aria-hidden="true"></i>
+            <span>Thread 01 · Orientation</span>
+          </div>
+          <div class="studio-bar-right">
+            <span class="studio-bar-status">
+              <i class="ti ti-cloud-check" aria-hidden="true"></i>
+              <span>3 of 3 prompts answered</span>
+            </span>
+            <span class="studio-close" aria-hidden="true"><i class="ti ti-x" aria-hidden="true"></i></span>
+          </div>
+        </header>
+        <div class="studio-progress" aria-hidden="true">
+          <span class="studio-progress-bar done"></span>
+          <span class="studio-progress-bar done"></span>
+          <span class="studio-progress-bar done current"></span>
         </div>
-        <div class="app-grid">
-          <aside class="app-sidebar" aria-label="Chapter list">
+        <div class="studio-grid">
+          <aside class="studio-sidebar" aria-label="Your chapters">
             <h4>Your chapters</h4>
-            <ul class="chap-list">
-              <li class="chap-item done"><i class="ti ti-check" aria-hidden="true"></i> 1 · Beginnings</li>
-              <li class="chap-item done"><i class="ti ti-check" aria-hidden="true"></i> 2 · School days</li>
-              <li class="chap-item active" aria-current="true">3 · The summer...</li>
-              <li class="chap-item locked"><i class="ti ti-lock" aria-hidden="true"></i> 4 · Locked</li>
-              <li class="chap-item locked"><i class="ti ti-lock" aria-hidden="true"></i> 5 · Locked</li>
+            <ul class="studio-thread-list">
+              <li class="studio-thread done active"><i class="ti ti-check" aria-hidden="true"></i> <span>1 · Orientation</span></li>
+              <li class="studio-thread"><span>2 · The turnings</span></li>
+              <li class="studio-thread"><span>3 · Earliest memories</span></li>
+              <li class="studio-thread"><span>4 · The family you were born into</span></li>
+              <li class="studio-thread"><span>5 · The places that made you</span></li>
+              <li class="studio-thread"><span>6 · School and the early world</span></li>
+              <li class="studio-thread"><span>7 · Adolescence</span></li>
+              <li class="studio-thread"><span>8 · Leaving home</span></li>
+              <li class="studio-thread"><span>9 · Money and class</span></li>
+              <li class="studio-thread"><span>10 · Work and vocation</span></li>
+              <li class="studio-thread"><span>11 · Friendship</span></li>
+              <li class="studio-thread"><span>12 · Love and partnership</span></li>
             </ul>
           </aside>
-          <div class="app-record">
+          <div class="studio-main">
             <div>
-              <div class="prompt-label">This week's question</div>
-              <div class="prompt-text">"What did your father smell like?"</div>
+              <div class="studio-prompt-label">Prompt 3 of 3</div>
+              <div class="studio-prompt-text">"Why you're sitting down to do this now. Even if the answer is &ldquo;I'm not sure yet.&rdquo;"</div>
             </div>
-            <div class="rec-button-wrap">
-              <div class="rec-pulse" aria-hidden="true"></div>
-              <button class="rec-button" aria-label="Stop recording" data-action="start-recording">
-                <div class="rec-square" aria-hidden="true"></div>
+            <div class="studio-rec-wrap">
+              <div class="studio-rec-pulse" aria-hidden="true"></div>
+              <button class="studio-rec-button" aria-label="Record again" tabindex="-1">
+                <i class="ti ti-microphone" aria-hidden="true"></i>
               </button>
             </div>
             <div>
-              <div class="timer" aria-label="Recording duration">01:23</div>
-              <div class="timer-status"><span class="timer-dot" aria-hidden="true"></span>Recording</div>
+              <div class="studio-timer">0:04</div>
+              <div class="studio-timer-status">Recorded · tap mic to re-record</div>
             </div>
-            <div class="waveform" aria-hidden="true">
-              <span style="height:8px; animation-delay:0s"></span><span style="height:14px; animation-delay:0.1s"></span><span style="height:20px; animation-delay:0.2s"></span><span style="height:12px; animation-delay:0.3s"></span><span style="height:18px; animation-delay:0.4s"></span><span style="height:24px; animation-delay:0.5s"></span><span style="height:10px; animation-delay:0.6s"></span><span style="height:16px; animation-delay:0.7s"></span><span style="height:22px; animation-delay:0.8s"></span><span style="height:14px; animation-delay:0.9s"></span><span style="height:18px; animation-delay:1.0s"></span><span style="height:8px; animation-delay:1.1s"></span><span style="height:14px; animation-delay:1.2s"></span><span style="height:20px; animation-delay:1.3s"></span><span style="height:12px; animation-delay:1.4s"></span><span style="height:18px; animation-delay:1.5s"></span><span style="height:24px; animation-delay:1.6s"></span><span style="height:10px; animation-delay:1.7s"></span><span style="height:16px; animation-delay:1.8s"></span><span style="height:22px; animation-delay:1.9s"></span>
+            <div class="studio-waveform active" aria-hidden="true">
+              <span style="height:8px; animation-delay:0s"></span>
+              <span style="height:18px; animation-delay:0.08s"></span>
+              <span style="height:26px; animation-delay:0.16s"></span>
+              <span style="height:14px; animation-delay:0.24s"></span>
+              <span style="height:22px; animation-delay:0.32s"></span>
+              <span style="height:30px; animation-delay:0.4s"></span>
+              <span style="height:12px; animation-delay:0.48s"></span>
+              <span style="height:20px; animation-delay:0.56s"></span>
+              <span style="height:28px; animation-delay:0.64s"></span>
+              <span style="height:16px; animation-delay:0.72s"></span>
+              <span style="height:24px; animation-delay:0.8s"></span>
+              <span style="height:10px; animation-delay:0.88s"></span>
+              <span style="height:18px; animation-delay:0.96s"></span>
+              <span style="height:26px; animation-delay:1.04s"></span>
+              <span style="height:14px; animation-delay:1.12s"></span>
+              <span style="height:22px; animation-delay:1.2s"></span>
+              <span style="height:30px; animation-delay:1.28s"></span>
+              <span style="height:12px; animation-delay:1.36s"></span>
+              <span style="height:20px; animation-delay:1.44s"></span>
+              <span style="height:28px; animation-delay:1.52s"></span>
+              <span style="height:16px; animation-delay:1.6s"></span>
+              <span style="height:24px; animation-delay:1.68s"></span>
+              <span style="height:10px; animation-delay:1.76s"></span>
+              <span style="height:18px; animation-delay:1.84s"></span>
             </div>
-            <div class="transcript">"He always smelled of two-stroke oil from the garage, and Old Spice on Sundays. There was a particular jacket — green canvas — that smelled like him for years after..."<span class="transcript-cursor" aria-hidden="true">|</span></div>
+            <div class="studio-saved">
+              <i class="ti ti-cloud-check" aria-hidden="true"></i>
+              <span>Saved. 0:04 of you, kept.</span>
+            </div>
           </div>
-          <aside class="app-prompts" aria-label="If you get stuck">
+          <aside class="studio-helper" aria-label="If you get stuck">
             <h4>If you get stuck</h4>
-            <div class="nudge">Was he tall or short?</div>
-            <div class="nudge">His hands — what did they look like?</div>
-            <div class="nudge">A phrase he said often?</div>
+            <div class="studio-nudge">There's no wrong way to do this.</div>
+            <div class="studio-nudge">If you stumble, just keep going.</div>
+            <div class="studio-nudge">Speak as if to someone who loves you.</div>
           </aside>
         </div>
-        <div class="app-foot">
-          <span><i class="ti ti-player-pause" aria-hidden="true"></i> Pause &nbsp;·&nbsp; <i class="ti ti-refresh" aria-hidden="true"></i> Start over &nbsp;·&nbsp; <i class="ti ti-player-play" aria-hidden="true"></i> Listen back</span>
-          <span class="next">Done · next question</span>
-        </div>
+        <footer class="studio-foot">
+          <div class="studio-foot-controls">
+            <span class="studio-foot-btn"><i class="ti ti-chevron-left" aria-hidden="true"></i> Previous</span>
+            <span class="studio-foot-btn"><i class="ti ti-player-play" aria-hidden="true"></i> Listen back</span>
+            <span class="studio-foot-btn danger"><i class="ti ti-trash" aria-hidden="true"></i> Delete</span>
+          </div>
+          <span class="studio-next">Finish thread <i class="ti ti-check" aria-hidden="true"></i></span>
+        </footer>
       </div>
     </div>
   </section>
@@ -953,40 +1205,74 @@ section { padding: 80px 0; }
       <p>An arc from earliest memories to what you know now — about 26 hours of recordings, told one prompt a week, in your own time.</p>
       <div class="curr-stats">
         <div><div class="curr-stat-num">20</div><div class="curr-stat-label">Threads</div></div>
-        <div><div class="curr-stat-num">~165</div><div class="curr-stat-label">Prompts</div></div>
-        <div><div class="curr-stat-num">~26h</div><div class="curr-stat-label">Recordings</div></div>
+        <div><div class="curr-stat-num">~175</div><div class="curr-stat-label">Prompts</div></div>
+        <div><div class="curr-stat-num">~27h</div><div class="curr-stat-label">Recordings</div></div>
       </div>
     </div>
   </section>
 
-  <section class="curr-map">
-    <h2>The whole tapestry, at a glance</h2>
+  <section class="curr-guidance" aria-label="How to use the prompts">
+    <div class="curr-guidance-grid">
+      <div class="curr-guidance-card">
+        <div class="curr-guidance-icon"><i class="ti ti-message-circle" aria-hidden="true"></i></div>
+        <h3>These are just guides.</h3>
+        <p>Talk freely, in your own way. The prompts are starting points — not a script.</p>
+      </div>
+      <div class="curr-guidance-card">
+        <div class="curr-guidance-icon"><i class="ti ti-heart" aria-hidden="true"></i></div>
+        <h3>Speak from the heart.</h3>
+        <p>Don't pause for the perfect word. Keep going — the unedited version is the one your grandchildren will want.</p>
+      </div>
+      <div class="curr-guidance-card">
+        <div class="curr-guidance-icon"><i class="ti ti-arrows-shuffle" aria-hidden="true"></i></div>
+        <h3>Order doesn't matter.</h3>
+        <p>Start anywhere. Skip what doesn't speak to you today. Come back to it later, or don't.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="curr-map" id="tapestry-map">
+    <div class="curr-section-head">
+      <span class="eyebrow">The tapestry</span>
+      <h2 class="curr-section-title">The whole journey, at a glance.</h2>
+      <p class="curr-section-sub">Click any thread to step into the studio and start recording.</p>
+    </div>
     <div class="map-grid">
       <a href="#thread-01" class="map-card map-card-new" data-thread="thread-01" data-studio="thread-01"><div class="map-card-head"><i class="ti ti-microphone-2" aria-hidden="true"></i><span class="map-card-num">01</span><span class="map-card-dur">~5 min</span></div><div class="map-card-title">Orientation</div><div class="map-card-sub">Finding your voice</div><div class="map-card-progress"></div></a>
-      <a href="#thread-02" class="map-card" data-thread="thread-02"><div class="map-card-head"><i class="ti ti-photo" aria-hidden="true"></i><span class="map-card-num">02</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Earliest memories</div><div class="map-card-sub">Fragments more than stories</div><div class="map-card-progress"></div></a>
-      <a href="#thread-03" class="map-card" data-thread="thread-03"><div class="map-card-head"><i class="ti ti-home" aria-hidden="true"></i><span class="map-card-num">03</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">The family you were born into</div><div class="map-card-sub">Before you chose them</div><div class="map-card-progress"></div></a>
-      <a href="#thread-04" class="map-card" data-thread="thread-04"><div class="map-card-head"><i class="ti ti-map-pin" aria-hidden="true"></i><span class="map-card-num">04</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">The places that made you</div><div class="map-card-sub">Rooms, landscapes, streets</div><div class="map-card-progress"></div></a>
-      <a href="#thread-05" class="map-card" data-thread="thread-05"><div class="map-card-head"><i class="ti ti-school" aria-hidden="true"></i><span class="map-card-num">05</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">School and the early world</div><div class="map-card-sub">Outside the family, for the first time</div><div class="map-card-progress"></div></a>
-      <a href="#thread-06" class="map-card" data-thread="thread-06"><div class="map-card-head"><i class="ti ti-headphones" aria-hidden="true"></i><span class="map-card-num">06</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Adolescence</div><div class="map-card-sub">Becoming, in all its noise</div><div class="map-card-progress"></div></a>
-      <a href="#thread-07" class="map-card" data-thread="thread-07"><div class="map-card-head"><i class="ti ti-luggage" aria-hidden="true"></i><span class="map-card-num">07</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Leaving home</div><div class="map-card-sub">Into a life of your own</div><div class="map-card-progress"></div></a>
-      <a href="#thread-08" class="map-card" data-thread="thread-08"><div class="map-card-head"><i class="ti ti-coins" aria-hidden="true"></i><span class="map-card-num">08</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Money and class</div><div class="map-card-sub">What you grew up with, what you feel</div><div class="map-card-progress"></div></a>
-      <a href="#thread-09" class="map-card" data-thread="thread-09"><div class="map-card-head"><i class="ti ti-briefcase" aria-hidden="true"></i><span class="map-card-num">09</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Work and vocation</div><div class="map-card-sub">What you've done with your days</div><div class="map-card-progress"></div></a>
-      <a href="#thread-10" class="map-card" data-thread="thread-10"><div class="map-card-head"><i class="ti ti-users" aria-hidden="true"></i><span class="map-card-num">10</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Friendship</div><div class="map-card-sub">Neither blood nor lovers</div><div class="map-card-progress"></div></a>
-      <a href="#thread-11" class="map-card" data-thread="thread-11"><div class="map-card-head"><i class="ti ti-heart" aria-hidden="true"></i><span class="map-card-num">11</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Love and partnership</div><div class="map-card-sub">The people you chose</div><div class="map-card-progress"></div></a>
-      <a href="#thread-12" class="map-card" data-thread="thread-12"><div class="map-card-head"><i class="ti ti-baby-carriage" aria-hidden="true"></i><span class="map-card-num">12</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Children, or the absence</div><div class="map-card-sub">A turning, either way</div><div class="map-card-progress"></div></a>
+      <a href="#thread-21" class="map-card" data-thread="thread-21"><div class="map-card-head"><i class="ti ti-route" aria-hidden="true"></i><span class="map-card-num">02</span><span class="map-card-dur">~30 min</span></div><div class="map-card-title">The turnings</div><div class="map-card-sub">The dates the memoir hangs from</div><div class="map-card-progress"></div></a>
+      <a href="#thread-02" class="map-card" data-thread="thread-02"><div class="map-card-head"><i class="ti ti-photo" aria-hidden="true"></i><span class="map-card-num">03</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Earliest memories</div><div class="map-card-sub">Fragments more than stories</div><div class="map-card-progress"></div></a>
+      <a href="#thread-03" class="map-card" data-thread="thread-03"><div class="map-card-head"><i class="ti ti-home" aria-hidden="true"></i><span class="map-card-num">04</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">The family you were born into</div><div class="map-card-sub">Before you chose them</div><div class="map-card-progress"></div></a>
+      <a href="#thread-04" class="map-card" data-thread="thread-04"><div class="map-card-head"><i class="ti ti-map-pin" aria-hidden="true"></i><span class="map-card-num">05</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">The places that made you</div><div class="map-card-sub">Rooms, landscapes, streets</div><div class="map-card-progress"></div></a>
+      <a href="#thread-05" class="map-card" data-thread="thread-05"><div class="map-card-head"><i class="ti ti-school" aria-hidden="true"></i><span class="map-card-num">06</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">School and the early world</div><div class="map-card-sub">Outside the family, for the first time</div><div class="map-card-progress"></div></a>
+      <a href="#thread-06" class="map-card" data-thread="thread-06"><div class="map-card-head"><i class="ti ti-headphones" aria-hidden="true"></i><span class="map-card-num">07</span><span class="map-card-dur">~100 min</span></div><div class="map-card-title">Adolescence</div><div class="map-card-sub">Becoming, in all its noise</div><div class="map-card-progress"></div></a>
+      <a href="#thread-07" class="map-card" data-thread="thread-07"><div class="map-card-head"><i class="ti ti-luggage" aria-hidden="true"></i><span class="map-card-num">08</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Leaving home</div><div class="map-card-sub">Into a life of your own</div><div class="map-card-progress"></div></a>
+      <a href="#thread-08" class="map-card" data-thread="thread-08"><div class="map-card-head"><i class="ti ti-coins" aria-hidden="true"></i><span class="map-card-num">09</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Money and class</div><div class="map-card-sub">What you grew up with, what you feel</div><div class="map-card-progress"></div></a>
+      <a href="#thread-09" class="map-card" data-thread="thread-09"><div class="map-card-head"><i class="ti ti-briefcase" aria-hidden="true"></i><span class="map-card-num">10</span><span class="map-card-dur">~100 min</span></div><div class="map-card-title">Work and vocation</div><div class="map-card-sub">What you've done with your days</div><div class="map-card-progress"></div></a>
+      <a href="#thread-11" class="map-card" data-thread="thread-11"><div class="map-card-head"><i class="ti ti-heart" aria-hidden="true"></i><span class="map-card-num">11</span><span class="map-card-dur">~100 min</span></div><div class="map-card-title">Friendship, love, and the people you chose</div><div class="map-card-sub">The chosen family of adult life</div><div class="map-card-progress"></div></a>
+      <a href="#thread-12" class="map-card" data-thread="thread-12"><div class="map-card-head"><i class="ti ti-baby-carriage" aria-hidden="true"></i><span class="map-card-num">12</span><span class="map-card-dur">~100 min</span></div><div class="map-card-title">Children, or the absence</div><div class="map-card-sub">A turning, either way</div><div class="map-card-progress"></div></a>
       <a href="#thread-13" class="map-card" data-thread="thread-13"><div class="map-card-head"><i class="ti ti-hammer" aria-hidden="true"></i><span class="map-card-num">13</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Hands and craft</div><div class="map-card-sub">What you've made or grown</div><div class="map-card-progress"></div></a>
       <a href="#thread-14" class="map-card" data-thread="thread-14"><div class="map-card-head"><i class="ti ti-mood-wink" aria-hidden="true"></i><span class="map-card-num">14</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Trouble</div><div class="map-card-sub">Mischief, rule-breaking, scrapes</div><div class="map-card-progress"></div></a>
       <a href="#thread-15" class="map-card" data-thread="thread-15"><div class="map-card-head"><i class="ti ti-heartbeat" aria-hidden="true"></i><span class="map-card-num">15</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">The body and its history</div><div class="map-card-sub">The vessel you've been in</div><div class="map-card-progress"></div></a>
       <a href="#thread-16" class="map-card" data-thread="thread-16"><div class="map-card-head"><i class="ti ti-world" aria-hidden="true"></i><span class="map-card-num">16</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">The wider world</div><div class="map-card-sub">How history broke into your life</div><div class="map-card-progress"></div></a>
-      <a href="#thread-17" class="map-card" data-thread="thread-17"><div class="map-card-head"><i class="ti ti-book-2" aria-hidden="true"></i><span class="map-card-num">17</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Books, music, art</div><div class="map-card-sub">The work made by others</div><div class="map-card-progress"></div></a>
-      <a href="#thread-18" class="map-card" data-thread="thread-18"><div class="map-card-head"><i class="ti ti-flame" aria-hidden="true"></i><span class="map-card-num">18</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Belief and meaning</div><div class="map-card-sub">Questions that stayed with you</div><div class="map-card-progress"></div></a>
-      <a href="#thread-19" class="map-card" data-thread="thread-19"><div class="map-card-head"><i class="ti ti-feather" aria-hidden="true"></i><span class="map-card-num">19</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Loss and grief</div><div class="map-card-sub">What you've kept anyway</div><div class="map-card-progress"></div></a>
-      <a href="#thread-20" class="map-card" data-thread="thread-20"><div class="map-card-head"><i class="ti ti-compass" aria-hidden="true"></i><span class="map-card-num">20</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">What you know now</div><div class="map-card-sub">The end is the beginning of the telling</div><div class="map-card-progress"></div></a>
+      <a href="#thread-18" class="map-card" data-thread="thread-18"><div class="map-card-head"><i class="ti ti-flame" aria-hidden="true"></i><span class="map-card-num">17</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Belief and meaning</div><div class="map-card-sub">Questions that stayed with you</div><div class="map-card-progress"></div></a>
+      <a href="#thread-19" class="map-card" data-thread="thread-19"><div class="map-card-head"><i class="ti ti-feather" aria-hidden="true"></i><span class="map-card-num">18</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">Loss and grief</div><div class="map-card-sub">What you've kept anyway</div><div class="map-card-progress"></div></a>
+      <a href="#thread-20" class="map-card" data-thread="thread-20"><div class="map-card-head"><i class="ti ti-compass" aria-hidden="true"></i><span class="map-card-num">19</span><span class="map-card-dur">~90 min</span></div><div class="map-card-title">What you know now</div><div class="map-card-sub">The end is the beginning of the telling</div><div class="map-card-progress"></div></a>
+      <a href="#thread-22" class="map-card" data-thread="thread-22"><div class="map-card-head"><i class="ti ti-sun" aria-hidden="true"></i><span class="map-card-num">20</span><span class="map-card-dur">~75 min</span></div><div class="map-card-title">Today</div><div class="map-card-sub">Where you are, as you tell it</div><div class="map-card-progress"></div></a>
+    </div>
+    <div class="curr-switch">
+      <a href="#prompts-list" data-scroll="prompts-list">Or read every prompt in order <i class="ti ti-arrow-down" aria-hidden="true"></i></a>
     </div>
   </section>
 
-  <section class="curr-detail">
-    <h2>Every prompt, in order</h2>
+  <section class="curr-detail" id="prompts-list">
+    <div class="curr-switch curr-switch-back">
+      <a href="#tapestry-map" data-scroll="tapestry-map"><i class="ti ti-arrow-up" aria-hidden="true"></i> Back to the tapestry</a>
+    </div>
+    <div class="curr-section-head">
+      <span class="eyebrow">The prompts</span>
+      <h2 class="curr-section-title">Every prompt, in order.</h2>
+      <p class="curr-section-sub">Browse the full curriculum at your own pace. Each thread has its own "If you get stuck" guide — tap the pill in the thread header to see helpers for that one.</p>
+    </div>
 
     <article class="thread thread-new" id="thread-01">
       <div class="thread-head"><div class="thread-icon"><i class="ti ti-microphone-2" aria-hidden="true"></i></div><div class="thread-meta">Thread 01 · ~5 min · 3 prompts</div></div>
@@ -999,8 +1285,28 @@ section { padding: 80px 0; }
       </ol>
     </article>
 
+    <article class="thread" id="thread-21">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-route" aria-hidden="true"></i></div><div class="thread-meta">Thread 02 · ~30 min · 12 prompts</div></div>
+      <h3>The turnings</h3>
+      <p class="thread-essence">A loose timeline of the moments that changed your direction — about a dozen, with rough dates. The thread the rest of the memoir hangs from.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The earliest big change you can put a date to — what year, what happened?</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">A decision in your twenties that shaped everything after.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A turning point that wasn't your decision — something done to you, or for you.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">The year you became a different version of yourself, and what changed.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A small moment that turned out to be a hinge — looking back, you can see it now.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A move (house, city, country) that mattered. Roughly when?</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A loss that became a turning, not just a closing.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">A meeting that became a turning — who, and roughly when?</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">A decade that was its own turning — when, and what shape did it have?</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">A turning in your work or vocation — when, what changed?</div></li>
+        <li><span class="prompt-num">11</span><div class="prompt-text-row">A turning in love, family, or friendship — when, what changed?</div></li>
+        <li><span class="prompt-num">12</span><div class="prompt-text-row">The most recent turning. Could be last year, could be last month.</div></li>
+      </ol>
+    </article>
+
     <article class="thread" id="thread-02">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-photo" aria-hidden="true"></i></div><div class="thread-meta">Thread 02 · ~90 min · 10 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-photo" aria-hidden="true"></i></div><div class="thread-meta">Thread 03 · ~90 min · 10 prompts</div></div>
       <h3>Earliest memories</h3>
       <p class="thread-essence">The first scenes you can summon — fragments more than stories, but specific.</p>
       <ol class="thread-prompts">
@@ -1018,7 +1324,7 @@ section { padding: 80px 0; }
     </article>
 
     <article class="thread" id="thread-03">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-home" aria-hidden="true"></i></div><div class="thread-meta">Thread 03 · ~90 min · 10 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-home" aria-hidden="true"></i></div><div class="thread-meta">Thread 04 · ~90 min · 10 prompts</div></div>
       <h3>The family you were born into</h3>
       <p class="thread-essence">The people who shaped you before you could choose them.</p>
       <ol class="thread-prompts">
@@ -1036,7 +1342,7 @@ section { padding: 80px 0; }
     </article>
 
     <article class="thread" id="thread-04">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div><div class="thread-meta">Thread 04 · ~75 min · 8 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div><div class="thread-meta">Thread 05 · ~75 min · 8 prompts</div></div>
       <h3>The places that made you</h3>
       <p class="thread-essence">The rooms, landscapes, and streets that became part of how you think.</p>
       <ol class="thread-prompts">
@@ -1052,7 +1358,7 @@ section { padding: 80px 0; }
     </article>
 
     <article class="thread" id="thread-05">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-school" aria-hidden="true"></i></div><div class="thread-meta">Thread 05 · ~75 min · 8 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-school" aria-hidden="true"></i></div><div class="thread-meta">Thread 06 · ~75 min · 8 prompts</div></div>
       <h3>School and the early world</h3>
       <p class="thread-essence">The first world outside the family — and the first time you noticed yourself in it.</p>
       <ol class="thread-prompts">
@@ -1068,7 +1374,7 @@ section { padding: 80px 0; }
     </article>
 
     <article class="thread" id="thread-06">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-headphones" aria-hidden="true"></i></div><div class="thread-meta">Thread 06 · ~90 min · 10 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-headphones" aria-hidden="true"></i></div><div class="thread-meta">Thread 07 · ~100 min · 12 prompts</div></div>
       <h3>Adolescence</h3>
       <p class="thread-essence">The years of becoming, in all their tenderness and noise.</p>
       <ol class="thread-prompts">
@@ -1082,11 +1388,13 @@ section { padding: 80px 0; }
         <li><span class="prompt-num">8</span><div class="prompt-text-row">The first time you got truly drunk, or its equivalent — and what you remember of it.</div></li>
         <li><span class="prompt-num">9</span><div class="prompt-text-row">An older person who saw something in you.</div></li>
         <li><span class="prompt-num">10</span><div class="prompt-text-row">The first time you understood your parents weren't going to live forever.</div></li>
+        <li><span class="prompt-num">11</span><div class="prompt-text-row">An ordinary Tuesday in your teenage years — what did the day look like, hour by hour?</div></li>
+        <li><span class="prompt-num">12</span><div class="prompt-text-row">The room you slept in as a teenager — the walls, the floor, what was on the bedside table.</div></li>
       </ol>
     </article>
 
     <article class="thread" id="thread-07">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-luggage" aria-hidden="true"></i></div><div class="thread-meta">Thread 07 · ~75 min · 8 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-luggage" aria-hidden="true"></i></div><div class="thread-meta">Thread 08 · ~90 min · 10 prompts</div></div>
       <h3>Leaving home</h3>
       <p class="thread-essence">The first steps into a life of your own making.</p>
       <ol class="thread-prompts">
@@ -1098,18 +1406,20 @@ section { padding: 80px 0; }
         <li><span class="prompt-num">6</span><div class="prompt-text-row">A friend who became family in those years.</div></li>
         <li><span class="prompt-num">7</span><div class="prompt-text-row">A belief you held then that you no longer hold.</div></li>
         <li><span class="prompt-num">8</span><div class="prompt-text-row">The first proper heartbreak.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">A regular week in your first year of independence — what was the rhythm of it?</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">What did you eat for dinner most nights in that first flat?</div></li>
       </ol>
     </article>
 
     <article class="thread" id="thread-08">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-coins" aria-hidden="true"></i></div><div class="thread-meta">Thread 08 · ~75 min · 8 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-coins" aria-hidden="true"></i></div><div class="thread-meta">Thread 09 · ~75 min · 8 prompts</div></div>
       <h3>Money and class</h3>
       <p class="thread-essence">The shape of money in your life — what you grew up with, what you learned, what you still feel.</p>
       <ol class="thread-prompts">
         <li><span class="prompt-num">1</span><div class="prompt-text-row">What you understood about money as a child.</div></li>
         <li><span class="prompt-num">2</span><div class="prompt-text-row">The first time you realised your family had more or less than someone else's.</div></li>
         <li><span class="prompt-num">3</span><div class="prompt-text-row">A financial decision that shaped your life.</div></li>
-        <li><span class="prompt-num">4</span><div class="prompt-text-row">A time money was tight, and what you did.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">Money in your twenties — were you scraping, comfortable, or somewhere in between?</div></li>
         <li><span class="prompt-num">5</span><div class="prompt-text-row">A time money came easily, and what you did with it.</div></li>
         <li><span class="prompt-num">6</span><div class="prompt-text-row">A class boundary you crossed, or didn't.</div></li>
         <li><span class="prompt-num">7</span><div class="prompt-text-row">What you'd want a child or grandchild to understand about money.</div></li>
@@ -1118,12 +1428,12 @@ section { padding: 80px 0; }
     </article>
 
     <article class="thread" id="thread-09">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-briefcase" aria-hidden="true"></i></div><div class="thread-meta">Thread 09 · ~90 min · 10 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-briefcase" aria-hidden="true"></i></div><div class="thread-meta">Thread 10 · ~100 min · 12 prompts</div></div>
       <h3>Work and vocation</h3>
       <p class="thread-essence">What you've done with your days — for pay, for love, for someone who needed it.</p>
       <ol class="thread-prompts">
         <li><span class="prompt-num">1</span><div class="prompt-text-row">The first work that asked something of you — paid or unpaid — and what it taught you.</div></li>
-        <li><span class="prompt-num">2</span><div class="prompt-text-row">The work you've been proudest of.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">The work that defined your twenties or thirties — what was it, and what did it ask of you?</div></li>
         <li><span class="prompt-num">3</span><div class="prompt-text-row">A boss, colleague, or mentor who changed how you saw things.</div></li>
         <li><span class="prompt-num">4</span><div class="prompt-text-row">A failure at work, and what you did with it.</div></li>
         <li><span class="prompt-num">5</span><div class="prompt-text-row">A choice between two paths, and how you chose.</div></li>
@@ -1132,45 +1442,33 @@ section { padding: 80px 0; }
         <li><span class="prompt-num">8</span><div class="prompt-text-row">Someone you mentored, taught, or supervised.</div></li>
         <li><span class="prompt-num">9</span><div class="prompt-text-row">What work has cost you, and what it has given you.</div></li>
         <li><span class="prompt-num">10</span><div class="prompt-text-row">What you'd tell yourself starting out.</div></li>
-      </ol>
-    </article>
-
-    <article class="thread" id="thread-10">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-users" aria-hidden="true"></i></div><div class="thread-meta">Thread 10 · ~75 min · 8 prompts</div></div>
-      <h3>Friendship</h3>
-      <p class="thread-essence">The people who weren't blood and weren't lovers, but became essential.</p>
-      <ol class="thread-prompts">
-        <li><span class="prompt-num">1</span><div class="prompt-text-row">The friend who knew you best at twenty.</div></li>
-        <li><span class="prompt-num">2</span><div class="prompt-text-row">A friendship that ended, and how.</div></li>
-        <li><span class="prompt-num">3</span><div class="prompt-text-row">A friend you made later in life, against the odds.</div></li>
-        <li><span class="prompt-num">4</span><div class="prompt-text-row">A friendship that survived a major rupture.</div></li>
-        <li><span class="prompt-num">5</span><div class="prompt-text-row">Someone you wish you'd been a better friend to.</div></li>
-        <li><span class="prompt-num">6</span><div class="prompt-text-row">The friend you've known longest, and what's kept it.</div></li>
-        <li><span class="prompt-num">7</span><div class="prompt-text-row">A small kindness from a friend that you've never forgotten.</div></li>
-        <li><span class="prompt-num">8</span><div class="prompt-text-row">What friendship has given you that family or romance hasn't.</div></li>
+        <li><span class="prompt-num">11</span><div class="prompt-text-row">Describe a typical morning at work in your busiest era — from waking to noon.</div></li>
+        <li><span class="prompt-num">12</span><div class="prompt-text-row">The commute, the coffee, the colleague you saw every day — the texture of a working week in your most settled job.</div></li>
       </ol>
     </article>
 
     <article class="thread" id="thread-11">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-heart" aria-hidden="true"></i></div><div class="thread-meta">Thread 11 · ~90 min · 10 prompts</div></div>
-      <h3>Love and partnership</h3>
-      <p class="thread-essence">The people you chose, and the ones who chose you.</p>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-heart" aria-hidden="true"></i></div><div class="thread-meta">Thread 11 · ~100 min · 12 prompts</div></div>
+      <h3>Friendship, love, and the people you chose</h3>
+      <p class="thread-essence">The people who weren't blood — the friends, the partners, the chosen family of adult life.</p>
       <ol class="thread-prompts">
-        <li><span class="prompt-num">1</span><div class="prompt-text-row">How you met the person you ended up with — or how you didn't.</div></li>
-        <li><span class="prompt-num">2</span><div class="prompt-text-row">A moment when you knew. Or a moment when you knew you didn't.</div></li>
-        <li><span class="prompt-num">3</span><div class="prompt-text-row">The first time you said "I love you" and meant it.</div></li>
-        <li><span class="prompt-num">4</span><div class="prompt-text-row">A hard season in a relationship, and how you came through (or didn't).</div></li>
-        <li><span class="prompt-num">5</span><div class="prompt-text-row">An argument that almost broke things, and how it didn't.</div></li>
-        <li><span class="prompt-num">6</span><div class="prompt-text-row">A small daily ritual that has mattered more than the big moments — with a partner, with yourself, with a friend, with a place.</div></li>
-        <li><span class="prompt-num">7</span><div class="prompt-text-row">A love that didn't last, and what it gave you anyway.</div></li>
-        <li><span class="prompt-num">8</span><div class="prompt-text-row">What you've learned about being loved.</div></li>
-        <li><span class="prompt-num">9</span><div class="prompt-text-row">What you understand about love now that you didn't at twenty.</div></li>
-        <li><span class="prompt-num">10</span><div class="prompt-text-row">A love letter, message, or note you still have, or wish you did.</div></li>
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">The friend who knew you best at twenty.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">How you met the person you ended up with — or how you didn't.</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">A moment when you knew. Or a moment when you knew you didn't.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">The first time you said "I love you" and meant it.</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">A friend you made later in life, against the odds.</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">A hard season in love or friendship in your thirties or forties — and how you came through, or didn't.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">A small daily ritual that has mattered more than the big moments — with a partner, a friend, a place.</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">A love or friendship that didn't last, and what it gave you anyway.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">Someone you wish you'd been a better friend, partner, or lover to.</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">The friend you've known longest, and what's kept it.</div></li>
+        <li><span class="prompt-num">11</span><div class="prompt-text-row">What you've learned about being loved — by friends, by partners, by anyone.</div></li>
+        <li><span class="prompt-num">12</span><div class="prompt-text-row">An ordinary Sunday in the middle years of your longest relationship — what did it look like?</div></li>
       </ol>
     </article>
 
     <article class="thread" id="thread-12">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-baby-carriage" aria-hidden="true"></i></div><div class="thread-meta">Thread 12 · ~90 min · 10 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-baby-carriage" aria-hidden="true"></i></div><div class="thread-meta">Thread 12 · ~100 min · 12 prompts</div></div>
       <h3>Children, or the absence of them</h3>
       <p class="thread-essence">A turning, either way.</p>
       <ol class="thread-prompts">
@@ -1184,6 +1482,8 @@ section { padding: 80px 0; }
         <li><span class="prompt-num">8</span><div class="prompt-text-row">A nephew, niece, godchild, or other young person who's mattered.</div></li>
         <li><span class="prompt-num">9</span><div class="prompt-text-row">What you hope to pass on — to a child, a niece, a godchild, a community — that isn't money.</div></li>
         <li><span class="prompt-num">10</span><div class="prompt-text-row">The version of yourself you became when someone else's wellbeing started to matter more than your own.</div></li>
+        <li><span class="prompt-num">11</span><div class="prompt-text-row">A regular weeknight when the kids were young — from dinner to bedtime.</div></li>
+        <li><span class="prompt-num">12</span><div class="prompt-text-row">The school run, the packed lunches, the small repetitions of those years — what did they sound like?</div></li>
       </ol>
     </article>
 
@@ -1227,7 +1527,7 @@ section { padding: 80px 0; }
         <li><span class="prompt-num">1</span><div class="prompt-text-row">A childhood illness or injury you remember vividly.</div></li>
         <li><span class="prompt-num">2</span><div class="prompt-text-row">A time your body did something you didn't think it could.</div></li>
         <li><span class="prompt-num">3</span><div class="prompt-text-row">A time it failed you.</div></li>
-        <li><span class="prompt-num">4</span><div class="prompt-text-row">Your relationship with sport, exercise, or movement.</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">Your body in your twenties — what could it do, what did you ask of it?</div></li>
         <li><span class="prompt-num">5</span><div class="prompt-text-row">A scar and the story behind it.</div></li>
         <li><span class="prompt-num">6</span><div class="prompt-text-row">An operation, hospital stay, or fragile season.</div></li>
         <li><span class="prompt-num">7</span><div class="prompt-text-row">How you've felt about your body through the decades.</div></li>
@@ -1251,24 +1551,8 @@ section { padding: 80px 0; }
       </ol>
     </article>
 
-    <article class="thread" id="thread-17">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-book-2" aria-hidden="true"></i></div><div class="thread-meta">Thread 17 · ~75 min · 8 prompts</div></div>
-      <h3>Books, music, art</h3>
-      <p class="thread-essence">The work made by others that became part of how you think.</p>
-      <ol class="thread-prompts">
-        <li><span class="prompt-num">1</span><div class="prompt-text-row">A book that you keep returning to.</div></li>
-        <li><span class="prompt-num">2</span><div class="prompt-text-row">A song or album from a particular season of your life.</div></li>
-        <li><span class="prompt-num">3</span><div class="prompt-text-row">A film or piece of theatre that stayed with you.</div></li>
-        <li><span class="prompt-num">4</span><div class="prompt-text-row">Someone whose work — written, sung, painted, made — has shaped how you see.</div></li>
-        <li><span class="prompt-num">5</span><div class="prompt-text-row">A piece of art, music, or writing you don't understand and love anyway.</div></li>
-        <li><span class="prompt-num">6</span><div class="prompt-text-row">Something you used to love and grew out of.</div></li>
-        <li><span class="prompt-num">7</span><div class="prompt-text-row">Something you grew into.</div></li>
-        <li><span class="prompt-num">8</span><div class="prompt-text-row">What you'd want someone to read, watch, or listen to to understand you.</div></li>
-      </ol>
-    </article>
-
     <article class="thread" id="thread-18">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-flame" aria-hidden="true"></i></div><div class="thread-meta">Thread 18 · ~75 min · 8 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-flame" aria-hidden="true"></i></div><div class="thread-meta">Thread 17 · ~75 min · 8 prompts</div></div>
       <h3>Belief and meaning</h3>
       <p class="thread-essence">The questions that have stayed with you, and the answers you've made some peace with.</p>
       <ol class="thread-prompts">
@@ -1284,7 +1568,7 @@ section { padding: 80px 0; }
     </article>
 
     <article class="thread" id="thread-19">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-feather" aria-hidden="true"></i></div><div class="thread-meta">Thread 19 · ~90 min · 10 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-feather" aria-hidden="true"></i></div><div class="thread-meta">Thread 18 · ~90 min · 10 prompts</div></div>
       <h3>Loss and grief</h3>
       <p class="thread-essence">What has been taken, and what you've kept anyway.</p>
       <ol class="thread-prompts">
@@ -1302,7 +1586,7 @@ section { padding: 80px 0; }
     </article>
 
     <article class="thread" id="thread-20">
-      <div class="thread-head"><div class="thread-icon"><i class="ti ti-compass" aria-hidden="true"></i></div><div class="thread-meta">Thread 20 · ~90 min · 10 prompts</div></div>
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-compass" aria-hidden="true"></i></div><div class="thread-meta">Thread 19 · ~90 min · 10 prompts</div></div>
       <h3>What you know now</h3>
       <p class="thread-essence">The end of the path, which is also the beginning of the telling.</p>
       <ol class="thread-prompts">
@@ -1319,6 +1603,24 @@ section { padding: 80px 0; }
       </ol>
     </article>
 
+    <article class="thread" id="thread-22">
+      <div class="thread-head"><div class="thread-icon"><i class="ti ti-sun" aria-hidden="true"></i></div><div class="thread-meta">Thread 20 · ~75 min · 10 prompts</div></div>
+      <h3>Today</h3>
+      <p class="thread-essence">Where you actually are, as you're recording this. The vantage point the whole memoir is told from.</p>
+      <ol class="thread-prompts">
+        <li><span class="prompt-num">1</span><div class="prompt-text-row">Describe where you are right now — the room, the chair, what's on the table, what's outside the window.</div></li>
+        <li><span class="prompt-num">2</span><div class="prompt-text-row">What does an ordinary Tuesday look like for you these days?</div></li>
+        <li><span class="prompt-num">3</span><div class="prompt-text-row">What's the first thing you do when you wake up?</div></li>
+        <li><span class="prompt-num">4</span><div class="prompt-text-row">What's on your kitchen windowsill — or your bedside table, or by the door?</div></li>
+        <li><span class="prompt-num">5</span><div class="prompt-text-row">Who do you talk to most this week, and what about?</div></li>
+        <li><span class="prompt-num">6</span><div class="prompt-text-row">What are you worried about this week? Not life — this week.</div></li>
+        <li><span class="prompt-num">7</span><div class="prompt-text-row">What's the last song or piece of music you played for yourself?</div></li>
+        <li><span class="prompt-num">8</span><div class="prompt-text-row">What did you eat yesterday? Breakfast, lunch, dinner — as much as you remember.</div></li>
+        <li><span class="prompt-num">9</span><div class="prompt-text-row">What's the smallest pleasure of your current life?</div></li>
+        <li><span class="prompt-num">10</span><div class="prompt-text-row">If a great-grandchild listens to this in fifty years, what would you want them to know about the day you're recording on?</div></li>
+      </ol>
+    </article>
+
   </section>
 
   <section class="curr-close">
@@ -1328,14 +1630,71 @@ section { padding: 80px 0; }
 
 </div>
 
+<!-- ============== TERMS PAGE ============== -->
+<div id="terms" class="page">
+  <section class="terms-page-section">
+    <div class="terms-container">
+      <div class="eyebrow">Terms &amp; conditions</div>
+      <h1>The fine print.</h1>
+      <p class="terms-meta">Last updated 13 May 2026</p>
+
+      <h2>1. About this service</h2>
+      <p>My Rich Tapestry is a voice-first memoir companion. We prompt you with questions about your life, record your spoken answers, transcribe them, and help you build a written and audio record over time.</p>
+
+      <h2>2. Your recordings are yours</h2>
+      <p>Your recordings, transcripts, and the personal stories within them belong to you. We will never sell them or share them with third parties for marketing purposes.</p>
+      <p>You can export your recordings or permanently delete your account at any time. When you delete your account, your recordings are removed from our servers within 30 days.</p>
+
+      <h2>3. How we store your data</h2>
+      <p>We collect and store:</p>
+      <ul>
+        <li>Your email address, for sign-in</li>
+        <li>Your audio recordings and any transcripts</li>
+        <li>Basic usage information (which prompts you've answered, when)</li>
+      </ul>
+      <p>Your recordings are encrypted at rest. We use Supabase as our data infrastructure provider; data is stored on servers in the Asia-Pacific region.</p>
+
+      <h2>4. Pricing</h2>
+      <p>My Rich Tapestry is currently free to use during early access. We may in future offer paid options — for example, printed books, audiobook production, or extended storage — but you will never be charged without your explicit consent. Any pricing changes will be communicated by email at least 30 days in advance.</p>
+
+      <h2>5. What we ask of you</h2>
+      <p>By using My Rich Tapestry, you agree not to:</p>
+      <ul>
+        <li>Use the service to record content that is illegal, infringes the rights of others, or contains personal information of others without their consent</li>
+        <li>Attempt to access, scrape, or interfere with other users' accounts or recordings</li>
+        <li>Reverse-engineer, copy, or resell the service itself</li>
+      </ul>
+
+      <h2>6. Limitation of liability</h2>
+      <p>To the maximum extent permitted by law, My Rich Tapestry's total liability arising from your use of the service is limited to the amount you have paid for the service in the 12 months prior to the event giving rise to the claim. We do not accept liability for indirect, consequential, or incidental losses, including loss of recordings due to circumstances outside our reasonable control.</p>
+
+      <h2>7. Service availability</h2>
+      <p>We aim to keep the service available continuously but cannot guarantee uninterrupted access. We will give reasonable notice of planned maintenance where possible.</p>
+
+      <h2>8. Termination</h2>
+      <p>You may delete your account at any time. We reserve the right to suspend or terminate accounts that breach these terms, with reasonable notice except in cases of serious or repeated breach.</p>
+
+      <h2>9. Governing law</h2>
+      <p>These terms are governed by the laws of New Zealand. Any disputes arising from your use of the service shall be resolved in the courts of New Zealand.</p>
+
+      <h2>10. Changes to these terms</h2>
+      <p>We may update these terms from time to time. We will notify you of material changes by email and post the updated terms here, with a new "last updated" date. Continued use of the service after changes take effect constitutes acceptance of the revised terms.</p>
+
+      <h2>Contact us</h2>
+      <p>Questions about these terms? Email <a href="mailto:hello@myrichtapestry.com">hello@myrichtapestry.com</a>.</p>
+
+      <hr>
+      <p class="terms-disclaimer">These terms are a working draft prepared for early access. They are not formal legal advice and should be reviewed by a lawyer before relying on them for commercial use.</p>
+    </div>
+  </section>
+</div>
+
 </main>
 
 <footer class="footer">
   <span class="brand">My Rich Tapestry</span>
   <span class="footer-meta">
-    <a href="#home" data-page="home">About</a> ·
-    <a href="#sample" data-scroll="sample">Listen</a> ·
-    <a href="#privacy">Privacy</a> ·
+    <a href="#terms" data-page="terms">Terms of Service</a> ·
     <a href="mailto:hello@myrichtapestry.example">Contact</a> ·
     Made with care, for people with stories
   </span>
@@ -1541,6 +1900,33 @@ section { padding: 80px 0; }
     var sec = s % 60;
     return m + ':' + String(sec).padStart(2, '0');
   }
+  function pickAudioMimeType() {
+    if (!window.MediaRecorder) return null;
+    var candidates = [
+      'audio/mp4;codecs=mp4a.40.2',
+      'audio/mp4',
+      'audio/aac',
+      'audio/webm;codecs=opus',
+      'audio/webm',
+      'audio/ogg;codecs=opus',
+      ''
+    ];
+    for (var i = 0; i < candidates.length; i++) {
+      var c = candidates[i];
+      if (c === '') return ''; // empty string = let browser pick default
+      try {
+        if (MediaRecorder.isTypeSupported(c)) return c;
+      } catch (e) {}
+    }
+    return null;
+  }
+  function extensionFromMime(mime) {
+    if (!mime) return 'webm';
+    var m = mime.toLowerCase();
+    if (m.indexOf('mp4') !== -1 || m.indexOf('aac') !== -1) return 'mp4';
+    if (m.indexOf('ogg') !== -1) return 'ogg';
+    return 'webm';
+  }
   function uuid() {
     if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
     // Fallback
@@ -1716,6 +2102,30 @@ section { padding: 80px 0; }
     });
   }
 
+  // ============== CONTINUE RECORDING ==============
+  // Find the first thread (in display order) that still has un-recorded prompts.
+  // Returns the thread ID, or null if everything's done.
+  function findContinuationLocation() {
+    var cards = document.querySelectorAll('.map-card[data-thread]');
+    for (var i = 0; i < cards.length; i++) {
+      var threadId = cards[i].getAttribute('data-thread');
+      var thread = document.getElementById(threadId);
+      if (!thread) continue;
+      var prompts = thread.querySelectorAll('.thread-prompts li');
+      var allDone = true;
+      for (var j = 0; j < prompts.length; j++) {
+        var numEl = prompts[j].querySelector('.prompt-num');
+        var idx = parseInt(numEl ? numEl.textContent : '', 10);
+        if (isNaN(idx) || !recordings[threadId + ':' + idx]) {
+          allDone = false;
+          break;
+        }
+      }
+      if (!allDone) return threadId;
+    }
+    return null;
+  }
+
   // ============== INJECT RECORD CONTROLS ==============
   function injectRecordControls() {
     var items = document.querySelectorAll('.thread-prompts li');
@@ -1808,10 +2218,11 @@ section { padding: 80px 0; }
       return;
     }
 
-    var mimeType = 'audio/webm;codecs=opus';
-    if (!window.MediaRecorder || !MediaRecorder.isTypeSupported(mimeType)) {
-      mimeType = 'audio/webm';
-      if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = '';
+    var mimeType = pickAudioMimeType();
+    if (mimeType === null) {
+      showToast('Recording not supported in this browser. Try Safari, Chrome or Firefox.', true);
+      cleanupStream();
+      return;
     }
 
     try {
@@ -1819,7 +2230,7 @@ section { padding: 80px 0; }
       if (mimeType) options.mimeType = mimeType;
       activeRecorder = new MediaRecorder(activeStream, options);
     } catch (err) {
-      showToast('Recording not supported. Try Chrome or Firefox.', true);
+      showToast('Recording not supported in this browser.', true);
       cleanupStream();
       return;
     }
@@ -1829,7 +2240,7 @@ section { padding: 80px 0; }
       if (e.data && e.data.size > 0) recChunks.push(e.data);
     };
     activeRecorder.onstop = function () { finishRecording(key); };
-    activeRecorder.start();
+    activeRecorder.start(1000); // emit chunks every 1s — needed for iOS Safari reliability
     activeKey = key;
     recStartTime = Date.now();
     renderRecordingState(key);
@@ -1858,7 +2269,10 @@ section { padding: 80px 0; }
     cleanupStream();
 
     var duration = Math.round((Date.now() - recStartTime) / 1000);
-    var blob = new Blob(recChunks, { type: 'audio/webm' });
+    var recorderMime = (activeRecorder && activeRecorder.mimeType) || 'audio/webm';
+    var blob = new Blob(recChunks, { type: recorderMime });
+    var ext = extensionFromMime(recorderMime);
+    var simpleMime = recorderMime.split(';')[0]; // strip ";codecs=..." for the storage content-type
     recChunks = [];
     activeRecorder = null;
     activeKey = null;
@@ -1872,7 +2286,7 @@ section { padding: 80px 0; }
     renderRecordingState(key, 'uploading');
 
     var recordingId = uuid();
-    var path = currentUser.id + '/' + recordingId + '.webm';
+    var path = currentUser.id + '/' + recordingId + '.' + ext;
     var parts = key.split(':');
     var threadId = parts[0];
     var promptIndex = parseInt(parts[1], 10);
@@ -1880,7 +2294,7 @@ section { padding: 80px 0; }
     var existing = recordings[key];
 
     var uploadResult = await sb.storage.from('recordings').upload(path, blob, {
-      contentType: 'audio/webm'
+      contentType: simpleMime
     });
     if (uploadResult.error) {
       console.error('Upload error:', uploadResult.error);
@@ -1996,7 +2410,7 @@ section { padding: 80px 0; }
         if (e) e.preventDefault();
         closeMobileMenu();
         if (currentUser) {
-          window.location.hash = '#thread-01';
+          openStudio('thread-01');
         } else {
           openModal();
         }
@@ -2019,9 +2433,26 @@ section { padding: 80px 0; }
         closeMobileMenu();
         window.location.hash = '#thread-01';
         return true;
+      case 'continue-recording':
+        if (e) e.preventDefault();
+        closeUserDropdown();
+        closeMobileMenu();
+        if (!currentUser) { openModal(); return true; }
+        var nextThread = findContinuationLocation();
+        if (nextThread) {
+          openStudio(nextThread);
+        } else {
+          showToast('All threads complete. Beautiful work — go listen back.');
+          window.location.hash = '#curriculum';
+        }
+        return true;
       case 'go-thread-01':
         if (e) e.preventDefault();
-        window.location.hash = '#thread-01';
+        if (currentUser) {
+          openStudio('thread-01');
+        } else {
+          openModal();
+        }
         return true;
     }
     return false;
@@ -2198,8 +2629,7 @@ section { padding: 80px 0; }
       if (scrollEl) {
         e.preventDefault();
         var target = scrollEl.getAttribute('data-scroll');
-        showPage('home');
-        setTimeout(function () { smoothScrollTo(target); }, 80);
+        smoothScrollTo(target);
       }
     });
 
@@ -2246,7 +2676,7 @@ section { padding: 80px 0; }
     'thread-08': ["Money is also feeling. What did it feel like?", "What were the unspoken rules?", "What would you have wanted someone to tell you?"],
     'thread-09': ["What did you make, fix, save, lose?", "Who taught you the trick of it?", "What did it cost you that wasn't on the timesheet?"],
     'thread-10': ["Friendship is its own kind of love. Name it that.", "What did they call you that nobody else did?", "Distance changes things but doesn't end them."],
-    'thread-11': ["Don't tidy it up. Let it be specific.", "The small moments often hold the whole thing.", "What did their voice do to a room?"],
+    'thread-11': ["Don't tidy it up. Let it be specific — name them.", "Friendship is its own kind of love. Treat it that way.", "The small moments often hold the whole thing."],
     'thread-12': ["However it actually happened.", "The boring daily moments are often the ones that stay.", "What did watching them teach you about yourself?"],
     'thread-13': ["What does your hand know?", "Who's going to inherit this skill?", "Be specific — the tools, the materials, the moves."],
     'thread-14': ["Tell it like you're telling a friend over a beer.", "If you got away with it, you're allowed to laugh now.", "Don't worry about who's listening — yet."],
@@ -2255,7 +2685,9 @@ section { padding: 80px 0; }
     'thread-17': ["Why did it land? What did it ask of you?", "When did you first hear it, see it, read it?", "What do you reach for when you can't sleep?"],
     'thread-18': ["It's okay to have changed your mind.", "The not-knowing can be the answer too.", "What still moves you?"],
     'thread-19': ["Don't rush past it. Stay in it if you can.", "What did the kitchen smell like the week after?", "What do you keep of them, in the small daily ways?"],
-    'thread-20': ["You're allowed to contradict yourself.", "If you could be heard by only one person, who?", "Don't aim for wisdom. Aim for true."]
+    'thread-20': ["You're allowed to contradict yourself.", "If you could be heard by only one person, who?", "Don't aim for wisdom. Aim for true."],
+    'thread-21': ["Don't aim for completeness — fifteen turning points is plenty.", "Rough dates are fine. 'Sometime in the mid-90s' counts.", "If you can't name the year, name what was on the radio or what season it was."],
+    'thread-22': ["Be specific. Not 'I live in Auckland' — 'I live in a small house on Hopetoun Street with a lemon tree by the back door.'", "The boring stuff is the gold. What did you have for breakfast?", "Future-you and future-them will want the texture, not the summary."]
   };
   var DEFAULT_HELPERS = ["Take your time.", "There's no wrong answer.", "Just keep going."];
   function getHelpers(threadId) { return THREAD_HELPERS[threadId] || DEFAULT_HELPERS; }
@@ -2339,7 +2771,7 @@ section { padding: 80px 0; }
     return !!(bd && bd.classList.contains('open'));
   }
   function openStudio(threadId) {
-    // Auth check temporarily removed for UX preview — recording itself still gates on sign-in.
+    if (!currentUser) { openModal(); return; }
     var backdrop = $('studioBackdrop');
     if (!backdrop) return;
     studioState.thread = threadId;
