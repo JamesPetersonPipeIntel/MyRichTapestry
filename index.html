@@ -965,6 +965,96 @@ section { padding: 80px 0; }
   .studio-next { width: 100%; justify-content: center; }
 }
 
+/* ============== iOS SAFARI POLISH ============== */
+
+/* Reset native button styling — iOS Safari adds default gradients, rounding, and inner shadows
+   that override our explicit styles. This makes all our buttons render as designed. */
+button,
+.btn,
+.tier-cta,
+.rec-icon-btn,
+.rec-pill,
+.rec-button,
+.studio-rec-button,
+.studio-foot-btn,
+.studio-next,
+.studio-close,
+.studio-progress-bar,
+.modal-submit,
+.modal-close,
+.user-btn,
+.user-dropdown-item,
+.hamburger,
+.thread-helper-btn,
+.curr-switch a,
+.map-card {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove iOS 300ms tap delay on interactive elements */
+a, button, input, .btn, [role="button"], .map-card, .studio-thread,
+.studio-progress-bar, .nav-link, .user-dropdown-item, .rec-icon-btn,
+.rec-pill, .studio-foot-btn, .studio-next, .modal-submit, .modal-close,
+.studio-close, .thread-helper-btn, .curr-switch a, .hamburger,
+.studio-rec-button, .rec-button {
+  touch-action: manipulation;
+}
+
+/* Smooth momentum scrolling inside scrollable areas */
+.studio-sidebar,
+.studio-main,
+.studio-helper,
+.studio-grid,
+.modal,
+.user-dropdown,
+.nav-links,
+.map-grid,
+.curr-detail,
+.curr-map,
+.thread-prompts {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* iOS URL bar shrinks the viewport — use dynamic viewport units so the Studio overlay
+   fills the visible area correctly. Only applies if dvh is supported. */
+@supports (height: 100dvh) {
+  .studio { height: min(92dvh, 760px); }
+}
+
+/* iOS treats first tap as a "hover" which sticks the transform/lift effect until you tap
+   somewhere else. Reset transform on touch-only devices so buttons spring back. */
+@media (hover: none) {
+  .map-card:hover,
+  .feat:hover,
+  .btn:hover,
+  .btn-primary:hover,
+  .btn-accent:hover,
+  .btn-ghost:hover,
+  .studio-progress-bar:hover,
+  .rec-button:hover,
+  .studio-rec-button:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Make sure the round recording buttons stay perfectly round on iOS,
+   which sometimes mishandles `inset: 10px` with native button geometry. */
+.rec-button,
+.studio-rec-button {
+  aspect-ratio: 1;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+/* Slim the avatar/user button so it doesn't get stretched on iOS */
+.user-avatar { flex-shrink: 0; }
+
+/* Prevent text-size adjustment quirks in iOS Safari when rotating */
+html { -webkit-text-size-adjust: 100%; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
