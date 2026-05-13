@@ -953,7 +953,7 @@ section { padding: 80px 0; }
 }
 
 @media (max-width: 880px) {
-  .studio { height: 100vh; max-height: none; border-radius: 0; }
+  .studio { height: 100vh; height: 100dvh; max-height: none; border-radius: 0; }
   .studio-grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
   .studio-sidebar, .studio-helper { border: none; border-bottom: 0.5px solid var(--border); padding: 12px 14px; max-height: 100px; }
   .studio-helper { border-bottom: none; border-top: 0.5px solid var(--border); }
@@ -1017,11 +1017,10 @@ a, button, input, .btn, [role="button"], .map-card, .studio-thread,
   -webkit-overflow-scrolling: touch;
 }
 
-/* iOS URL bar shrinks the viewport — use dynamic viewport units so the Studio overlay
-   fills the visible area correctly. Only applies if dvh is supported. */
-@supports (height: 100dvh) {
-  .studio { height: min(92dvh, 760px); }
-}
+/* iOS URL bar handling for Studio overlay: see the mobile media query below
+   where we use `height: 100dvh` as a progressive override on top of 100vh.
+   Removed an earlier @supports block here that was inadvertently shrinking the
+   mobile Studio to 760px (broke layout — footer overlapped main content). */
 
 /* iOS treats first tap as a "hover" which sticks the transform/lift effect until you tap
    somewhere else. Reset transform on touch-only devices so buttons spring back. */
