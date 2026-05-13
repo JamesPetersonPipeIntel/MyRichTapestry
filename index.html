@@ -980,6 +980,80 @@ section { padding: 80px 0; }
   font-size: 16px; color: var(--text-2); line-height: 1.6;
   margin-bottom: 36px;
 }
+.record-progress-card {
+  display: flex; align-items: center; gap: 36px;
+  padding: 28px 32px;
+  background: var(--paper);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 28px;
+}
+.record-pie-wrap {
+  position: relative;
+  width: 168px; height: 168px;
+  flex-shrink: 0;
+}
+.record-pie {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.record-pie-track {
+  fill: none;
+  stroke: rgba(74, 27, 12, 0.08);
+  stroke-width: 9;
+}
+.record-pie-fill {
+  fill: none;
+  stroke: var(--coral-400);
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-dasharray: 263.89; /* 2 * PI * 42 */
+  stroke-dashoffset: 263.89;
+  transition: stroke-dashoffset 1s ease-out;
+}
+.record-pie-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.record-pie-pct {
+  font-family: var(--serif);
+  font-size: 40px; font-weight: 400;
+  color: var(--coral-900);
+  line-height: 1; letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 60;
+}
+.record-pie-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-3);
+  font-weight: 500;
+  margin-top: 6px;
+}
+.record-progress-summary {
+  flex: 1;
+}
+.record-progress-summary p {
+  font-size: 16px; color: var(--text);
+  line-height: 1.6; margin: 0;
+}
+.record-progress-summary p strong { color: var(--coral-900); font-weight: 600; }
+.record-progress-encourage {
+  font-family: var(--serif); font-style: italic;
+  color: var(--text-2) !important;
+  font-size: 15px !important;
+  margin-top: 10px !important;
+}
+@media (max-width: 700px) {
+  .record-progress-card {
+    flex-direction: column; text-align: center;
+    gap: 20px; padding: 24px 20px;
+  }
+  .record-pie-wrap { width: 140px; height: 140px; }
+}
+
 .record-stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1850,6 +1924,23 @@ html { -webkit-text-size-adjust: 100%; }
       <h1>Your story, so far.</h1>
       <p class="record-subtitle">Everything you've recorded, summed up.</p>
 
+      <div class="record-progress-card">
+        <div class="record-pie-wrap">
+          <svg viewBox="0 0 100 100" class="record-pie" aria-hidden="true">
+            <circle cx="50" cy="50" r="42" class="record-pie-track"/>
+            <circle cx="50" cy="50" r="42" class="record-pie-fill" id="pieFill"/>
+          </svg>
+          <div class="record-pie-center">
+            <div class="record-pie-pct" id="piePct">0%</div>
+            <div class="record-pie-label">complete</div>
+          </div>
+        </div>
+        <div class="record-progress-summary">
+          <p>You've answered <strong id="pieAnswered">0</strong> of <strong id="pieTotal">175</strong> prompts.</p>
+          <p class="record-progress-encourage" id="pieEncourage"></p>
+        </div>
+      </div>
+
       <div class="record-stats-grid">
         <div class="record-stat">
           <div class="record-stat-label">Total recorded</div>
@@ -2423,9 +2514,38 @@ html { -webkit-text-size-adjust: 100%; }
     });
 
     $('statTotalTime').textContent = formatLongDuration(totalSeconds);
-    $('statComplete').textContent = completedThreads + ' <span class="small">of ' + threadOrder.length + '</span>';
     $('statComplete').innerHTML = completedThreads + ' <span class="small">of ' + threadOrder.length + '</span>';
     $('statPrompts').textContent = recs.length;
+
+    // Pie chart: % of unique prompts answered across the whole curriculum
+    var totalPossible = 0;
+    var uniqueAnswered = 0;
+    threadOrder.forEach(function (t) {
+      totalPossible += t.total;
+      var a = agg[t.id];
+      if (a) uniqueAnswered += Object.keys(a.unique).length;
+    });
+    var pct = totalPossible > 0 ? (uniqueAnswered / totalPossible) * 100 : 0;
+    var circumference = 2 * Math.PI * 42;
+    var pieFill = $('pieFill');
+    if (pieFill) {
+      pieFill.style.strokeDasharray = circumference;
+      pieFill.style.strokeDashoffset = circumference * (1 - pct / 100);
+    }
+    if ($('piePct')) $('piePct').textContent = Math.round(pct) + '%';
+    if ($('pieAnswered')) $('pieAnswered').textContent = uniqueAnswered;
+    if ($('pieTotal')) $('pieTotal').textContent = totalPossible;
+    if ($('pieEncourage')) {
+      var enc = '';
+      if (uniqueAnswered === 0) enc = 'A journey of a thousand prompts begins with one. Press record.';
+      else if (pct < 10) enc = 'Beautifully begun.';
+      else if (pct < 25) enc = 'You\'re finding your voice.';
+      else if (pct < 50) enc = 'Nicely along the way.';
+      else if (pct < 75) enc = 'More than halfway. The hardest part is behind you.';
+      else if (pct < 100) enc = 'You can see the finish line.';
+      else enc = 'Complete. Every prompt, in your voice — kept.';
+      $('pieEncourage').textContent = enc;
+    }
 
     // Empty state
     var emptyEl = $('recordEmpty');
