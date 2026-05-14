@@ -71,10 +71,13 @@ img { max-width: 100%; display: block; }
   position: relative;
 }
 .brand {
+  display: inline-flex; align-items: center; gap: 10px;
   font-family: var(--serif); font-size: 22px; font-style: italic;
   font-weight: 400; color: var(--coral-900);
   letter-spacing: -0.01em;
 }
+.brand-icon { width: 28px; height: 28px; flex-shrink: 0; display: block; }
+.footer .brand-icon { width: 22px; height: 22px; }
 .nav-links { display: flex; align-items: center; gap: 26px; list-style: none; }
 .nav-link {
   font-size: 13px; color: var(--text-2);
@@ -1330,7 +1333,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 <nav class="nav" aria-label="Primary">
   <div class="nav-inner">
-    <a href="#home" class="brand" data-page="home">My Rich Tapestry</a>
+    <a href="#home" class="brand" data-page="home"><img src="icon.svg" alt="" class="brand-icon" aria-hidden="true"><span>My Rich Tapestry</span></a>
     <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
       <i class="ti ti-menu-2" aria-hidden="true"></i>
     </button>
@@ -2096,7 +2099,7 @@ html { -webkit-text-size-adjust: 100%; }
 </main>
 
 <footer class="footer">
-  <span class="brand">My Rich Tapestry</span>
+  <span class="brand"><img src="icon.svg" alt="" class="brand-icon" aria-hidden="true"><span>My Rich Tapestry</span></span>
   <span class="footer-meta">
     <a href="#terms" data-page="terms">Terms of Service</a> ·
     <a href="mailto:hello@myrichtapestry.example">Contact</a> ·
