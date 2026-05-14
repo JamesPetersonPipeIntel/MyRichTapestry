@@ -866,7 +866,7 @@ section { padding: 80px 0; }
 }
 
 .studio-foot {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; align-items: center; gap: 6px;
   padding: 12px 20px;
   border-top: 0.5px solid var(--border);
   flex-shrink: 0;
@@ -891,6 +891,7 @@ section { padding: 80px 0; }
   display: inline-flex; align-items: center; gap: 6px;
   transition: all 0.2s;
   font-family: var(--sans);
+  margin-left: auto;
 }
 .studio-next:hover:not(:disabled) { background: var(--coral-800); }
 .studio-next:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -902,8 +903,8 @@ section { padding: 80px 0; }
      (sidebar highlights the current chapter; progress bars show prompt count).
      Keep just the X close button. */
   .studio:not(.studio-static) .studio-bar {
-    padding: 4px 6px;
-    border-bottom: none;
+    padding: 2px 6px;
+    border-bottom: 0.5px solid var(--border);
     justify-content: flex-end;
   }
   .studio:not(.studio-static) .studio-bar-title { display: none; }
@@ -948,9 +949,27 @@ section { padding: 80px 0; }
   .studio-thread-list { display: flex; gap: 4px; overflow-x: auto; }
   .studio-thread { white-space: nowrap; flex-shrink: 0; }
   .studio-main { padding: 24px 18px; gap: 18px; }
-  .studio-foot { flex-direction: row; gap: 8px; padding: 10px 12px; align-items: center; }
-  .studio-foot-controls { width: auto; justify-content: flex-start; flex-wrap: nowrap; }
-  .studio-next { width: auto; flex-shrink: 0; }
+  /* Live studio footer: 2-up grid. Listen back + Delete sit on the top row,
+     Previous + Done·next on the row below. When there's no recording yet,
+     Play + Delete are display:none, so Previous + Done·next fall onto one row. */
+  .studio:not(.studio-static) .studio-foot {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .studio:not(.studio-static) #studioPlayBtn { order: 1; }
+  .studio:not(.studio-static) #studioDeleteBtn { order: 2; }
+  .studio:not(.studio-static) #studioPrevBtn { order: 3; }
+  .studio:not(.studio-static) #studioNextBtn { order: 4; margin-left: 0; }
+  .studio:not(.studio-static) .studio-foot .studio-foot-btn,
+  .studio:not(.studio-static) .studio-foot .studio-next {
+    width: 100%; justify-content: center;
+  }
+  /* Static home-page mock keeps its single-row footer */
+  .studio-static .studio-foot { flex-direction: row; gap: 8px; padding: 10px 12px; align-items: center; }
+  .studio-static .studio-foot-controls { width: auto; justify-content: flex-start; flex-wrap: nowrap; }
+  .studio-static .studio-next { width: auto; flex-shrink: 0; }
 }
 
 /* ============== YOUR RECORD (DASHBOARD) ============== */
@@ -2098,11 +2117,9 @@ html { -webkit-text-size-adjust: 100%; }
       </aside>
     </div>
     <footer class="studio-foot">
-      <div class="studio-foot-controls">
-        <button class="studio-foot-btn" id="studioPrevBtn"><i class="ti ti-chevron-left" aria-hidden="true"></i> Previous</button>
-        <button class="studio-foot-btn" id="studioPlayBtn" style="display:none;"><i class="ti ti-player-play" aria-hidden="true"></i> Listen back</button>
-        <button class="studio-foot-btn danger" id="studioDeleteBtn" style="display:none;"><i class="ti ti-trash" aria-hidden="true"></i> Delete</button>
-      </div>
+      <button class="studio-foot-btn" id="studioPrevBtn"><i class="ti ti-chevron-left" aria-hidden="true"></i> Previous</button>
+      <button class="studio-foot-btn" id="studioPlayBtn" style="display:none;"><i class="ti ti-player-play" aria-hidden="true"></i> Listen back</button>
+      <button class="studio-foot-btn danger" id="studioDeleteBtn" style="display:none;"><i class="ti ti-trash" aria-hidden="true"></i> Delete</button>
       <button class="studio-next" id="studioNextBtn">Done · next question <i class="ti ti-chevron-right" aria-hidden="true"></i></button>
     </footer>
   </div>
