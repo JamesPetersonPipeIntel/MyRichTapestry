@@ -884,6 +884,9 @@ section { padding: 80px 0; }
 .studio-foot-btn.danger:hover:not(:disabled) { background: #fde7e7; color: #b94747; }
 .studio-foot-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .studio-foot-btn i { font-size: 13px; }
+/* Previous button styled like the Finish/Done button — solid coral, white text */
+#studioPrevBtn { background: var(--coral-900); color: #fff; font-weight: 500; }
+#studioPrevBtn:hover:not(:disabled) { background: var(--coral-800); color: #fff; }
 .studio-next {
   background: var(--coral-900); color: #fff;
   padding: 9px 18px; border-radius: 7px;
@@ -935,8 +938,8 @@ section { padding: 80px 0; }
     grid-template-rows: auto auto auto auto;
     align-items: center;
     column-gap: 18px;
-    row-gap: 16px;
-    padding: 18px 18px 16px;
+    row-gap: 8px;
+    padding: 12px 18px;
     text-align: left;
   }
   .studio:not(.studio-static) .studio-main > div:nth-child(1) { grid-area: prompt; text-align: center; }
