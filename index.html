@@ -169,6 +169,12 @@ img { max-width: 100%; display: block; }
 }
 .user-dropdown-item:hover { background: var(--cream); }
 .user-dropdown-item i { font-size: 15px; color: var(--text-2); }
+.user-dropdown-item.is-active {
+  background: var(--coral-50);
+  color: var(--coral-900);
+  font-weight: 500;
+}
+.user-dropdown-item.is-active i { color: var(--coral-400); }
 
 /* ============== LAYOUT ============== */
 .page { display: none; animation: fadeIn 0.4s ease-out; }
@@ -561,6 +567,7 @@ section { padding: 80px 0; }
   .user-btn { width: 100%; padding: 10px 12px; border-radius: 6px; }
   .user-btn .ti-chevron-down { display: none; }
   .user-dropdown { position: static; box-shadow: none; border: none; border-top: 0.5px solid var(--border); border-radius: 0; margin-top: 4px; padding: 4px 0 0; display: block; min-width: 0; }
+  .user-dropdown-email { display: none; }
   section { padding: 60px 0; }
   .hero { padding: 70px 0 60px; }
   .steps { grid-template-columns: 1fr; gap: 32px; }
@@ -2378,6 +2385,19 @@ html { -webkit-text-size-adjust: 100%; }
     if (!hash) window.scrollTo({ top: 0, behavior: 'instant' });
     // Load fresh stats whenever the user lands on the Your Record page
     if (pageId === 'record') loadAndRenderStats();
+    updateDropdownActiveState(pageId);
+  }
+
+  // Mark the user-dropdown item that matches the current page as "is-active"
+  function updateDropdownActiveState(pageId) {
+    var items = document.querySelectorAll('.user-dropdown-item');
+    for (var i = 0; i < items.length; i++) items[i].classList.remove('is-active');
+    var mapping = { 'record': 'go-record', 'curriculum': 'go-curriculum' };
+    var actionForPage = mapping[pageId];
+    if (actionForPage) {
+      var active = document.querySelector('.user-dropdown-item[data-action="' + actionForPage + '"]');
+      if (active) active.classList.add('is-active');
+    }
   }
 
   // ============== AUTH UI ==============
