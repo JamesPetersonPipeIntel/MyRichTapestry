@@ -628,6 +628,8 @@ section { padding: 80px 0; }
 .studio-static .studio-close,
 .studio-static .studio-progress-bar { cursor: default; pointer-events: none; }
 @media (max-width: 880px) {
+  /* The studio example on the home page doesn't lay out well on phones or narrow tablets — hide it. */
+  .recording-room { display: none; }
   .studio-static { border-radius: 14px !important; height: auto !important; }
   .studio-static .studio-grid {
     grid-template-columns: 170px 1fr 180px !important;
@@ -884,9 +886,9 @@ section { padding: 80px 0; }
 .studio-foot-btn.danger:hover:not(:disabled) { background: #fde7e7; color: #b94747; }
 .studio-foot-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .studio-foot-btn i { font-size: 13px; }
-/* Previous button styled like the Finish/Done button — solid coral, white text */
-#studioPrevBtn { background: var(--coral-900); color: #fff; font-weight: 500; }
-#studioPrevBtn:hover:not(:disabled) { background: var(--coral-800); color: #fff; }
+/* Previous button — bright orange (coral-400), distinct from the dark Done·next button */
+#studioPrevBtn { background: var(--coral-400); color: #fff; font-weight: 500; }
+#studioPrevBtn:hover:not(:disabled) { background: var(--coral-600); color: #fff; }
 .studio-next {
   background: var(--coral-900); color: #fff;
   padding: 9px 18px; border-radius: 7px;
@@ -901,7 +903,9 @@ section { padding: 80px 0; }
 .studio-next i { font-size: 14px; }
 
 @media (max-width: 880px) {
-  .studio { height: 100vh; height: 100dvh; max-height: none; border-radius: 0; }
+  /* Inset the studio modal slightly so the backdrop shows as a thin border around it. */
+  .studio-backdrop { padding: 10px; }
+  .studio { height: 100%; max-height: none; border-radius: 12px; }
   /* Hide the bar's title + status on mobile — both are duplicated below
      (sidebar highlights the current chapter; progress bars show prompt count).
      Keep just the X close button. */
@@ -912,7 +916,8 @@ section { padding: 80px 0; }
   }
   .studio:not(.studio-static) .studio-bar-title { display: none; }
   .studio:not(.studio-static) .studio-bar-status { display: none; }
-  .studio-grid { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; min-height: 0; }
+  /* Studio-main grows (1fr) and the pink helper shrinks to its content. */
+  .studio-grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; min-height: 0; }
   .studio-sidebar, .studio-helper { border: none; border-bottom: 0.5px solid var(--border); padding: 12px 14px; max-height: 100px; }
   /* Main area stays put at content height (button always visible).
      Helper takes whatever's left and scrolls inside its panel. */
@@ -967,7 +972,12 @@ section { padding: 80px 0; }
   .studio:not(.studio-static) #studioNextBtn { order: 4; margin-left: 0; }
   .studio:not(.studio-static) .studio-foot .studio-foot-btn,
   .studio:not(.studio-static) .studio-foot .studio-next {
-    width: 100%; justify-content: center;
+    width: 100%;
+    justify-content: center;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 7px;
   }
   /* Static home-page mock keeps its single-row footer */
   .studio-static .studio-foot { flex-direction: row; gap: 8px; padding: 10px 12px; align-items: center; }
